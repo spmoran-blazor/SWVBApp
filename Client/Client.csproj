@@ -18,12 +18,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\WVBApp\Shared\Shared.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Content Update="wwwroot\img\ball.png">
-	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	    <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 	  </Content>
 	</ItemGroup>
 
