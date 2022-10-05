@@ -15,50 +15,34 @@
     <div id="app">
 
         <style>
-            .mud-wasm {
-                animation: slide 3s ease-in-out infinite alternate;
-                background-image: linear-gradient(-60deg,#1E88E5 50%,#0069c0 50%);
-                bottom: 0;
-                left: -50%;
-                opacity: .5;
-                position: fixed;
-                right: -50%;
-                top: 0;
-                z-index: -1;
-            }
-
-            .mud-wasm-cont {
-                width: 100%;
-                display: block;
-                margin: auto;
-            }
-
             .mud-img-logo {
-                max-inline-size: 200%;
-                left: 25px;
+                max-inline-size: 80%;
+                left: 75px;
                 top: 200px;
                 margin-top: 50px;
-                vertical-align: bottom
+                vertical-align: bottom;
+                padding-left: 90px;
+                max-width: auto;
+                max-height: auto;
             }
 
             .openloading {
                 font-family: Roboto;
                 font-size: 5em;
                 text-align: center;
-                color: white;
-                text-shadow: 0px 0px 5px #000;
+                color: #0D47A1;
+                -webkit-text-stroke: 2px black;
+                text-stroke: 2px black;
             }
         </style>
 
         <div style="margin-top:100px;position:fixed;width:100%;" >
-            <!--<h1 class="openloading">Getting</h1>
+            <h1 class="openloading">Getting</h1>
             <h1 class="openloading">Your</h1>
-            <h1 class="openloading">Stuff</h1>-->
-                <img class="mud-img-logo" src="img/ball.png" style="max-width:auto; max-height:auto;" />
-            <!--<img src="img/loading-waiting.gif" style="max-width:auto; max-height:auto;" />-->
+            <h1 class="openloading">Stuff</h1>
+                <img class="mud-img-logo" src="img/ball.png" />
         </div>
     </div>
-    <!--<div id="app"><img Src="img/Ball.png" Alt="Loading" Elevation="25" Class="rounded-sm" /></div>-->
     <div id="blazor-error-ui">
         An unhandled error has occurred.
         <a href="" class="reload">Reload</a>
