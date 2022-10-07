@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 
 namespace Api
 {
-    public static class Repository
+    public static class Repository 
     {
         [FunctionName("Function1")]
         public static async Task<IActionResult> Run(
