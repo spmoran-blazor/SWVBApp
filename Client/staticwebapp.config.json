@@ -1,17 +1,17 @@
 {
-  "auth": {
-    "identityProviders": {
-      "azureActiveDirectory": {
-        "registration": {
-          "openIdIssuer": "https://login.microsoftonline.com/1f2ecf30-50eb-47b8-adb3-86b37b4c14ba/v2.0",
-          "clientIdSettingName": "795fdc9a-e162-4340-b305-29a8f2e63f36, null",
-          "clientSecretSettingName": "NoDumDums"
-        }
-      }
-    }
-  },
-  {
-    "route": "/*",
-    "allowedRoles": [ "authenticated" ]
-  }
+  //"auth": {
+  //  "identityProviders": {
+  //    "azureActiveDirectory": {
+  //      "registration": {
+  //        "openIdIssuer": "https://login.microsoftonline.com/1f2ecf30-50eb-47b8-adb3-86b37b4c14ba/v2.0",
+  //        "clientIdSettingName": "795fdc9a-e162-4340-b305-29a8f2e63f36, null",
+  //        "clientSecretSettingName": "NoDumDums"
+  //      }
+  //    }
+  //  }
+  //},
+  //{
+  //  "route": "/*",
+  //  "allowedRoles": [ "authenticated" ]
+  //}
 }
