@@ -9,14 +9,15 @@
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-3 pt-3">
         <AuthorizeView>
                 <Authorizing>
-                    <MudButton Href="/.auth/login/aad" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Login" Color="Color.Primary">Login</MudButton>
-                </Authorizing>
+@*                    <MudButton Href="/.auth/login/aad?post_login_redirect_uri=.referrer" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Login" Color="Color.Primary" Style="width: 200px; height: 60px">Login</MudButton>
+*@                &nbsp;
+            </Authorizing>
             <Authorized>
                 Hello, @context.User.Identity.Name!
                 <a href="/.auth/logout?post_logout_redirect_uri=/">Log out</a>
             </Authorized>
             <NotAuthorized>
-                    <MudButton Href="/.auth/login/aad" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Login" Color="Color.Primary">Login</MudButton>
+                    <MudButton Href="/.auth/login/aad" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Login" Color="Color.Primary" Style="width: 200px; height: 60px;">Login</MudButton>
             </NotAuthorized>
         </AuthorizeView>
     <div class="content px-4">
