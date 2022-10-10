@@ -13,7 +13,13 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services
     .AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
     .AddStaticWebAppsAuthentication()
-    .AddMudServices();
+    .AddMudServices()
+    .AddMsalAuthentication(options =>
+    {
+        options.ProviderOptions.DefaultAccessTokenScopes
+        .Add("https://graph.microsoft.com/User.Read");
+    });
+
 
 await builder.Build().RunAsync();
 
