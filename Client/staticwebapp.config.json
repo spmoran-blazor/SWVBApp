@@ -1,13 +1,22 @@
 {
-  "auth": {
-    "identityProviders": {
-      "azureActiveDirectory": {
-        "registration": {
-          "openIdIssuer": "https://login.microsoftonline.com/1f2ecf30-50eb-47b8-adb3-86b37b4c14ba",
-          "clientIdSettingName": "AZURE_CLIENT_ID",
-          "clientSecretSettingName": "AZURE_CLIENT_SECRET"
-        }
-      }
+  "routes": [
+    {
+      "route": "/authenticated/*",
+      "allowedRoles": [ "authenticated" ]
     }
+  ],
+  //"auth": {
+  //  "identityProviders": {
+  //    "azureActiveDirectory": {
+  //      "registration": {
+  //        "openIdIssuer": "https://login.microsoftonline.com/1f2ecf30-50eb-47b8-adb3-86b37b4c14ba",
+  //        "clientIdSettingName": "AZURE_CLIENT_ID",
+  //        "clientSecretSettingName": "AZURE_CLIENT_SECRET"
+  //      }
+  //    }
+  //  }
+  //},
+  "globalHeaders": {
+    "Cache-Control": "no-cache"
   }
 }
