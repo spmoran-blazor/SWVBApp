@@ -7,29 +7,23 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging; 
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using WVBApp.Shared.Entities;
 
 namespace Api
 {
     public static class Repository 
-    { 
-        [FunctionName("Function1")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+    {
+
+        [FunctionName("GetMembers")]
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetMembers")] HttpRequest req,
+            ILogger log,
+            [Sql("GetMembers", CommandType = System.Data.CommandType.StoredProcedure,
+                ConnectionStringSetting = "Server=tcp:swvb.database.windows.net,1433;Initial Catalog=SWVB;Persist Security Info=False;User ID=spmoran;Password=1SPm081563_;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")]
+                IEnumerable<Member> toDoItems)
         {
-            log.LogInformation("C# HTTP trigger function processed a request.");
-
-            string name = req.Query["name"];
-
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
-
-            string responseMessage = string.IsNullOrEmpty(name)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {name}. This HTTP triggered function executed successfully.";
-
-            return new OkObjectResult(responseMessage);
+            return new OkObjectResult(toDoItems);
         }
     }
 }

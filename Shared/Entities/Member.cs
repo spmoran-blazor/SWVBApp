@@ -10,23 +10,26 @@ namespace WVBApp.Shared.Entities
         public Int32 Id { get; set; }
 
         [Required]
-        public Int32 OrganizationId { get; set; }
+        public string? AzureId { get; set; }
+
+        [Required]
+        public Int32 OrganizationId { get; set; } = 1;
 
         [Required]
         [MaxLength(50)]
-        public String FirstName { get; set; }
+        public String? FirstName { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public String LastName { get; set; }
+        public String? LastName { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public String StreetAddress { get; set; }
+        public String? StreetAddress { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public String City { get; set; }
+        public String? City { get; set; }
 
         [Required]
         public Int32 State { get; set; }
@@ -36,14 +39,14 @@ namespace WVBApp.Shared.Entities
 
         [Required]
         [MaxLength(50)]
-        public String Zip { get; set; }
+        public String? Zip { get; set; }
 
         [MaxLength(50)]
         public String? Email { get; set; }
 
         [Required]
         [MaxLength(10)]
-        public String MobileNumber { get; set; }
+        public String? MobileNumber { get; set; }
 
         [Required]
         public Int32 GenderIdentification { get; set; }
@@ -61,7 +64,7 @@ namespace WVBApp.Shared.Entities
 
         [Required]
         [MaxLength(50)]
-        public String UpdatedBy { get; set; }
+        public String? UpdatedBy { get; set; }
 
         public List<Member> Members { get; set; } = new List<Member>();
 
