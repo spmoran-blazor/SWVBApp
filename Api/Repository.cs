@@ -20,10 +20,10 @@ namespace Api
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetMembers")] HttpRequest req,
             ILogger log,
             [Sql("GetMembers", CommandType = System.Data.CommandType.StoredProcedure,
-                ConnectionStringSetting = "Server=tcp:swvb.database.windows.net,1433;Initial Catalog=SWVB;Persist Security Info=False;User ID=spmoran;Password=1SPm081563_;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;")]
-                IEnumerable<Member> toDoItems)
+                ConnectionStringSetting = "SqlConnection")]
+                IEnumerable<Member> Members)
         {
-            return new OkObjectResult(toDoItems);
+            return new OkObjectResult(Members);
         }
     }
 }
