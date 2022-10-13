@@ -17,7 +17,7 @@ namespace Api
 
         [FunctionName("GetMembers")]
         public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "GetMembers")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getmembers")] HttpRequest req,
             ILogger log,
             [Sql("GetMembers", CommandType = System.Data.CommandType.StoredProcedure,
                 ConnectionStringSetting = "SqlConnection")]

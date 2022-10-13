@@ -1,47 +1,27 @@
 ﻿@page "/"
-@attribute [Authorize]
 
-<PageTitle>Upcoming Opportunities</PageTitle>
-
-<MudExpansionPanels MultiExpansion="true">
-    <MudExpansionPanel Text="Monday, Nov 31 2022 6:30 PM">
-        <MudText Class="mb-3" Align="Align.Center" Color="Color.Error" Typo="Typo.h5">Thursday, 10-1-2022 - 6:30 pm.</MudText>
-        <MudText Class="mb-3" Align="Align.Left">You are in queue for a Level 3 game on the date above. Please accept or decline using the thumbs below.</MudText>
-
-        <MudStack Spacing="3" Row="true" Class="pb-2">
-            <MudField Variant="Variant.Text">Arthur Fonzarelli - Unconfirmed</MudField>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" DisableElevation="true" Icon="@Icons.Filled.ThumbUp"></MudIconButton>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" DisableElevation="true" Icon="@Icons.Filled.ThumbDown"></MudIconButton>
-        </MudStack>
-        <MudStack Spacing="3" Row="true" Class="pb-2">
-            <MudField Disabled Variant="Variant.Text">Freddie Kruger - Unconfirmed</MudField>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" Disabled DisableElevation="true" Icon="@Icons.Filled.ThumbUp"></MudIconButton>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" Disabled DisableElevation="true" Icon="@Icons.Filled.ThumbDown"></MudIconButton>
-        </MudStack>
-        <MudStack Spacing="3" Row="true" Class="pb-2">
-            <MudField Disabled Variant="Variant.Text">H.R. Puffenstuff - Confirmed</MudField>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" Disabled DisableElevation="true" Icon="@Icons.Filled.ThumbUp"></MudIconButton>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" Disabled DisableElevation="true" Icon="@Icons.Filled.ThumbDown"></MudIconButton>
-        </MudStack>
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Panel Two">
-        Panel Two Content
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Panel Three">
-        Panel Three Content
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Panel Four">
-        Panel Four Content
-    </MudExpansionPanel>
-</MudExpansionPanels>
-
-            
 @code {
-    public bool SwitchValue { get; set; } = true;
-    public bool ReadOnly { get; set; } = true;
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
 
-    void ToggleValue()
+    protected override void OnInitialized()
     {
-        SwitchValue = !SwitchValue;
+
+    }
+
+
+    protected void NavigateToHome()
+    {
+
+    }
+ 
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var Id = 95;
+            NavigationManager.NavigateTo($"/eventregister/{Id}");
+        }
     }
 }

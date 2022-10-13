@@ -10,10 +10,7 @@ namespace WVBApp.Shared.Entities
         public Int32 Id { get; set; }
 
         [Required]
-        public string? AzureId { get; set; }
-
-        [Required]
-        public Int32 OrganizationId { get; set; } = 1;
+        public string? AzureId { get; set; } = "0";
 
         [Required]
         [MaxLength(50)]
@@ -49,12 +46,13 @@ namespace WVBApp.Shared.Entities
         public String? MobileNumber { get; set; }
 
         [Required]
-        public Int32 GenderIdentification { get; set; }
+        public string? Gender { get; set; }
 
         [Required]
         public Int32 PlayLevel { get; set; }
 
-        public String? ExceptionDates { get; set; }
+        [Required]
+        public Int32 PlayScore { get; set; }
 
         [Required]
         public Boolean IsCurrent { get; set; }
