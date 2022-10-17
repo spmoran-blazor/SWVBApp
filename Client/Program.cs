@@ -1,32 +1,33 @@
+using AzureStaticWebApps.Blazor.Authentication;
 using Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Microsoft.AspNetCore.Http;
 using MudBlazor.Services;
-using Microsoft.AspNetCore.Authorization;
-using System.Runtime.CompilerServices;
-using AzureStaticWebApps.Blazor.Authentication;
 
-var builder = WebAssemblyHostBuilder.CreateDefault(args);
-builder.RootComponents.Add<App>("#app");
-builder.RootComponents.Add<HeadOutlet>("head::after");
-
-builder.Services
-    .AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
-    .AddStaticWebAppsAuthentication()
-    .AddMudServices()
-    .AddMsalAuthentication(options =>
+internal class Program
+{
+    private static async Task Main(string[] args)
     {
-        options.ProviderOptions.DefaultAccessTokenScopes
-        .Add("https://graph.microsoft.com/User.Read");
-    });
+        var builder = WebAssemblyHostBuilder.CreateDefault(args);
+        builder.RootComponents.Add<App>("#app");
+        builder.RootComponents.Add<HeadOutlet>("head::after");
 
+        builder.Services
+            .AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
+            .AddStaticWebAppsAuthentication()
+            .AddMudServices();
+        builder.Services.AddScoped(sp =>
+            new HttpClient
+            {
+                BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)
+            });
 
-await builder.Build().RunAsync();
-
-
-//builder.Services.AddStaticWebAppsAuthentication(this IServiceCollection);
-//builder.Services.AddMsalAuthentication(options =>
-
-//{
-//    builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
-//});
+        builder.Services.AddMsalAuthentication(options =>
+        {
+            options.ProviderOptions.DefaultAccessTokenScopes
+                .Add("https://graph.microsoft.com/User.Read");
+        });
+        await builder.Build().RunAsync();
+    }
+}

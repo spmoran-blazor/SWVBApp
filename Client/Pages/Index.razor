@@ -1,6 +1,6 @@
 ﻿@page "/"
 
-@code {
+@*@code {
     [Inject]
     public NavigationManager NavigationManager { get; set; }
 
@@ -16,12 +16,12 @@
     }
  
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var Id = 95;
-            NavigationManager.NavigateTo($"/eventregister/{Id}");
-        }
-    }
-}
+    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    //{
+    //    if (firstRender)
+    //    {
+    //        var Id = 95;
+    //        NavigationManager.NavigateTo($"/eventregister/{Id}");
+    //    }
+    //}
+}*@
