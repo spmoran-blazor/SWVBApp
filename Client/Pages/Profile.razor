@@ -5,37 +5,83 @@
 @using System.Threading.Tasks
 @using Microsoft.AspNetCore.Http
 @using System.Security.Claims
-@using Microsoft.Graph
+@using System.Text.Json
+@using WVBApp.Shared.Entities
+@using System.Runtime.Serialization
+@using System.Runtime.Serialization.Json
+
 @inject HttpClient Http
 @inject AuthenticationStateProvider AuthenticationStateProvider
-<h1>Hello, @user.Identity.Name</h1>
+
 @code {
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-    private string _authMessage;
-    private string _userId;
-    private IEnumerable<Claim> _claims = Enumerable.Empty<Claim>();
-    private ClaimsPrincipal user;
+    private Member _currentMember = new Member();
+    private ClaimsPrincipal? _user;
+    private int _userId;
+    private string? _userEmail;
+
     protected override async Task OnParametersSetAsync()
     {
-        await GetClaimsPrincipalData();
+
         await base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetClaimsPrincipalData();
+            GetMemberIdByEmail(_userEmail);
+            GetMemberById(_userId);
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        //if (!firstRender)
+        //{
+
+        //}
+    }
+
+    private async void GetMemberIdByEmail(string email)
+    {
+        var response = await Http.GetAsync($"{GetBaseUri()}api/getmemberidbyemail/{_userEmail}");
+        _userId = await response.Content.ReadFromJsonAsync<int>();
+    }
+
+    private async void GetMemberById(int Id)
+    {
+        Member member = new Member();
+
+        var response = await Http.GetAsync($"{GetBaseUri()}api/getmemberbyid/{Id}");
+        var members = await response.Content.ReadFromJsonAsync<IEnumerable<Member>>() ?? null;
+
+        if(members != null){
+            if(members.Count() > 0)
+            {
+                _currentMember = members.FirstOrDefault();
+            }
+        }
     }
 
     private async Task GetClaimsPrincipalData()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        user = authState.User;
+        var user = authState.User ?? null;
 
-        //if (user.Identity.IsAuthenticated)
-        //{
-        //    //_authMessage = $"{user.Identity.Name} is authenticated.";
-        //    //_claims = user.Claims;
-        //    //_userId = $"User Id: {user.FindFirst(c => c.Type == "sub")?.Value}";
-        //}
-        //else
-        //{
-        //    _authMessage = "The user is NOT authenticated.";
-        //}
+        if(user != null){
+            if (user.Identity.IsAuthenticated)
+            {
+                _userEmail = user.Identity.Name;
+            }
+        }
+    }
+
+    private string GetBaseUri()
+    {
+        string baseUrl = Http.BaseAddress.ToString();
+#if DEBUG
+       baseUrl =  "http://localhost:7289/";
+#endif
+        return baseUrl;
     }
 }
 

@@ -20,24 +20,6 @@ namespace WVBApp.Shared.Entities
         [MaxLength(50)]
         public String? LastName { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public String? StreetAddress { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public String? City { get; set; }
-
-        [Required]
-        public Int32 State { get; set; }
-
-        [Required]
-        public Int32 Country { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public String? Zip { get; set; }
-
         [MaxLength(50)]
         public String? Email { get; set; }
 
@@ -56,13 +38,6 @@ namespace WVBApp.Shared.Entities
 
         [Required]
         public Boolean IsCurrent { get; set; }
-
-        [Required]
-        public DateTime UpdateDate { get; set; }
-
-        [Required]
-        [MaxLength(50)]
-        public String? UpdatedBy { get; set; }
 
         public List<Member> Members { get; set; } = new List<Member>();
 

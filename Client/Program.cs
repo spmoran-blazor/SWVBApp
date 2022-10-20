@@ -28,6 +28,7 @@ internal class Program
             options.ProviderOptions.DefaultAccessTokenScopes
                 .Add("https://graph.microsoft.com/User.Read");
         });
+
         await builder.Build().RunAsync();
     }
 }
