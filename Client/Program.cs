@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Http;
 using MudBlazor.Services;
-
+using WVBApp.Shared.Data;
 internal class Program
 {
     private static async Task Main(string[] args)
@@ -13,10 +13,13 @@ internal class Program
         builder.RootComponents.Add<App>("#app");
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
+        builder.Services.AddHttpClient("DataAccessHttpClient", sp => sp.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+        builder.Services.AddTransient<DataAccessService, DataAccessService>();
         builder.Services
-            .AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) })
             .AddStaticWebAppsAuthentication()
             .AddMudServices();
+            
+
         builder.Services.AddScoped(sp =>
             new HttpClient
             {

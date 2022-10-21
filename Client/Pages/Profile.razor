@@ -9,57 +9,45 @@
 @using WVBApp.Shared.Entities
 @using System.Runtime.Serialization
 @using System.Runtime.Serialization.Json
+@using WVBApp.Shared.Data
 
-@inject HttpClient Http
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataAccessService dataAccess;
 
 @code {
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
     private Member _currentMember = new Member();
+    private DataAccessService _data;
     private ClaimsPrincipal? _user;
     private int _userId;
     private string? _userEmail;
+    //private string? _baseUrl;
 
     protected override async Task OnParametersSetAsync()
     {
-
         await base.OnParametersSetAsync();
     }
 
     protected override async Task OnInitializedAsync()
     {
+        _data = dataAccess;
         await GetClaimsPrincipalData();
-            GetMemberIdByEmail(_userEmail);
-            GetMemberById(_userId);
     }
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        //if (!firstRender)
-        //{
-
-        //}
-    }
-
-    private async void GetMemberIdByEmail(string email)
-    {
-        var response = await Http.GetAsync($"{GetBaseUri()}api/getmemberidbyemail/{_userEmail}");
-        _userId = await response.Content.ReadFromJsonAsync<int>();
-    }
-
-    private async void GetMemberById(int Id)
-    {
-        Member member = new Member();
-
-        var response = await Http.GetAsync($"{GetBaseUri()}api/getmemberbyid/{Id}");
-        var members = await response.Content.ReadFromJsonAsync<IEnumerable<Member>>() ?? null;
-
-        if(members != null){
-            if(members.Count() > 0)
-            {
-                _currentMember = members.FirstOrDefault();
-            }
+        if (!firstRender)
+        {
+            await GetMemberByEmail();
         }
+    }
+
+    private async Task GetMemberByEmail()
+    {
+        _currentMember = await dataAccess.GetMemberByEmail(_userEmail);
+
+        var foo = "x";
+
     }
 
     private async Task GetClaimsPrincipalData()
@@ -67,21 +55,13 @@
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
         var user = authState.User ?? null;
 
-        if(user != null){
+        if (user != null)
+        {
             if (user.Identity.IsAuthenticated)
             {
                 _userEmail = user.Identity.Name;
             }
         }
-    }
-
-    private string GetBaseUri()
-    {
-        string baseUrl = Http.BaseAddress.ToString();
-#if DEBUG
-       baseUrl =  "http://localhost:7289/";
-#endif
-        return baseUrl;
     }
 }
 

@@ -64,7 +64,7 @@ namespace Api
             [Sql("GetMemberIdByEmail", CommandType = System.Data.CommandType.StoredProcedure,
                 Parameters = "@Email={email}",
                 ConnectionStringSetting = "SqlConnection")]
-                int Id)
+                IEnumerable<int> Id)
         {
             return new OkObjectResult(Id);
         }
