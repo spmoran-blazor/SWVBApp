@@ -15,11 +15,11 @@ namespace WVBApp.Shared.Data
         public DataAccessService(IHttpClientFactory factory)
         {
             _http = factory.CreateClient("DataAccessHttpClient");
-            SetBaseUri();
         }
 
         public async Task<Member?> GetMemberByEmail(string email)
         {
+            SetBaseUri();
             Member member = new Member();
 
             var response = await _http.GetAsync($"{_baseUrl}api/getmemberbyemail/{email}");

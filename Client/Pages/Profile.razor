@@ -14,31 +14,43 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess;
 
+<h1>This is horribly ugly and I don't care. It's late and I want to see if this user is returned.</h1>
+<div>@_currentMember.FirstName</div>
+<div>@_currentMember.LastName</div>
+<div>@_currentMember.Gender</div>
+<div>@_currentMember.IsCurrent</div>
+<div>@_currentMember.Email</div>
+<div>@_currentMember.Id</div>
+<div>@_currentMember.AzureId</div>
+<div>@_currentMember.MobileNumber</div>
+
 @code {
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
     private Member _currentMember = new Member();
-    private DataAccessService _data;
+    private DataAccessService? _data;
     private ClaimsPrincipal? _user;
     private int _userId;
     private string? _userEmail;
-    //private string? _baseUrl;
 
     protected override async Task OnParametersSetAsync()
     {
         await base.OnParametersSetAsync();
+        await GetClaimsPrincipalData();
     }
 
     protected override async Task OnInitializedAsync()
     {
-        _data = dataAccess;
-        await GetClaimsPrincipalData();
+
+
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
         {
+            _data = dataAccess;
             await GetMemberByEmail();
+            StateHasChanged();
         }
     }
 
