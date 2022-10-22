@@ -38,7 +38,7 @@ namespace WVBApp.Shared.Data
 
         private void SetBaseUri()
         {
-            _baseUrl = _http.BaseAddress.ToString();
+            _baseUrl = "https://swvbsa.azurewebsites.net/";
 #if DEBUG
             _baseUrl = "http://localhost:7289/";
 #endif
