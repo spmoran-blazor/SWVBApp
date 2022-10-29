@@ -3,7 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
 using WVBApp.Shared.Entities;
 
 namespace Api
@@ -22,7 +26,7 @@ namespace Api
             return new OkObjectResult(Members);
         }
 
-        
+
     }
 
     public static class GetMemberById
@@ -55,18 +59,47 @@ namespace Api
         }
     }
 
-    public static class GetMemberIdByEmail
+        public static class PostEvent
     {
-        [FunctionName("GetMemberIdByEmail")]
-        public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getmemberidbyemail/{email}")] HttpRequest req,
-            ILogger log,
-            [Sql("GetMemberIdByEmail", CommandType = System.Data.CommandType.StoredProcedure,
-                Parameters = "@Email={email}",
-                ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<int> Id)
-        {
-            return new OkObjectResult(Id);
-        }
+        //[FunctionName("InsertNewEvent")]
+        //public static IActionResult Run(
+        //    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "insertnewevent"] HttpRequest req,
+        //    ILogger log,
+        //    [Sql("GetMemberIdByEmail", CommandType = System.Data.CommandType.StoredProcedure,
+        //        Parameters = "@Email={email}",
+        //        ConnectionStringSetting = "SqlConnection")]
+        //        IEnumerable<int> Id)
+        //{
+        //    return new OkObjectResult(Id);
+        //}
+
+        //[FunctionName("PostEvent")]
+        //public static async Task<IActionResult> Run(
+        //    [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PostEvent")] HttpRequest req,
+        //    ILogger log,
+        //    [Sql("dbo.Event", ConnectionStringSetting = "SqlConnection")] IAsyncCollector<Event> events)
+        //{
+        //    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        //    Event newEvent = JsonConvert.DeserializeObject<Event>(requestBody);
+
+        //    // generate a new id for the todo item
+        //    //toDoItem.Id = Guid.NewGuid();
+
+        //    // set Url from env variable ToDoUri
+        //    toDoItem.url = Environment.GetEnvironmentVariable("ToDoUri") + "?id=" + toDoItem.Id.ToString();
+
+        //    // if completed is not provided, default to false
+        //    if (toDoItem.completed == null)
+        //    {
+        //        toDoItem.completed = false;
+        //    }
+
+        //    await toDoItems.AddAsync(toDoItem);
+        //    await toDoItems.FlushAsync();
+        //    List<ToDoItem> toDoItemList = new List<ToDoItem> { toDoItem };
+
+        //    return new OkObjectResult(toDoItemList);
+
+        //}
     }
 }

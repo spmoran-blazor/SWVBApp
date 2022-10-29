@@ -1,7 +1,5 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
+﻿using System.Net.Http.Json;
 using WVBApp.Shared.Entities;
-using WVBApp.Shared.Data;
 
 //using static System.Net.WebRequestMethods;
 

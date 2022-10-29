@@ -10,25 +10,40 @@ namespace WVBApp.Shared.Entities
         public Int32 Id { get; set; }
 
         [Required]
-        public DateTime EventDate { get; set; }
+        public DateTime? EventDate { get; set; }
+
+        [Required]
+        public TimeSpan? EventTime { get; set; }
 
         [Required]
         public Int32 AreaOfPlayId { get; set; }
 
         [Required]
-        public Int32 ParticipantCount { get; set; }
+        public Int32 ParticipantLimit { get; set; }
+
+        [Required]
+        public Int32 PlayLevelMin { get; set; }
+
+        [Required]
+        public Int32 PlayLevelMax { get; set; }
 
         [MaxLength(200)]
-        public String EventComment { get; set; }
+        public String? EventComment { get; set; }
+
+        [Required]
+        public Boolean IsCancelled { get; set; }
+
+        [Required]
+        public Boolean IsPartial { get; set; }
+
+        public int? PartialGameId { get; set; }
 
         [Required]
         public DateTime UpdatedDate { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public String UpdatedBy { get; set; }
-
-        public List<Event> Events { get; set; } = new List<Event>();
+        public String? UpdatedBy { get; set; }
 
     }
 }

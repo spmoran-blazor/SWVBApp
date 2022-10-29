@@ -1,0 +1,84 @@
+﻿@page "/AddEvent"
+@using System.ComponentModel.DataAnnotations
+@using Microsoft.AspNetCore.Components.Forms
+@using WVBApp.Shared.Entities
+
+<EditForm Model="@newEvent" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <h5 class="mud-typography mud-typography-h5">Create New Game</h5>
+    <MudGrid>
+        <MudItem xs="12" sm="7" Class="pt-5">
+
+            <MudDatePicker Label="Event Date" PickerVariant="PickerVariant.Dialog" @bind-Date="@newEvent.EventDate" Mask="@(new DateMask("MM/dd/yyyy"))" DateFormat="MM/dd/yyyy" Placeholder="Enter Event Date" />
+
+        </MudItem>
+        <MudItem xs="12" sm="7">
+
+            <MudTimePicker Label="Event Time" AmPm="true" @bind-Time="time" PickerVariant="PickerVariant.Dialog" />
+
+        </MudItem>
+
+        <MudItem xs="12" sm="7">
+
+            <MudField Label="Area of Play" Variant="Variant.Text" InnerPadding="false">
+
+                <MudRadioGroup @bind-SelectedOption="@newEvent.AreaOfPlayId">
+                    <MudRadio Option="1" Color="Color.Primary" Dense="true" Size="Size.Small">North End</MudRadio>
+                    <MudRadio Option="2" Color="Color.Secondary" Dense="true" Size="Size.Small">South End</MudRadio>
+                </MudRadioGroup>
+            </MudField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+
+            <MudNumericField @bind-Value="@newEvent.PlayLevelMin" Label="Min Player Score" Variant="Variant.Text" Min="1" />
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudNumericField @bind-Value="@newEvent.PlayLevelMax" Label="Max Player Score" Variant="Variant.Text" Min="1" />
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudNumericField @bind-Value="@newEvent.ParticipantLimit" Label="Number of Players Needed" Variant="Variant.Text" Min="0" Max="10" />
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudField Label="Partial" Variant="Variant.Text">
+                <MudCheckBox @bind-Checked="@newEvent.IsPartial" Label="Is Partial Game"></MudCheckBox>
+            </MudField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudField Label="Comments" Variant="Variant.Text" InnerPadding="false">
+                <MudTextField @bind-Value="@newEvent.EventComment" Label="Enter any Comments" Variant="Variant.Text" Margin="Margin.Dense"></MudTextField>
+            </MudField>
+        </MudItem>
+                <MudItem xs="12" sm="7" Class="pt-5">
+        <MudButton />
+        </MudItem>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+        <MudButton />
+        </MudItem>                <MudItem xs="12" sm="7" Class="pt-5">
+        <MudButton />
+        </MudItem>                <MudItem xs="12" sm="7" Class="pt-5">
+            <MudButton />
+        </MudItem>                <MudItem xs="12" sm="7" Class="pt-5">
+        <MudButton />
+        </MudItem>                <MudItem xs="12" sm="7" Class="pt-5">
+            <MudButton />
+        </MudItem>
+        </MudGrid>
+</EditForm>
+
+@code {
+    Event newEvent = new Event();
+
+    bool success;
+    string[] errors = { };
+    DateTime? eventDate;
+    //DateTime? eventTime;
+
+    TimeSpan? time = new TimeSpan(18, 30, 00);
+    //DateTime fullDateTime = eventDate.Value =
+
+    private void HandleValidSubmit(EditContext context)
+    {
+        newEvent.Id = 0;
+
+    }
+}

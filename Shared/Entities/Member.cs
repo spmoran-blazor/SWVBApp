@@ -9,7 +9,6 @@ namespace WVBApp.Shared.Entities
         [Required]
         public Int32 Id { get; set; }
 
-        [Required]
         public string? AzureId { get; set; } = "0";
 
         [Required]
@@ -38,8 +37,6 @@ namespace WVBApp.Shared.Entities
 
         [Required]
         public Boolean IsCurrent { get; set; }
-
-        public List<Member> Members { get; set; } = new List<Member>();
 
     }
 }
