@@ -4,6 +4,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -37,7 +38,10 @@
 	  </Content>
 	</ItemGroup>
 
-	
+	<ItemGroup>
+		<Script Include="**"/>
+		<Script Remove="**.d.ts"/>
+	</ItemGroup>
 	
 	
 </Project>

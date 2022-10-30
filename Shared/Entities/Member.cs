@@ -38,5 +38,13 @@ namespace WVBApp.Shared.Entities
         [Required]
         public Boolean IsCurrent { get; set; }
 
+        public string? PreferredDays { get; set; }
+
+        public DateTime UpdatedDate { get; set; }
+
+        [MaxLength(50)]
+        public String? UpdatedBy { get; set; }
+
+        public List<MemberExceptionDates>? ExceptionDates { get; set; } = new List<MemberExceptionDates>();
     }
 }

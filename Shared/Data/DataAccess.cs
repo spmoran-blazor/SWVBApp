@@ -1,7 +1,6 @@
-﻿using System.Net.Http.Json;
+﻿using System.Collections.Generic;
+using System.Net.Http.Json;
 using WVBApp.Shared.Entities;
-
-//using static System.Net.WebRequestMethods;
 
 namespace WVBApp.Shared.Data
 {
@@ -34,6 +33,17 @@ namespace WVBApp.Shared.Data
             return member ?? null;
         }
 
+        public async Task<IEnumerable<MemberExceptionDates>?> GetMemberExceptionDates(int Id)
+        {
+            SetBaseUri();
+            IEnumerable<MemberExceptionDates>? memberExceptionDates;
+
+            var response = await _http.GetAsync($"{_baseUrl}api/getmemberexceptiondates/{Id}");
+            memberExceptionDates = await response.Content.ReadFromJsonAsync<IEnumerable<MemberExceptionDates>>() ?? null;
+
+            return memberExceptionDates;
+        }
+
         private void SetBaseUri()
         {
             _baseUrl = "https://swvbsa.azurewebsites.net/";
@@ -47,6 +57,7 @@ namespace WVBApp.Shared.Data
     public interface IDataAccessService
     {
         public Task<Member?> GetMemberByEmail(string email);
+        public Task<IEnumerable<MemberExceptionDates>?> GetMemberExceptionDates(int Id);
     }
 
 }

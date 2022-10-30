@@ -14,7 +14,6 @@ namespace Api
 {
     public static class GetMembers
     {
-
         [FunctionName("GetMembers")]
         public static IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getmembers")] HttpRequest req,
@@ -27,6 +26,21 @@ namespace Api
         }
 
 
+    }
+
+    public static class GetMemberExceptionDates
+    {
+        [FunctionName("GetMembersExceptionDates")]
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getmemberexceptiondates/{Id}")] HttpRequest req,
+            ILogger log,
+            [Sql("[GetMemberExceptionDatesById]", CommandType = System.Data.CommandType.StoredProcedure,
+                Parameters = "@Id={Id}",
+                ConnectionStringSetting = "SqlConnection")]
+                IEnumerable<MemberExceptionDates> MemberExceptionDates)
+        {
+            return new OkObjectResult(MemberExceptionDates);
+        }
     }
 
     public static class GetMemberById
@@ -59,7 +73,7 @@ namespace Api
         }
     }
 
-        public static class PostEvent
+    public static class PostEvent
     {
         //[FunctionName("InsertNewEvent")]
         //public static IActionResult Run(
