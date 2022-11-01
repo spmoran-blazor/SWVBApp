@@ -18,53 +18,33 @@
 
 @if (_currentMember is not null && _memberExceptionDates is not null)
 {
+<MudAppBar Color="Color.Primary" Fixed="true">
 
-    <MudExpansionPanels>
-        <MudExpansionPanel>
-            <TitleContent>
-                <div class="d-flex">
-                    <MudIcon Icon="@Icons.Filled.Person" class="mr-3"></MudIcon>
-                    <MudText>Member Data</MudText>
-                </div>
-            </TitleContent>
-            <ChildContent>
-                <EditForm Model="@_currentMember" OnValidSubmit="HandleValidMemberSubmit">
+    <MudText Typo="Typo.h5">Player Center</MudText>
+
+</MudAppBar>
+
+<MudExpansionPanels MultiExpansion="false" Square="true" DisableBorders="false" Elevation="1" Class="pt-8">
+
+        <MudExpansionPanel Text="Exception Dates"Icon="@Icons.Filled.EditCalendar">
+                @foreach (entities.MemberExceptionDates date in @_memberExceptionDates)
+                {
+                    <span>@date.BeginDate.ToShortDateString()</span>
+                    <text>&nbsp;</text>
+                    <span>@date.EndDate.ToShortDateString()</span>
+                }
+                <EditForm Model="@_memberExceptionDates" OnValidSubmit="HandleValidExceptionDatesSubmit">
                     <DataAnnotationsValidator />
-                    <MudGrid>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudTextField @bind-Value="@_currentMember.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudTextField @bind-Value="@_currentMember.LastName" Label="Last Name" Variant="Variant.Text"></MudTextField>
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudTextField @bind-Value="@_currentMember.Email" Label="Email" Disabled Variant="Variant.Text"></MudTextField>
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudTextField @bind-Value="@_currentMember.MobileNumber" Label="Mobile Number" Variant="Variant.Text"></MudTextField>
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudTextField @bind-Value="@_currentMember.Gender" Label="Gender" Disabled Variant="Variant.Text"></MudTextField>
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudTextField @bind-Value="@_currentMember.PlayLevel" Label="Level" Disabled Variant="Variant.Text"></MudTextField>
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudTextField @bind-Value="@_currentMember.PlayScore" Label="Player Score" Disabled Variant="Variant.Text"></MudTextField>
-                        </MudItem>
-                    </MudGrid>
                 </EditForm>
-            </ChildContent>
-        </MudExpansionPanel>
 
-        <MudExpansionPanel>
-            <TitleContent>
-                <div class="d-flex">
-                    <MudIcon Icon="@Icons.Filled.Today" class="mr-3"></MudIcon>
-                    <MudText>Preferred Play Days</MudText>
-                </div>
-            </TitleContent>
-            <ChildContent>
+                            <MudPaper Height="200px" Width="100%" Elevation="0">
+                <MudContainer MaxWidth="MaxWidth.Small">
+                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+                </MudContainer>
+            </MudPaper>
+
+        </MudExpansionPanel>
+        <MudExpansionPanel Text="Preferred Play Days" Icon="@Icons.Filled.Today">
                 <EditForm Model="@_currentMember" OnValidSubmit="HandleValidPlayDaySubmit">
                     <DataAnnotationsValidator />
                     <MudStack>
@@ -91,37 +71,50 @@
                         </MudItem>
                     </MudStack>
                 </EditForm>
-
-            </ChildContent>
+            <MudPaper Height="200px" Width="100%" Elevation="0">
+                <MudContainer MaxWidth="MaxWidth.Small">
+                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+                </MudContainer>
+            </MudPaper>
         </MudExpansionPanel>
 
 
-        <MudExpansionPanel>
-            <TitleContent>
-                <div class="d-flex">
-                    <MudIcon Icon="@Icons.Filled.EditCalendar" class="mr-3"></MudIcon>
-                    <MudText>Exception Dates</MudText>
-                </div>
-            </TitleContent>
-            <ChildContent>
 
-
-                @foreach (entities.MemberExceptionDates date in @_memberExceptionDates)
-                {
-                    <span>@date.BeginDate.ToShortDateString()</span>
-                    <text>&nbsp;</text>
-                    <span>@date.EndDate.ToShortDateString()</span>
-                }
-                <EditForm Model="@_memberExceptionDates" OnValidSubmit="HandleValidExceptionDatesSubmit">
+        <MudExpansionPanel Text="Member Data" Icon="@Icons.Filled.Person">
+                            <EditForm Model="@_currentMember" OnValidSubmit="HandleValidMemberSubmit">
                     <DataAnnotationsValidator />
+                <MudGrid>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+                            <MudTextField @bind-Value="@_currentMember.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+                            <MudTextField @bind-Value="@_currentMember.LastName" Label="Last Name" Variant="Variant.Text"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+                            <MudTextField @bind-Value="@_currentMember.Email" Label="Email" Disabled Variant="Variant.Text"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+                            <MudTextField @bind-Value="@_currentMember.MobileNumber" Label="Mobile Number" Variant="Variant.Text"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+                            <MudTextField @bind-Value="@_currentMember.Gender" Label="Gender" Disabled Variant="Variant.Text"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+                            <MudTextField @bind-Value="@_currentMember.PlayLevel" Label="Level" Disabled Variant="Variant.Text"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+                            <MudTextField @bind-Value="@_currentMember.PlayScore" Label="Player Score" Disabled Variant="Variant.Text"></MudTextField>
+                        </MudItem>
+                    </MudGrid>
                 </EditForm>
-
-
-
-            </ChildContent>
+            <MudPaper Height="200px" Width="100%" Elevation="0">
+                <MudContainer MaxWidth="MaxWidth.Small">
+                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+                </MudContainer>
+            </MudPaper>
         </MudExpansionPanel>
-
     </MudExpansionPanels>
+
 }
 
 
