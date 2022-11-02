@@ -18,7 +18,7 @@
 
 @if (_currentMember is not null && _memberExceptionDates is not null)
 {
-<MudAppBar Color="Color.Primary" Fixed="true">
+<MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
     <MudText Typo="Typo.h5">Player Center</MudText>
 
@@ -26,25 +26,23 @@
 
 <MudExpansionPanels MultiExpansion="false" Square="true" DisableBorders="false" Elevation="1" Class="pt-8">
 
-        <MudExpansionPanel Text="Exception Dates"Icon="@Icons.Filled.EditCalendar">
-                @foreach (entities.MemberExceptionDates date in @_memberExceptionDates)
-                {
-                    <span>@date.BeginDate.ToShortDateString()</span>
-                    <text>&nbsp;</text>
-                    <span>@date.EndDate.ToShortDateString()</span>
-                }
-                <EditForm Model="@_memberExceptionDates" OnValidSubmit="HandleValidExceptionDatesSubmit">
-                    <DataAnnotationsValidator />
-                </EditForm>
-
-                            <MudPaper Height="200px" Width="100%" Elevation="0">
-                <MudContainer MaxWidth="MaxWidth.Small">
-                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
-                </MudContainer>
-            </MudPaper>
+        <MudExpansionPanel Text="Exception Dates" Icon="@Icons.Filled.EditCalendar" Style="font-weight:bold">
+            <MudTable Items="@_memberExceptionDates" Hover="false" Breakpoint="Breakpoint.Sm" @ref="mudTable" RowClassFunc="@SelectedRowClassFunc">
+    <HeaderContent>
+        <MudTh>Begin Date</MudTh>
+        <MudTh>End Date</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="BeginDate">@context.BeginDate</MudTd>
+        <MudTd DataLabel="End Date">@context.EndDate</MudTd>
+                    <MudTd><MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" /><MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" /></MudTd>
+    </RowTemplate>
+</MudTable>
 
         </MudExpansionPanel>
-        <MudExpansionPanel Text="Preferred Play Days" Icon="@Icons.Filled.Today">
+
+
+        <MudExpansionPanel Text="Preferred Play Days" Icon="@Icons.Filled.Today" Style="font-weight:bold">
                 <EditForm Model="@_currentMember" OnValidSubmit="HandleValidPlayDaySubmit">
                     <DataAnnotationsValidator />
                     <MudStack>
@@ -80,7 +78,7 @@
 
 
 
-        <MudExpansionPanel Text="Member Data" Icon="@Icons.Filled.Person">
+        <MudExpansionPanel Text="Member Data" Icon="@Icons.Filled.Person" Style="font-weight:bold">
                             <EditForm Model="@_currentMember" OnValidSubmit="HandleValidMemberSubmit">
                     <DataAnnotationsValidator />
                 <MudGrid>
@@ -129,8 +127,34 @@
     List<entities.PlayDay>? _playDays = new List<entities.PlayDay>();
     List<entities.MemberExceptionDates>? _memberExceptionDates;
     private List<string> _events = new();
-
+    private MudTable<entities.MemberExceptionDates> mudTable;
     bool success;
+        private int selectedRowNumber = -1;
+
+    private void RowClickEvent(TableRowClickEventArgs<entities.MemberExceptionDates> tableRowClickEventArgs)
+    {
+        Console.Write("Row has been clicked");
+    }
+
+    private string SelectedRowClassFunc(entities.MemberExceptionDates element, int rowNumber)
+    {
+        if (selectedRowNumber == rowNumber)
+        {
+            selectedRowNumber = -1;
+            //clickedEvents.Add("Selected Row: None");
+            return string.Empty;
+        }
+        else if (mudTable.SelectedItem != null && mudTable.SelectedItem.Equals(element))
+        {
+            selectedRowNumber = rowNumber;
+            //clickedEvents.Add($"Selected Row: {rowNumber}");
+            return "selected";
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
 
     private void HandleValidMemberSubmit(EditContext context)
     {
