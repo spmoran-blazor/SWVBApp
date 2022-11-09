@@ -15,73 +15,100 @@
 
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess;
+@inject IDialogService DialogService;
 
 @if (_currentMember is not null && _memberExceptionDates is not null)
 {
-<MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
+    <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
-    <MudText Typo="Typo.h5">Player Center</MudText>
+        <MudText Typo="Typo.h5">Player Center</MudText>
 
-</MudAppBar>
+    </MudAppBar>
 
-<MudExpansionPanels MultiExpansion="false" Square="true" DisableBorders="false" Elevation="1" Class="pt-8">
+    <MudExpansionPanels MultiExpansion="false" Square="true" DisableBorders="false" Elevation="1" Class="pt-8">
 
-        <MudExpansionPanel Text="Exception Dates" Icon="@Icons.Filled.EditCalendar" Style="font-weight:bold">
-            <MudTable Items="@_memberExceptionDates" Hover="false" Breakpoint="Breakpoint.Sm" @ref="mudTable" RowClassFunc="@SelectedRowClassFunc">
-    <HeaderContent>
-        <MudTh>Begin Date</MudTh>
-        <MudTh>End Date</MudTh>
-    </HeaderContent>
-    <RowTemplate>
-        <MudTd DataLabel="BeginDate">@context.BeginDate</MudTd>
-        <MudTd DataLabel="End Date">@context.EndDate</MudTd>
-                    <MudTd><MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Edit" Size="Size.Small" /><MudFab Color="Color.Secondary" StartIcon="@Icons.Material.Filled.Delete" Size="Size.Small" /></MudTd>
-    </RowTemplate>
-</MudTable>
+        <MudExpansionPanel HideIcon="true">
+            <TitleContent>
+                <div class="d-flex">
+                    <MudText><strong>Exception Dates</strong></MudText>
+                    <MudIcon Icon="@Icons.Filled.EditCalendar" class="ml-auto" Color="Color.Primary" Size="Size.Large"></MudIcon>
 
+                </div>
+            </TitleContent>
+            <ChildContent>
+                <MudTable Items="@_memberExceptionDates" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" @ref="mudTable" RowClassFunc="@SelectedRowClassFunc">
+                    <HeaderContent>
+                        <MudTh>Begin Date</MudTh>
+                        <MudTh>End Date</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="BeginDate">@context.BeginDate.ToShortDateString()</MudTd>
+                        <MudTd DataLabel="End Date">@context.EndDate.ToShortDateString()</MudTd>
+                        <MudTd>
+                            <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large" OnClick="@((e) => DeleteExceptionDate(@context.Id))">Delete</MudButton>
+                        </MudTd>
+                    </RowTemplate>
+
+                </MudTable>
+
+                <MudDialog @bind-IsVisible="visible" Options="dialogOptions">
+                    <TitleContent>
+                        <MudText Typo="Typo.h6">
+                            <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" /> Edit Dates <text></text>
+                        </MudText>
+                    </TitleContent>
+                    <DialogContent>
+                        <MudDateRangePicker></MudDateRangePicker>
+                    </DialogContent>
+                    <DialogActions>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="Submit" Class="px-10">Close</MudButton>
+                    </DialogActions>
+                </MudDialog>
+                @*                    <RemoveExceptionDate exceptionDates=@_memberExceptionDates>Foof</RemoveExceptionDate>*@
+            </ChildContent>
         </MudExpansionPanel>
 
+        <MudExpansionPanel HideIcon="true" Text="Preferred Play Days" Style="font-weight:bold" Size="Size.Large">
+            <TitleContent>
+                <div class="d-flex">
+                    <MudText><strong>Preferred Play Days</strong></MudText>
+                    <MudIcon Icon="@Icons.Filled.Today" class="ml-auto" Color="Color.Primary" Size="Size.Large"></MudIcon>
 
-        <MudExpansionPanel Text="Preferred Play Days" Icon="@Icons.Filled.Today" Style="font-weight:bold">
-                <EditForm Model="@_currentMember" OnValidSubmit="HandleValidPlayDaySubmit">
+                </div>
+            </TitleContent>
+            <ChildContent>
+                <EditForm Model="@_playDays" OnValidSubmit="HandleValidPlayDaySubmit">
                     <DataAnnotationsValidator />
                     <MudStack>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudCheckBox @bind-Checked="@_playDays[0].DayValue" Label="Sunday" />
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudCheckBox @bind-Checked="@_playDays[1].DayValue" Label="Monday" />
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudCheckBox @bind-Checked="@_playDays[2].DayValue" Label="Tuesday" />
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudCheckBox @bind-Checked="@_playDays[3].DayValue" Label="Wednesday" />
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudCheckBox @bind-Checked="@_playDays[4].DayValue" Label="Thursday" />
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudCheckBox @bind-Checked="@_playDays[5].DayValue" Label="Friday" />
-                        </MudItem>
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudCheckBox @bind-Checked="@_playDays[6].DayValue" Label="Saturday" />
-                        </MudItem>
+                        @foreach(var playday in _playDays)
+                        {
+                            <MudItem xs="12" sm="7" Class="pt-5">
+                                <MudCheckBox @bind-Checked="@playday.DayOfWeek" Label="@playday.Day" />
+                            </MudItem>
+                        }
                     </MudStack>
                 </EditForm>
-            <MudPaper Height="200px" Width="100%" Elevation="0">
-                <MudContainer MaxWidth="MaxWidth.Small">
-                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
-                </MudContainer>
-            </MudPaper>
+                <MudPaper Height="200px" Width="100%" Elevation="0">
+                    <MudContainer MaxWidth="MaxWidth.Small">
+                        <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+                    </MudContainer>
+                </MudPaper>
+            </ChildContent>
         </MudExpansionPanel>
+        <MudExpansionPanel HideIcon="true" Text="Member Data" Icon="@Icons.Filled.Person" Style="font-weight:bold">
+            <TitleContent>
+                <div class="d-flex">
+                    <MudText><strong>Member Data</strong></MudText>
+                    <MudIcon Icon="@Icons.Filled.Person" class="ml-auto" Color="Color.Primary" Size="Size.Large" Style="font-weight:bold"></MudIcon>
+
+                </div>
+            </TitleContent>
+            <ChildContent>
 
 
-
-        <MudExpansionPanel Text="Member Data" Icon="@Icons.Filled.Person" Style="font-weight:bold">
-                            <EditForm Model="@_currentMember" OnValidSubmit="HandleValidMemberSubmit">
+                <EditForm Model="@_currentMember" OnValidSubmit="HandleValidMemberSubmit">
                     <DataAnnotationsValidator />
-                <MudGrid>
+                    <MudGrid>
                         <MudItem xs="12" sm="7" Class="pt-5">
                             <MudTextField @bind-Value="@_currentMember.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
                         </MudItem>
@@ -105,13 +132,15 @@
                         </MudItem>
                     </MudGrid>
                 </EditForm>
-            <MudPaper Height="200px" Width="100%" Elevation="0">
-                <MudContainer MaxWidth="MaxWidth.Small">
-                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
-                </MudContainer>
-            </MudPaper>
+                <MudPaper Height="200px" Width="100%" Elevation="0">
+                    <MudContainer MaxWidth="MaxWidth.Small">
+                        <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+                    </MudContainer>
+                </MudPaper>
+            </ChildContent>
         </MudExpansionPanel>
     </MudExpansionPanels>
+
 
 }
 
@@ -123,13 +152,34 @@
     private ClaimsPrincipal? _user;
     private int _userId;
     private string? _userEmail;
-    //private int[]? _playDays = new int[7];
     List<entities.PlayDay>? _playDays = new List<entities.PlayDay>();
     List<entities.MemberExceptionDates>? _memberExceptionDates;
     private List<string> _events = new();
     private MudTable<entities.MemberExceptionDates> mudTable;
+    private int selectedRowNumber = -1;
     bool success;
-        private int selectedRowNumber = -1;
+    private bool visible;
+    private int rating;
+    private void OpenDialog() => visible = true;
+    void Submit() => visible = false;
+
+    private DialogOptions dialogOptions = new() { FullWidth = true };
+
+    async Task DeleteExceptionDate(int exceptionDate)
+    {
+        var parameters = new DialogParameters { ["dateId"] = exceptionDate };
+        //this.OpenDialog();
+
+        //var dialog = DialogService.Show<RemoveExceptionDate>("Delete Server", parameters);
+        //var result = await dialog.Result;
+
+        ////if (!result.Cancelled)
+        ////{
+        ////    //In a real world scenario we would reload the data from the source here since we "removed" it in the dialog already.
+        ////    Guid.TryParse(result.Data.ToString(), out Guid deletedServer);
+        ////    //Servers.RemoveAll(item => item.Id == deletedServer);
+        ////}
+    }
 
     private void RowClickEvent(TableRowClickEventArgs<entities.MemberExceptionDates> tableRowClickEventArgs)
     {
@@ -181,18 +231,10 @@
         //await SavePlayDates();
     }
 
-    protected async Task SetPlayDays()
+    protected async Task SetPlayDays(int Id)
     {
-        char[]? splittedList = _currentMember?.PreferredDays?.ToCharArray() ?? null;
-        string playdays = new string(splittedList).Trim();
-        foreach (char i in splittedList)
-        {
-            entities.PlayDay day = new entities.PlayDay();
-            day.DayNumber = i.ToString();
-            day.DayValue = (i.ToString() == "1") ? true : false;
-
-            _playDays.Add(day);
-        }
+        var getData = await _data.GetMemberPreferredDaysById(Id);
+        _playDays = getData.ToList() ?? null;
     }
 
     protected void SavePlayDates()
@@ -213,7 +255,7 @@
         _data = dataAccess ?? null;
         await GetMemberByEmail();
         await GetMemberExceptionDatesById(_currentMember.Id);
-        await SetPlayDays();
+        await SetPlayDays(_currentMember.Id);
         //StateHasChanged();
 
     }

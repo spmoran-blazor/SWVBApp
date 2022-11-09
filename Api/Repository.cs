@@ -58,6 +58,7 @@ namespace Api
         }
     }
 
+    
     public static class GetMemberByEmail
     {
         [FunctionName("GetMemberByEmail")]
@@ -70,6 +71,21 @@ namespace Api
                 IEnumerable<Member> Members)
         {
             return new OkObjectResult(Members);
+        }
+    }
+
+    public static class GetMemberPreferredDaysById
+    {
+        [FunctionName("GetMemberPreferredDaysById")]
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getgemberpreferreddaysbyid/{Id}")] HttpRequest req,
+            ILogger log,
+            [Sql("GetMemberPreferredDaysById", CommandType = System.Data.CommandType.StoredProcedure,
+                Parameters = "@Id={Id}",
+                ConnectionStringSetting = "SqlConnection")]
+                IEnumerable<PlayDay> PlayDays)
+        {
+            return new OkObjectResult(PlayDays);
         }
     }
 

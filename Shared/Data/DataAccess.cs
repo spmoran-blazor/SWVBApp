@@ -44,6 +44,18 @@ namespace WVBApp.Shared.Data
             return memberExceptionDates;
         }
 
+        public async Task<IEnumerable<PlayDay>?> GetMemberPreferredDaysById(int Id)
+        {
+            SetBaseUri();
+            IEnumerable<PlayDay>? memberPreferredDays;
+
+            var response = await _http.GetAsync($"{_baseUrl}api/getgemberpreferreddaysbyid/{Id}");
+            memberPreferredDays = await response.Content.ReadFromJsonAsync<IEnumerable<PlayDay>>() ?? null;
+
+            return memberPreferredDays;
+        }
+
+        
         private void SetBaseUri()
         {
             _baseUrl = "https://swvbsa.azurewebsites.net/";

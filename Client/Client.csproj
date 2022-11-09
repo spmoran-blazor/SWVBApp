@@ -11,6 +11,8 @@
 	  <Content Remove="Pages\Authentication.razor" />
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
+	  <Content Remove="Shared\MudDialog.razor" />
+	  <Content Remove="Shared\RemoveExceptionDate.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -39,8 +41,18 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Script Include="**"/>
-		<Script Remove="**.d.ts"/>
+		<Script Include="**" />
+		<Script Remove="**.d.ts" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Script Remove="Shared\MudDialog.razor" />
+	  <Script Remove="Shared\RemoveExceptionDate.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Shared\MudDialog.razor" />
+	  <None Include="Shared\RemoveExceptionDate.razor" />
 	</ItemGroup>
 	
 	

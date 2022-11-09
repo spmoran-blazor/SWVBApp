@@ -8,7 +8,9 @@ namespace WVBApp.Shared.Entities
 {
     public class PlayDay
     {
-        public string? DayNumber { get; set; }
-        public bool DayValue { get; set; }
+        public int Id { get; set; }
+        public bool DayOfWeek { get; set; }
+        public string? Day { get; set; }
+
     }
 }

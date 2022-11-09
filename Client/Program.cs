@@ -3,6 +3,7 @@ using Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Http;
+using MudBlazor;
 using MudBlazor.Services;
 using WVBApp.Shared.Data;
 internal class Program
@@ -16,9 +17,20 @@ internal class Program
         builder.Services.AddHttpClient("DataAccessHttpClient", sp => sp.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
         builder.Services.AddTransient<DataAccessService, DataAccessService>();
         builder.Services
-            .AddStaticWebAppsAuthentication()
-            .AddMudServices();
-            
+            .AddStaticWebAppsAuthentication();
+
+        builder.Services.AddMudServices(config =>
+        {
+            config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;
+
+            config.SnackbarConfiguration.PreventDuplicates = false;
+            config.SnackbarConfiguration.NewestOnTop = false;
+            config.SnackbarConfiguration.ShowCloseIcon = true;
+            config.SnackbarConfiguration.VisibleStateDuration = 3000;
+            config.SnackbarConfiguration.HideTransitionDuration = 500;
+            config.SnackbarConfiguration.ShowTransitionDuration = 500;
+            config.SnackbarConfiguration.SnackbarVariant = Variant.Filled;
+        });
 
         builder.Services.AddScoped(sp =>
             new HttpClient
