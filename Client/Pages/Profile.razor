@@ -258,10 +258,9 @@
     {
         _userId = Convert.ToInt32(await localStorage.GetItemAsync<string>("userId"));
         _data = dataAccess ?? null;
-        //await GetMemberByEmail();
         await GetMemberById(_userId);
-        await GetMemberExceptionDatesById(_currentMember.Id);
-        await SetPlayDays(_currentMember.Id);
+        await GetMemberExceptionDatesById(_userId);
+        await SetPlayDays(_userId);
         //StateHasChanged();
 
     }
