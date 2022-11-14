@@ -14,12 +14,33 @@ namespace WVBApp.Shared.Data
             _http = factory.CreateClient("DataAccessHttpClient");
         }
 
+        #region "MemberData"
+
         public async Task<Member?> GetMemberByEmail(string email)
         {
             SetBaseUri();
             Member member = new Member();
 
             var response = await _http.GetAsync($"{_baseUrl}api/getmemberbyemail/{email}");
+            var members = await response.Content.ReadFromJsonAsync<IEnumerable<Member>>() ?? null;
+
+            if (members != null)
+            {
+                if (members.Count() > 0)
+                {
+                    member = members.FirstOrDefault();
+                }
+            }
+
+            return member ?? null;
+        }
+
+        public async Task<Member?> GetMemberById(int Id)
+        {
+            SetBaseUri();
+            Member member = new Member();
+
+            var response = await _http.GetAsync($"{_baseUrl}api/getmemberbyid/{Id}");
             var members = await response.Content.ReadFromJsonAsync<IEnumerable<Member>>() ?? null;
 
             if (members != null)
@@ -55,7 +76,22 @@ namespace WVBApp.Shared.Data
             return memberPreferredDays;
         }
 
-        
+        #endregion
+
+        #region "EventData"
+
+        public async Task<IEnumerable<EventSchedulingCode>?> GetEventSchedulingCodes()
+        {
+            SetBaseUri();
+            IEnumerable<EventSchedulingCode>? codes = new List<EventSchedulingCode>();   
+
+            var response = await _http.GetAsync($"{_baseUrl}api/geteventschedulingcodes");
+            codes = await response.Content.ReadFromJsonAsync<IEnumerable<EventSchedulingCode>?>() ?? null;
+
+            return codes ?? null;
+        }
+        #endregion
+
         private void SetBaseUri()
         {
             _baseUrl = "https://swvbsa.azurewebsites.net/";
@@ -70,6 +106,7 @@ namespace WVBApp.Shared.Data
     {
         public Task<Member?> GetMemberByEmail(string email);
         public Task<IEnumerable<MemberExceptionDates>?> GetMemberExceptionDates(int Id);
+        public Task<IEnumerable<PlayDay>?> GetMemberPreferredDaysById(int Id);
     }
 
 }

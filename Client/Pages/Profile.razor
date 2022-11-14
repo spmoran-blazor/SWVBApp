@@ -1,5 +1,5 @@
 ﻿@page "/profile"
-@*@attribute [Authorize]*@
+@attribute [Authorize]
 @using System.ComponentModel.DataAnnotations
 @using System.Net.Http
 @using System.Net.Http.Json
@@ -13,6 +13,7 @@
 @using System.Runtime.Serialization.Json
 @using WVBApp.Shared.Data
 
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess;
 @inject IDialogService DialogService;
@@ -129,6 +130,9 @@
                         </MudItem>
                         <MudItem xs="12" sm="7" Class="pt-5">
                             <MudTextField @bind-Value="@_currentMember.PlayScore" Label="Player Score" Disabled Variant="Variant.Text"></MudTextField>
+                        </MudItem>
+                        <MudItem xs="12" sm="7" Class="pt-5">
+                            <MudTextField @bind-Value="@_currentMember.IsAdmin" Label="Admin User" Disabled Variant="Variant.Text"></MudTextField>
                         </MudItem>
                     </MudGrid>
                 </EditForm>
@@ -252,8 +256,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        _userId = Convert.ToInt32(await localStorage.GetItemAsync<string>("userId"));
         _data = dataAccess ?? null;
-        await GetMemberByEmail();
+        //await GetMemberByEmail();
+        await GetMemberById(_userId);
         await GetMemberExceptionDatesById(_currentMember.Id);
         await SetPlayDays(_currentMember.Id);
         //StateHasChanged();
@@ -275,11 +281,16 @@
         }
     }
 
-    private async Task GetMemberByEmail()
+    private async Task GetMemberById(int Id)
     {
-        //_currentMember = await dataAccess.GetMemberByEmail(_userEmail);
-        _currentMember = await _data.GetMemberByEmail("spmoran@hotmail.com");
+        _currentMember = await _data.GetMemberById(Id);
     }
+
+    //private async Task GetMemberByEmail()
+    //{
+    //    //_currentMember = await dataAccess.GetMemberByEmail(_userEmail);
+    //    _currentMember = await _data.GetMemberByEmail("spmoran@hotmail.com");
+    //}
 
     private async Task GetMemberExceptionDatesById(int Id)
     {
@@ -287,18 +298,18 @@
         _memberExceptionDates = getData.ToList<entities.MemberExceptionDates>();
     }
 
-    private async Task GetClaimsPrincipalData()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User ?? null;
+    //private async Task GetClaimsPrincipalData()
+    //{
+    //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    //    var user = authState.User ?? null;
 
-        if (user != null)
-        {
-            if (user.Identity.IsAuthenticated)
-            {
-                _userEmail = user.Identity.Name;
-            }
-        }
-    }
+    //    if (user != null)
+    //    {
+    //        if (user.Identity.IsAuthenticated)
+    //        {
+    //            _userEmail = user.Identity.Name;
+    //        }
+    //    }
+    //}
 }
 

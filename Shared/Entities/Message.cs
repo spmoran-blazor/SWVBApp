@@ -1,32 +1,36 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace WVBApp.Shared.Entities
 {
-    [Table("MemberPreferredDays")]
-    public class MemberPreferredDays
+    public class Message
     {
         [Required]
         public Int32 Id { get; set; }
 
         [Required]
+        [MaxLength(100)]
+        public String? Title { get; set; }
+
+        [Required]
         [MaxLength(10)]
-        public Int32 MemberId { get; set; }
+        public String? Body { get; set; }
 
         [Required]
-        public Int32 DayOfWeekId { get; set; }
+        public DateTime DateSent { get; set; }
+
+        public Int32 Type { get; set; }
 
         [Required]
-        public DateTime UpdateDate { get; set; }
+        public DateTime UpdatedDate { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public String? UpdatedBy { get; set; }
+        public String UpdatedBy { get; set; }
 
     }
 }

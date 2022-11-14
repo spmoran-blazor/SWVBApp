@@ -38,11 +38,12 @@ namespace WVBApp.Shared.Entities
         [Required]
         public Boolean IsCurrent { get; set; }
 
+        [Required]
+        public Boolean IsAdmin { get; set; }
+
         public DateTime UpdatedDate { get; set; }
 
         [MaxLength(50)]
         public String? UpdatedBy { get; set; }
-
-        public List<MemberExceptionDates>? ExceptionDates { get; set; } = new List<MemberExceptionDates>();
     }
 }

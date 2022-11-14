@@ -89,6 +89,21 @@ namespace Api
         }
     }
 
+    public static class GetEventSchedulingCodes
+    {
+        [FunctionName("GetEventSchedulingCodes")]
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "geteventschedulingcodes")] HttpRequest req,
+            ILogger log,
+            [Sql("GetSchedulingCodes", CommandType = System.Data.CommandType.StoredProcedure,
+                ConnectionStringSetting = "SqlConnection")]
+                IEnumerable<EventSchedulingCode> eventSchedulingCodes )
+        {
+            return new OkObjectResult(eventSchedulingCodes);
+        }
+
+
+    }
     public static class PostEvent
     {
         //[FunctionName("InsertNewEvent")]

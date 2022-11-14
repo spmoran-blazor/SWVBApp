@@ -1,27 +1,101 @@
-﻿@*@page "/"*@
+﻿@page "/"
+@attribute [Authorize]
+@using System.Security.Claims
+@using entities = WVBApp.Shared.Entities
+@using System.Runtime.Serialization
+@using System.Runtime.Serialization.Json
+@using System.Text.Json
+@using WVBApp.Shared.Data
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject DataAccessService dataAccess
 
-@*@code {
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
+@if (_currentMember is not null)
+{
+    <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
-    protected override void OnInitialized()
+        <MudText Typo="Typo.h5">Message Center</MudText>
+
+    </MudAppBar>
+}
+
+@if (_isLoaded == true)
+{
+    <MudTable Items="@_messages" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" Class="pt-8">
+        <HeaderContent>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd Style="font-weight:bold">@context.Title - @context.DateSent.ToShortDateString()</MudTd>
+@*            <MudTd DataLabel="Sent Date">@context.DateSent.ToShortDateString()</MudTd>*@
+            <MudTd>@context.Body</MudTd>
+            @*        <MudTd>
+            <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large">Delete</MudButton>  @* OnClick="@((e) => DeleteExceptionDate(@context.Id))"
+        </MudTd>*@
+        </RowTemplate>
+
+    </MudTable>
+}
+@code {
+    private DataAccessService? _data;
+    private entities.Member _currentMember = new entities.Member();
+    private ClaimsPrincipal? _user;
+    private int _userId;
+    private string? _userEmail;
+    private bool _isLoaded = false;
+
+    private IEnumerable<entities.Message> _messages = new List<entities.Message>()
     {
+        new entities.Message() { Id = 1, Title = "Zombie Oh Noze", Body = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium.", DateSent= Convert.ToDateTime("11/10/2022"), Type=1},
+        new entities.Message() { Id = 2, Title = "Meat Yum Yum", Body = "Bacon ipsum dolor amet short ribs brisket venison rump drumstick pig sausage prosciutto chicken spare ribs salami picanha doner. Kevin capicola sausage, buffalo bresaola venison turkey shoulder picanha ham pork tri-tip meatball meatloaf ribeye. Doner spare ribs andouille bacon sausage. Ground round jerky brisket pastrami shank.", DateSent= Convert.ToDateTime("11/11/2022"), Type=1},
+        new entities.Message() { Id = 3, Title = "Cupcakes Sweetiepie", Body = "Cupcake ipsum dolor. Sit amet marshmallow topping cheesecake muffin. Halvah croissant candy canes bonbon candy. Apple pie jelly beans topping carrot cake danish tart cake cheesecake. Muffin danish chocolate soufflé pastry icing bonbon oat cake. Powder cake jujubes oat cake. Lemon drops tootsie roll marshmallow halvah carrot cake.", DateSent= Convert.ToDateTime("11/12/2022"), Type=2}
+    };
 
+    private void RowClickEvent(TableRowClickEventArgs<entities.Message> tableRowClickEventArgs)
+    {
+        //clickedEvents.Add("Row has been clicked");
     }
 
-
-    protected void NavigateToHome()
+    protected override async Task OnInitializedAsync()
     {
-
+        GetClaimsPrincipalData();
+        _data = dataAccess ?? null;
+        GetMemberByEmail();
+        _isLoaded = true;
     }
- 
 
-    //protected override async Task OnAfterRenderAsync(bool firstRender)
+    private async Task GetMemberByEmail()
+    {
+        _currentMember = await dataAccess.GetMemberByEmail(_userEmail);
+
+        await localStorage.SetItemAsync("userName", $"{_currentMember.FirstName} {_currentMember.LastName}");
+        await localStorage.SetItemAsync("email", _currentMember.Email);
+        await localStorage.SetItemAsync("userId", _currentMember.Id.ToString());
+
+        var _userName = await localStorage.GetItemAsync<string>("userName");
+        var _userEmal = await localStorage.GetItemAsync<string>("email");
+        var _userId = await localStorage.GetItemAsync<string>("userId");
+
+
+        }
+
+    //protected void NavigateToHome()
     //{
-    //    if (firstRender)
-    //    {
-    //        var Id = 95;
-    //        NavigationManager.NavigateTo($"/eventregister/{Id}");
-    //    }
+
     //}
-}*@
+ 
+    private async Task GetClaimsPrincipalData()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User ?? null;
+
+        if (user != null)
+        {
+            if (user.Identity.IsAuthenticated)
+            {
+                _userEmail = user.Identity.Name;
+            }
+        }
+    }
+
+    //string[] messages = new string[]{"Message 1", "message 2", "message3"}
+}

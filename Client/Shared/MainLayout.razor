@@ -11,14 +11,14 @@
                 <Authorizing>
                 </Authorizing>
                 <Authorized>
+                    <div class="content px-4">
+                        @Body
+                    </div>
                 </Authorized>
-@*                <NotAuthorized>
+                <NotAuthorized>
                     <RedirectToLogin></RedirectToLogin>
-                </NotAuthorized>*@
+                </NotAuthorized>
             </AuthorizeView>
-            <div class="content px-4">
-                @Body
-            </div>
 
         </MudContainer>
     </MudMainContent>
@@ -26,7 +26,8 @@
         <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large" >
         <MudMenuItem Href="/AddEvent" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
         </MudMenu>
-        
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/" Size="Size.Large" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/eventregister" Size="Size.Large" />
         <MudSpacer />

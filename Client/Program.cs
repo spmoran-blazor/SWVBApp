@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using MudBlazor.Services;
 using WVBApp.Shared.Data;
+
+using Blazored.LocalStorage;
+using System.Threading.Tasks;
 internal class Program
 {
     private static async Task Main(string[] args)
@@ -43,6 +46,8 @@ internal class Program
             options.ProviderOptions.DefaultAccessTokenScopes
                 .Add("https://graph.microsoft.com/User.Read");
         });
+
+        builder.Services.AddBlazoredLocalStorage();
 
         await builder.Build().RunAsync();
     }

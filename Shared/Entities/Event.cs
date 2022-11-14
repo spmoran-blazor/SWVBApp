@@ -7,25 +7,25 @@ namespace WVBApp.Shared.Entities
     public class Event
     {
         [Required]
+        [Key]
         public Int32 Id { get; set; }
 
         [Required]
         public DateTime? EventDate { get; set; }
 
         [Required]
-        public TimeSpan? EventTime { get; set; }
+        public String? EventTime { get; set; }
 
         [Required]
         public Int32 AreaOfPlayId { get; set; }
 
         [Required]
+        public Int32 EventSchedulingCodeId { get; set; }
+
+        public Int32 PartialGameId { get; set; }
+
+        [Required]
         public Int32 ParticipantLimit { get; set; }
-
-        [Required]
-        public Int32 PlayLevelMin { get; set; }
-
-        [Required]
-        public Int32 PlayLevelMax { get; set; }
 
         [MaxLength(200)]
         public String? EventComment { get; set; }
@@ -36,8 +36,6 @@ namespace WVBApp.Shared.Entities
         [Required]
         public Boolean IsPartial { get; set; }
 
-        public int? PartialGameId { get; set; }
-
         [Required]
         public DateTime UpdatedDate { get; set; }
 
@@ -45,5 +43,7 @@ namespace WVBApp.Shared.Entities
         [MaxLength(50)]
         public String? UpdatedBy { get; set; }
 
+        [NotMapped]
+        public EventSchedulingCode? EventSchedulingCode { get; set; }
     }
 }
