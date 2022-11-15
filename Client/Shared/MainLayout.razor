@@ -1,4 +1,7 @@
 @inherits LayoutComponentBase
+@using WVBApp.Shared.Data
+@using entities = WVBApp.Shared.Entities
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -38,10 +41,35 @@
 </MudLayout>
 
 @code {
+    private DataAccessService? _data;
+    private entities.Member _currentMember = new entities.Member();
     bool _drawerOpen = true;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
+
+    //protected override void OnInitialized()
+    //{
+    //    GetClaimsPrincipalData();
+    //    _data = dataAccess ?? null;
+    //    GetMemberByEmail();
+    //    _isLoaded = true;
+    //}
+
+    //private async Task GetMemberByEmail()
+    //{
+    //    _currentMember = await dataAccess.GetMemberByEmail(_userEmail);
+
+    //    await localStorage.SetItemAsync("userName", $"{_currentMember.FirstName} {_currentMember.LastName}");
+    //    await localStorage.SetItemAsync("email", _currentMember.Email);
+    //    await localStorage.SetItemAsync("userId", _currentMember.Id.ToString());
+
+    //    var _userName = await localStorage.GetItemAsync<string>("userName");
+    //    var _userEmal = await localStorage.GetItemAsync<string>("email");
+    //    var _userId = await localStorage.GetItemAsync<string>("userId");
+
+
+    //}
 }

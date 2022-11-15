@@ -153,12 +153,12 @@
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
     private entities.Member? _currentMember = new entities.Member();
     private DataAccessService? _data;
-    private ClaimsPrincipal? _user;
+    //private ClaimsPrincipal? _user;
     private int _userId;
-    private string? _userEmail;
+    //private string? _userEmail;
     List<entities.PlayDay>? _playDays = new List<entities.PlayDay>();
     List<entities.MemberExceptionDates>? _memberExceptionDates;
-    private List<string> _events = new();
+    //private List<string> _events = new();
     private MudTable<entities.MemberExceptionDates> mudTable;
     private int selectedRowNumber = -1;
     bool success;
@@ -241,26 +241,14 @@
         _playDays = getData.ToList() ?? null;
     }
 
-    protected void SavePlayDates()
-    {
-        //StringBuilder sb = new StringBuilder();
-
-        //foreach (var pd in _playDays)
-        //{
-        //    sb.Append(pd.DayNumber);
-        //}
-
-        //_currentMember.PreferredDays = sb.ToString();
-    }
-
-
     protected override async Task OnInitializedAsync()
     {
-        _userId = Convert.ToInt32(await localStorage.GetItemAsync<string>("userId"));
+        var uid = localStorage.GetItemAsync<string>("userId");
+        _userId = Convert.ToInt32(uid);
         _data = dataAccess ?? null;
-        await GetMemberById(_userId);
-        await GetMemberExceptionDatesById(_userId);
-        await SetPlayDays(_userId);
+        GetMemberById(_userId);
+        GetMemberExceptionDatesById(_userId);
+        SetPlayDays(_userId);
         //StateHasChanged();
 
     }
@@ -285,30 +273,12 @@
         _currentMember = await _data.GetMemberById(Id);
     }
 
-    //private async Task GetMemberByEmail()
-    //{
-    //    //_currentMember = await dataAccess.GetMemberByEmail(_userEmail);
-    //    _currentMember = await _data.GetMemberByEmail("spmoran@hotmail.com");
-    //}
-
     private async Task GetMemberExceptionDatesById(int Id)
     {
         var getData = await _data.GetMemberExceptionDates(Id);
+
         _memberExceptionDates = getData.ToList<entities.MemberExceptionDates>();
     }
 
-    //private async Task GetClaimsPrincipalData()
-    //{
-    //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    //    var user = authState.User ?? null;
-
-    //    if (user != null)
-    //    {
-    //        if (user.Identity.IsAuthenticated)
-    //        {
-    //            _userEmail = user.Identity.Name;
-    //        }
-    //    }
-    //}
 }
 

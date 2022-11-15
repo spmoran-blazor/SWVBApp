@@ -105,6 +105,7 @@ namespace WVBApp.Shared.Data
     public interface IDataAccessService
     {
         public Task<Member?> GetMemberByEmail(string email);
+        public Task<Member?> GetMemberById(int Id);
         public Task<IEnumerable<MemberExceptionDates>?> GetMemberExceptionDates(int Id);
         public Task<IEnumerable<PlayDay>?> GetMemberPreferredDaysById(int Id);
     }
