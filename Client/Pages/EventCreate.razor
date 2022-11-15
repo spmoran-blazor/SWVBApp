@@ -9,7 +9,7 @@
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess;
 @inject IDialogService DialogService;
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 
 <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
@@ -169,7 +169,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        _userEmail = await localStorage.GetItemAsync<string>("email");
+        _userEmail = await sessionStorage.GetItemAsync<string>("email");
         _data = dataAccess ?? null;
         //await GetMemberByEmail();
         //await GetClaimsPrincipalData();

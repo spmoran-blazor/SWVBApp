@@ -7,7 +7,7 @@ using MudBlazor;
 using MudBlazor.Services;
 using WVBApp.Shared.Data;
 
-using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using System.Threading.Tasks;
 internal class Program
 {
@@ -47,7 +47,7 @@ internal class Program
                 .Add("https://graph.microsoft.com/User.Read");
         });
 
-        builder.Services.AddBlazoredLocalStorage();
+        builder.Services.AddBlazoredSessionStorage();
 
         await builder.Build().RunAsync();
     }

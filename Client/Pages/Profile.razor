@@ -13,12 +13,12 @@
 @using System.Runtime.Serialization.Json
 @using WVBApp.Shared.Data
 
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess;
 @inject IDialogService DialogService;
 
-@if (_currentMember is not null && _memberExceptionDates is not null)
+@*@if (_currentMember is not null && _userId > 0 && _memberExceptionDates is not null)*@
 {
     <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
@@ -146,7 +146,7 @@
     </MudExpansionPanels>
 
 
-}
+@*}*@
 
 
 @code {
@@ -243,9 +243,9 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var uid = await localStorage.GetItemAsync<string>("userId");
+        var uid = await sessionStorage.GetItemAsync<string>("userId");
         Console.WriteLine(uid);
-        _userId = Convert.ToInt32(uid);
+        _userId = Convert.ToInt32(uid.Trim());
         Console.WriteLine(_userId);
         _data = dataAccess ?? null;
         GetMemberById();
@@ -259,8 +259,7 @@
     {
         if (!firstRender)
         {
-            //_data = dataAccess ?? null;
-            //GetMemberByEmail();
+            //StateHasChanged();
 
 
         }

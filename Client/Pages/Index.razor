@@ -6,15 +6,15 @@
 @using System.Runtime.Serialization.Json
 @using System.Text.Json
 @using WVBApp.Shared.Data
-@inject Blazored.LocalStorage.ILocalStorageService localStorage
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess
 
-@if (_currentMember is not null)
+@if (_userName != string.Empty)
 {
     <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
-        <MudText Typo="Typo.h5">Message Center</MudText>
+        <MudText Typo="Typo.h5">Message Center - @_userName</MudText>
 
     </MudAppBar>
 }
@@ -41,6 +41,7 @@
     private ClaimsPrincipal? _user;
     private int _userId;
     private string? _userEmail;
+    private string? _userName;
     private bool _isLoaded = false;
 
     private IEnumerable<entities.Message> _messages = new List<entities.Message>()
@@ -57,25 +58,30 @@
 
     protected override async Task OnInitializedAsync()
     {
-        GetClaimsPrincipalData();
+        await GetClaimsPrincipalData();
         _data = dataAccess ?? null;
-        GetMemberByEmail();
-        _isLoaded = true;
+        await GetMemberByEmail();
+
     }
 
     private async Task GetMemberByEmail()
     {
         _currentMember = await dataAccess.GetMemberByEmail(_userEmail);
+        _userName = $"{_currentMember.FirstName} {_currentMember.LastName}";
+        await Task.Delay(1000);
 
-        await localStorage.SetItemAsync("userName", $"{_currentMember.FirstName} {_currentMember.LastName}");
-        await localStorage.SetItemAsync("email", _currentMember.Email);
-        await localStorage.SetItemAsync("userId", _currentMember.Id.ToString());
+        //var jsonMember = _currentMember;
 
-        var _userName = await localStorage.GetItemAsync<string>("userName");
-        var _userEmal = await localStorage.GetItemAsync<string>("email");
-        var _userId = await localStorage.GetItemAsync<string>("userId");
+        //await sessionStorage.SetItemAsync("currentUser", jsonMember);
+        await sessionStorage.SetItemAsync("userName", _userName);
+        await sessionStorage.SetItemAsync("email", _currentMember.Email);
+        await sessionStorage.SetItemAsync("userId", _currentMember.Id.ToString());
 
+        _userName = await sessionStorage.GetItemAsync<string>("userName");
+        _userEmail = await sessionStorage.GetItemAsync<string>("email");
+        _userId = Convert.ToInt32(await sessionStorage.GetItemAsync<string>("userId"));
 
+        _isLoaded = true;
         }
 
     //protected void NavigateToHome()
