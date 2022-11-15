@@ -235,20 +235,22 @@
         //await SavePlayDates();
     }
 
-    protected async Task SetPlayDays(int Id)
+    protected async Task SetPlayDays()
     {
-        var getData = await _data.GetMemberPreferredDaysById(Id);
+        var getData = await _data.GetMemberPreferredDaysById(_userId);
         _playDays = getData.ToList() ?? null;
     }
 
     protected override async Task OnInitializedAsync()
     {
-        var uid = localStorage.GetItemAsync<string>("userId");
+        var uid = await localStorage.GetItemAsync<string>("userId");
+        Console.WriteLine(uid);
         _userId = Convert.ToInt32(uid);
+        Console.WriteLine(_userId);
         _data = dataAccess ?? null;
-        GetMemberById(_userId);
-        GetMemberExceptionDatesById(_userId);
-        SetPlayDays(_userId);
+        GetMemberById();
+        GetMemberExceptionDatesById();
+        SetPlayDays();
         //StateHasChanged();
 
     }
@@ -268,14 +270,14 @@
         }
     }
 
-    private async Task GetMemberById(int Id)
+    private async Task GetMemberById()
     {
-        _currentMember = await _data.GetMemberById(Id);
+        _currentMember = await _data.GetMemberById(_userId);
     }
 
-    private async Task GetMemberExceptionDatesById(int Id)
+    private async Task GetMemberExceptionDatesById()
     {
-        var getData = await _data.GetMemberExceptionDates(Id);
+        var getData = await _data.GetMemberExceptionDates(_userId);
 
         _memberExceptionDates = getData.ToList<entities.MemberExceptionDates>();
     }
