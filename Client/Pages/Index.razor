@@ -1,4 +1,5 @@
 ﻿@page "/"
+@page "/{UserId}"
 @attribute [Authorize]
 @using System.Security.Claims
 @using entities = WVBApp.Shared.Entities
@@ -6,43 +7,74 @@
 @using System.Runtime.Serialization.Json
 @using System.Text.Json
 @using WVBApp.Shared.Data
+@using WVBApp.Shared
+@using MudBlazor
+
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess
 
-@if (_userName != string.Empty)
+@*@if (_userName is not null && _userName != string.Empty)
 {
     <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
         <MudText Typo="Typo.h5">Message Center - @_userName</MudText>
 
     </MudAppBar>
-}
+}*@
+<ProjectAuthComponent />
+@*<TopAppBar UserId="95"></TopAppBar>*@
 
 @if (_isLoaded == true)
 {
+@*    <MudText>@CurrentMemberString</MudText>*@
     <MudTable Items="@_messages" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" Class="pt-8">
         <HeaderContent>
         </HeaderContent>
         <RowTemplate>
             <MudTd Style="font-weight:bold">@context.Title - @context.DateSent.ToShortDateString()</MudTd>
-@*            <MudTd DataLabel="Sent Date">@context.DateSent.ToShortDateString()</MudTd>*@
             <MudTd>@context.Body</MudTd>
-            @*        <MudTd>
-            <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large">Delete</MudButton>  @* OnClick="@((e) => DeleteExceptionDate(@context.Id))"
-        </MudTd>*@
         </RowTemplate>
-
     </MudTable>
 }
+@*<BottomAppBar UserId="@_userId"></BottomAppBar>*@
+<BottomAppBar UserId="95" />
+
+@*<MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1">
+    <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large">
+        <MudMenuItem Href="/AddEvent" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
+    </MudMenu>
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/" Size="Size.Large" />
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/eventregister" Size="Size.Large" />
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Material.Filled.PermIdentity" Color="Color.Inherit" Edge="Edge.End" Href="/profile" Size="Size.Large" />
+    <MudSpacer />
+    <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" Href="/.auth/logout" Size="Size.Large" />
+</MudAppBar>*@
 @code {
-    private DataAccessService? _data;
+    //private DataAccessService? _data;
     private entities.Member _currentMember = new entities.Member();
-    private ClaimsPrincipal? _user;
-    private int _userId;
+    //private ClaimsPrincipal? _user;
+    [CascadingParameter]
+    public MainLayout? Layout { get; set; }
+    [CascadingParameter]
+    public string? CurrentMemberString { get; set; }
+    [Parameter]
+    public int UserId{ get; set; } = 95;
     private string? _userEmail;
     private string? _userName;
     private bool _isLoaded = false;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+
+        //await GetClaimsPrincipalData();
+
+        //await SavePlayDates();
+    }
 
     private IEnumerable<entities.Message> _messages = new List<entities.Message>()
     {
@@ -58,50 +90,79 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await GetClaimsPrincipalData();
-        _data = dataAccess ?? null;
-        await GetMemberByEmail();
+        //var foo = sessionStorage.GetItemAsync<string>("currentUser").ToString();
+        //string f = foo.Result;
+        //_currentMember = JsonSerializer.Deserialize<entities.Member>(foo);
 
+        //try
+        //{
+        //    _currentMember = JsonSerializer.Deserialize<entities.Member>(await sessionStorage.GetItemAsync<string>("currentUser"));
+        //}
+        //catch (Exception e) { }
+
+        //_userName = await sessionStorage.GetItemAsync<string>("userName");
+        //_userEmail = await sessionStorage.GetItemAsync<string>("email");
+        //UserId = Convert.ToInt32(await sessionStorage.GetItemAsync<string>("userId"));
+        //await GetClaimsPrincipalData();
+        //_data = dataAccess ?? null;
+        //await GetMemberByEmail();
+
+        _isLoaded = true;
+        //Console.WriteLine(CurrentMemberString);
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            Console.WriteLine("Executed for the first render from Index.");
+        }
+        else
+        {
+            //_currentMember = JsonSerializer.Deserialize<entities.Member>(await sessionStorage.GetItemAsync<string>("currentUser"));
+        }
     }
 
     private async Task GetMemberByEmail()
     {
-        _currentMember = await dataAccess.GetMemberByEmail(_userEmail);
-        _userName = $"{_currentMember.FirstName} {_currentMember.LastName}";
-        await Task.Delay(1000);
+        //MainLayout._currentMember = await MainLayout._data.GetMemberByEmail(MainLayout._userEmail);
+        //_userName = $"{Layout._currentMember.FirstName} {Layout._currentMember.LastName}";
+        //await Task.Delay(1000);
 
-        //var jsonMember = _currentMember;
+        //var jsonMember = JsonSerializer.Serialize(_currentMember);
 
         //await sessionStorage.SetItemAsync("currentUser", jsonMember);
-        await sessionStorage.SetItemAsync("userName", _userName);
-        await sessionStorage.SetItemAsync("email", _currentMember.Email);
-        await sessionStorage.SetItemAsync("userId", _currentMember.Id.ToString());
+        //await sessionStorage.SetItemAsync("userName", _userName);
+        //await sessionStorage.SetItemAsync("email", _currentMember.Email);
+        //await sessionStorage.SetItemAsync("userId", _currentMember.Id.ToString());
 
-        _userName = await sessionStorage.GetItemAsync<string>("userName");
-        _userEmail = await sessionStorage.GetItemAsync<string>("email");
-        _userId = Convert.ToInt32(await sessionStorage.GetItemAsync<string>("userId"));
+        //var foo = JsonSerializer.Deserialize<entities.Member>(await sessionStorage.GetItemAsync<string>("currentUser"));
+        //_userName = await sessionStorage.GetItemAsync<string>("userName");
+        //_userEmail = await sessionStorage.GetItemAsync<string>("email");
+        //_userId = Convert.ToInt32(await sessionStorage.GetItemAsync<string>("userId"));
 
-        _isLoaded = true;
-        }
+        //_isLoaded = true;
+    }
 
     //protected void NavigateToHome()
     //{
 
     //}
  
-    private async Task GetClaimsPrincipalData()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User ?? null;
+    //private async Task GetClaimsPrincipalData()
+    //{
+    //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+    //    var user = authState.User ?? null;
 
-        if (user != null)
-        {
-            if (user.Identity.IsAuthenticated)
-            {
-                _userEmail = user.Identity.Name;
-            }
-        }
-    }
+    //    if (user != null)
+    //    {
+    //        if (user.Identity.IsAuthenticated)
+    //        {
+    //            _userEmail = user.Identity.Name;
+    //        }
+    //    }
+    //}
 
     //string[] messages = new string[]{"Message 1", "message 2", "message3"}
 }

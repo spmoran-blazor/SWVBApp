@@ -1,0 +1,75 @@
+﻿@using WVBApp.Shared.Entities
+@using WVBApp.Shared.Data
+@using System.Security.Claims
+@using System.Text.Json
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
+@inject DataAccessService dataAccess
+
+@code {
+    public DataAccessService? _data;
+    public Member? _currentMember;
+    public ClaimsPrincipal? _user;
+    public int _userId;
+    public string? _userEmail;
+    public string? _userName;
+    public string? _userJson;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _data = dataAccess;
+        await GetClaimsPrincipalData();
+    }
+    private async Task GetClaimsPrincipalData()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+
+        if (authState.User.Identities.Count() == 0)
+        {
+            return;
+        }
+        var user = authState.User ?? null;
+
+        if (user is not null && user.Identity is not null)
+        {
+            if (user.Identity.IsAuthenticated)
+            {
+                _userEmail = user.Identity.Name;
+            }
+        }
+    }
+
+    private async Task GetMemberByEmail()
+    {
+        if (_userEmail is null || _userEmail == string.Empty)
+        {
+            return;
+        }
+
+        if (_data is not null && _userEmail is not null)
+        {
+            _currentMember = await _data.GetMemberByEmail(_userEmail);
+        }
+
+        if (_currentMember is not null)
+        {
+           _userName = $"{_currentMember.FirstName} {_currentMember.LastName}";
+        }
+        //await Task.Delay(1000);
+
+
+
+        _userJson = JsonSerializer.Serialize(_currentMember);
+
+        await sessionStorage.SetItemAsync("currentUser", _userJson);
+        await sessionStorage.SetItemAsync("userName", _userName);
+        //await sessionStorage.SetItemAsync("email", _currentMember.Email);
+        //await sessionStorage.SetItemAsync("userId", _currentMember.Id.ToString());
+
+        var foo = JsonSerializer.Deserialize<Member>(await sessionStorage.GetItemAsync<string>("currentUser"));
+        _userName = await sessionStorage.GetItemAsync<string>("userName");
+        _userEmail = await sessionStorage.GetItemAsync<string>("email");
+        _userId = Convert.ToInt32(await sessionStorage.GetItemAsync<string>("userId"));
+    }
+
+}

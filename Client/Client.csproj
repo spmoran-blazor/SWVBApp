@@ -1,34 +1,37 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net7.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Common\SWVBLayoutComponentBase.razor" />
 	  <Content Remove="Pages\Authentication.razor" />
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
+	  <Content Remove="Shared\AuthMemberSetup.razor" />
 	  <Content Remove="Shared\MudDialog.razor" />
+	  <Content Remove="Shared\ProjectAuthComponent.razor" />
 	  <Content Remove="Shared\RemoveExceptionDate.razor" />
+	  <Content Remove="Shared\TopAppBar.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="AnthonyChu.AzureStaticWebApps.Blazor.Authentication" Version="0.0.2-preview" />
-		<PackageReference Include="Blazored.LocalStorage" Version="4.2.0" />
 		<PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.10" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.10" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.10" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.0" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
-		<PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="6.0.10" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
-		<PackageReference Include="MudBlazor" Version="6.0.17" />
+		<PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="7.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+		<PackageReference Include="MudBlazor" Version="6.1.2" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -47,14 +50,35 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Script Remove="Shared\MudDialog.razor" />
-	  <Script Remove="Shared\RemoveExceptionDate.razor" />
+	  <Compile Remove="Common\ProjectLayoutComponentBase.cs" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Script Remove="Common\ProjectLayoutComponentBase.cs" />
+	  <Script Remove="Common\SWVBLayoutComponentBase.razor" />
+	  <Script Remove="Shared\AuthMemberSetup.razor" />
+	  <Script Remove="Shared\MudDialog.razor" />
+	  <Script Remove="Shared\ProjectAuthComponent.razor" />
+	  <Script Remove="Shared\RemoveExceptionDate.razor" />
+	  <Script Remove="Shared\TopAppBar.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="Shared\AuthMemberSetup.razor" />
+	  <None Include="Components\BottomAppBar.razor" />
+	  <None Include="Components\ProjectAuthComponent.razor" />
+	  <None Include="Shared\SWVBLayoutComponentBase.razor" />
 	  <None Include="Shared\MudDialog.razor" />
 	  <None Include="Shared\RemoveExceptionDate.razor" />
+	  <None Include="Components\TopAppBar.razor" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Common\" />
 	</ItemGroup>
 	
+	<ItemGroup>
+    <TrimmerRootAssembly Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
+</ItemGroup>
 	
 </Project>

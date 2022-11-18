@@ -18,8 +18,6 @@
 @inject DataAccessService dataAccess;
 @inject IDialogService DialogService;
 
-@*@if (_currentMember is not null && _userId > 0 && _memberExceptionDates is not null)*@
-{
     <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
         <MudText Typo="Typo.h5">Player Center</MudText>
@@ -146,8 +144,6 @@
     </MudExpansionPanels>
 
 
-@*}*@
-
 
 @code {
     [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
@@ -248,7 +244,7 @@
         _userId = Convert.ToInt32(uid.Trim());
         Console.WriteLine(_userId);
         _data = dataAccess ?? null;
-        GetMemberById();
+        //GetMemberById();
         GetMemberExceptionDatesById();
         SetPlayDays();
         //StateHasChanged();
@@ -269,10 +265,10 @@
         }
     }
 
-    private async Task GetMemberById()
-    {
-        _currentMember = await _data.GetMemberById(_userId);
-    }
+    //private async Task GetMemberById()
+    //{
+    //    _currentMember = await _data.GetMemberById(_userId);
+    //}
 
     private async Task GetMemberExceptionDatesById()
     {

@@ -1,6 +1,6 @@
 @inherits LayoutComponentBase
-@using WVBApp.Shared.Data
-@using entities = WVBApp.Shared.Entities
+@*@using WVBApp.Shared.Data*@
+@*@using entities = WVBApp.Shared.Entities*@
 
 <MudThemeProvider />
 <MudDialogProvider />
@@ -9,11 +9,13 @@
 <MudLayout>
     <MudMainContent>
         <MudContainer MaxWidth="MaxWidth.Large" Class="my-3 pr-0 pl-0">
-            <AuthorizeView>
+           <AuthorizeView>
                 <Authorizing>
                 </Authorizing>
                 <Authorized>
                     <div class="content px-4">
+@*                        <CascadingValue Value="this" Name="Layout" />*@
+@*                        <CascadingValue Value=base._userJson Name="CurrentMemberString" />*@
                         @Body
                     </div>
                 </Authorized>
@@ -24,7 +26,7 @@
 
         </MudContainer>
     </MudMainContent>
-    <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1">
+@*    <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1">
         <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large" >
         <MudMenuItem Href="/AddEvent" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
         </MudMenu>
@@ -36,12 +38,12 @@
         <MudIconButton Icon="@Icons.Material.Filled.PermIdentity" Color="Color.Inherit" Edge="Edge.End" Href="/profile" Size="Size.Large" />
         <MudSpacer />
         <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" Href="/.auth/logout" Size="Size.Large" />
-    </MudAppBar>
+    </MudAppBar>*@
 </MudLayout>
 
 @code {
-    private DataAccessService? _data;
-    private entities.Member _currentMember = new entities.Member();
+    //public DataAccessService? _data;
+    //private entities.Member _currentMember = new entities.Member();
     bool _drawerOpen = true;
 
     void DrawerToggle()
