@@ -6,7 +6,7 @@
         <MudMenuItem Href="/AddEvent" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
     </MudMenu>
     <MudSpacer />
-    <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" OnClick="OnIndexClick" Size="Size.Large" />
+    <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/" Size="Size.Large" />
     <MudSpacer />
     <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/eventregister" Size="Size.Large" />
     <MudSpacer />
@@ -17,18 +17,11 @@
 
 @code {
     [Parameter]
-    public int UserId { get; set; }
-
-    //protected int _userId = Convert.ToInt32(await sessionStorage.GetItemAsync<string>("userId"));
+    public Member? CurrentMember { get; set; }
     bool _drawerOpen = true;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
-    }
-
-    private void OnIndexClick()
-    {
-        UriHelper.NavigateTo($"/{UserId}");
     }
 }

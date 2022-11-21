@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using MudBlazor.Services;
-using WVBApp.Shared.Data;
+using WVBApp.Shared.Services.Data;
+using WVBApp.Shared.Services.State;
 
 using Blazored.SessionStorage;
 using System.Threading.Tasks;
@@ -19,9 +20,8 @@ internal class Program
 
         builder.Services.AddHttpClient("DataAccessHttpClient", sp => sp.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
         builder.Services.AddTransient<DataAccessService, DataAccessService>();
-        builder.Services
-            .AddStaticWebAppsAuthentication();
-
+        builder.Services.AddStaticWebAppsAuthentication();
+        builder.Services.AddSingleton<StateAccessService, StateAccessService>();
         builder.Services.AddMudServices(config =>
         {
             config.SnackbarConfiguration.PositionClass = Defaults.Classes.Position.BottomCenter;

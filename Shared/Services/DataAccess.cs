@@ -2,9 +2,9 @@
 using System.Net.Http.Json;
 using WVBApp.Shared.Entities;
 
-namespace WVBApp.Shared.Data
+namespace WVBApp.Shared.Services.Data
 {
-    public class DataAccessService : IDataAccessService
+    public class DataAccessService
     {
         HttpClient _http;
         private string? _baseUrl;
@@ -90,6 +90,20 @@ namespace WVBApp.Shared.Data
 
             return codes ?? null;
         }
+        #endregion
+
+        #region "MessageData"
+        public async Task<IEnumerable<Message>?> GetMessages()
+        {
+            SetBaseUri();
+            IEnumerable<Message>? messages = new List<Message>();
+
+            var response = await _http.GetAsync($"{_baseUrl}api/getmessages");
+            messages = await response.Content.ReadFromJsonAsync<IEnumerable<Message>?>() ?? null;
+
+            return messages ?? null;
+        }
+
         #endregion
 
         private void SetBaseUri()

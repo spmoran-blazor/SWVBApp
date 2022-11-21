@@ -3,11 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
 using WVBApp.Shared.Entities;
 
 namespace Api
@@ -20,9 +16,9 @@ namespace Api
             ILogger log,
             [Sql("GetMembers", CommandType = System.Data.CommandType.StoredProcedure,
                 ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<Member> Members)
+                IEnumerable<Member> members)
         {
-            return new OkObjectResult(Members);
+            return new OkObjectResult(members);
         }
 
 
@@ -37,9 +33,9 @@ namespace Api
             [Sql("[GetMemberExceptionDatesById]", CommandType = System.Data.CommandType.StoredProcedure,
                 Parameters = "@Id={Id}",
                 ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<MemberExceptionDates> MemberExceptionDates)
+                IEnumerable<MemberExceptionDates> memberExceptionDates)
         {
-            return new OkObjectResult(MemberExceptionDates);
+            return new OkObjectResult(memberExceptionDates);
         }
     }
 
@@ -52,9 +48,9 @@ namespace Api
             [Sql("GetMemberById", CommandType = System.Data.CommandType.StoredProcedure,
                 Parameters = "@Id={Id}",
                 ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<Member> Members)
+                IEnumerable<Member> members)
         {
-            return new OkObjectResult(Members);
+            return new OkObjectResult(members);
         }
     }
 
@@ -65,12 +61,12 @@ namespace Api
         public static IActionResult Run(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getmemberbyemail/{email}")] HttpRequest req,
             ILogger log,
-            [Sql("GetMemberByemail", CommandType = System.Data.CommandType.StoredProcedure,
+            [Sql("GetMemberByEmail", CommandType = System.Data.CommandType.StoredProcedure,
                 Parameters = "@Email={email}",
                 ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<Member> Members)
+                IEnumerable<Member> members)
         {
-            return new OkObjectResult(Members);
+            return new OkObjectResult(members);
         }
     }
 
@@ -83,9 +79,9 @@ namespace Api
             [Sql("GetMemberPreferredDaysById", CommandType = System.Data.CommandType.StoredProcedure,
                 Parameters = "@Id={Id}",
                 ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<PlayDay> PlayDays)
+                IEnumerable<PlayDay> playDays)
         {
-            return new OkObjectResult(PlayDays);
+            return new OkObjectResult(playDays);
         }
     }
 
@@ -104,7 +100,7 @@ namespace Api
 
 
     }
-    public static class PostEvent
+    public static class Future
     {
         //[FunctionName("InsertNewEvent")]
         //public static IActionResult Run(
@@ -146,5 +142,21 @@ namespace Api
         //    return new OkObjectResult(toDoItemList);
 
         //}
+    }
+
+    public static class GetMessages
+    {
+        [FunctionName("GetMessages")]
+        public static IActionResult Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getmessages")] HttpRequest req,
+            ILogger log,
+            [Sql("GetMessages", CommandType = System.Data.CommandType.StoredProcedure,
+                ConnectionStringSetting = "SqlConnection")]
+                IEnumerable<Message> messages)
+        {
+            return new OkObjectResult(messages);
+        }
+
+
     }
 }

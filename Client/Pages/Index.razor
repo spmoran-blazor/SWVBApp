@@ -6,66 +6,62 @@
 @using System.Runtime.Serialization
 @using System.Runtime.Serialization.Json
 @using System.Text.Json
-@using WVBApp.Shared.Data
+@using WVBApp.Shared.Services.Data
+@using WVBApp.Shared.Services.State
 @using WVBApp.Shared
 @using MudBlazor
 
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider authenticationStateProvider
 @inject DataAccessService dataAccess
+@inject StateAccessService stateAccess
 
-@*@if (_userName is not null && _userName != string.Empty)
+
+<Client.Components.ProjectAuthComponent CurrentMember="@CurrentMember" CurrentMemberString="@CurrentMemberString" />
+
+@if (CurrentMember is not null)
 {
-    <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
+    <Client.Components.TopAppBar UserName="@CurrentMember.FirstName" />
+}
 
-        <MudText Typo="Typo.h5">Message Center - @_userName</MudText>
-
-    </MudAppBar>
-}*@
-<ProjectAuthComponent />
-@*<TopAppBar UserId="95"></TopAppBar>*@
-
-@if (_isLoaded == true)
+@if (CurrentMember is not null)
 {
-@*    <MudText>@CurrentMemberString</MudText>*@
-    <MudTable Items="@_messages" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" Class="pt-8">
+    <Client.Components.Messages />
+
+@*    <MudTable Items="@_messages" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" Class="pt-8">
         <HeaderContent>
         </HeaderContent>
         <RowTemplate>
             <MudTd Style="font-weight:bold">@context.Title - @context.DateSent.ToShortDateString()</MudTd>
             <MudTd>@context.Body</MudTd>
         </RowTemplate>
-    </MudTable>
+    </MudTable>*@
 }
 @*<BottomAppBar UserId="@_userId"></BottomAppBar>*@
-<BottomAppBar UserId="95" />
+<Client.Components.BottomAppBar />
 
-@*<MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1">
-    <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large">
-        <MudMenuItem Href="/AddEvent" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
-    </MudMenu>
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/" Size="Size.Large" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/eventregister" Size="Size.Large" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Material.Filled.PermIdentity" Color="Color.Inherit" Edge="Edge.End" Href="/profile" Size="Size.Large" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" Href="/.auth/logout" Size="Size.Large" />
-</MudAppBar>*@
 @code {
     //private DataAccessService? _data;
     private entities.Member _currentMember = new entities.Member();
     //private ClaimsPrincipal? _user;
-    [CascadingParameter]
-    public MainLayout? Layout { get; set; }
-    [CascadingParameter]
-    public string? CurrentMemberString { get; set; }
-    [Parameter]
-    public int UserId{ get; set; } = 95;
+    //[CascadingParameter]
+    //public MainLayout? Layout { get; set; }
+
+    public string? _userId;
     private string? _userEmail;
     private string? _userName;
     private bool _isLoaded = false;
+    [Parameter]
+    public string? UserId { get; set; }
+    [Parameter]
+    public string? CurrentMemberString { get; set; }
+    [Parameter]
+    public Member? CurrentMember { get; set; }
+
+    public void Dispose()
+    {
+        stateAccess.OnStateChange -= StateHasChanged;
+    }
 
     protected override async Task OnParametersSetAsync()
     {
@@ -76,12 +72,12 @@
         //await SavePlayDates();
     }
 
-    private IEnumerable<entities.Message> _messages = new List<entities.Message>()
-    {
-        new entities.Message() { Id = 1, Title = "Zombie Oh Noze", Body = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium.", DateSent= Convert.ToDateTime("11/10/2022"), Type=1},
-        new entities.Message() { Id = 2, Title = "Meat Yum Yum", Body = "Bacon ipsum dolor amet short ribs brisket venison rump drumstick pig sausage prosciutto chicken spare ribs salami picanha doner. Kevin capicola sausage, buffalo bresaola venison turkey shoulder picanha ham pork tri-tip meatball meatloaf ribeye. Doner spare ribs andouille bacon sausage. Ground round jerky brisket pastrami shank.", DateSent= Convert.ToDateTime("11/11/2022"), Type=1},
-        new entities.Message() { Id = 3, Title = "Cupcakes Sweetiepie", Body = "Cupcake ipsum dolor. Sit amet marshmallow topping cheesecake muffin. Halvah croissant candy canes bonbon candy. Apple pie jelly beans topping carrot cake danish tart cake cheesecake. Muffin danish chocolate soufflé pastry icing bonbon oat cake. Powder cake jujubes oat cake. Lemon drops tootsie roll marshmallow halvah carrot cake.", DateSent= Convert.ToDateTime("11/12/2022"), Type=2}
-    };
+    //private IEnumerable<entities.Message> _messages = new List<entities.Message>()
+    //{
+    //    new entities.Message() { Id = 1, Title = "Zombie Oh Noze", Body = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium.", DateSent= Convert.ToDateTime("11/10/2022"), Type=1},
+    //    new entities.Message() { Id = 2, Title = "Meat Yum Yum", Body = "Bacon ipsum dolor amet short ribs brisket venison rump drumstick pig sausage prosciutto chicken spare ribs salami picanha doner. Kevin capicola sausage, buffalo bresaola venison turkey shoulder picanha ham pork tri-tip meatball meatloaf ribeye. Doner spare ribs andouille bacon sausage. Ground round jerky brisket pastrami shank.", DateSent= Convert.ToDateTime("11/11/2022"), Type=1},
+    //    new entities.Message() { Id = 3, Title = "Cupcakes Sweetiepie", Body = "Cupcake ipsum dolor. Sit amet marshmallow topping cheesecake muffin. Halvah croissant candy canes bonbon candy. Apple pie jelly beans topping carrot cake danish tart cake cheesecake. Muffin danish chocolate soufflé pastry icing bonbon oat cake. Powder cake jujubes oat cake. Lemon drops tootsie roll marshmallow halvah carrot cake.", DateSent= Convert.ToDateTime("11/12/2022"), Type=2}
+    //};
 
     private void RowClickEvent(TableRowClickEventArgs<entities.Message> tableRowClickEventArgs)
     {
@@ -90,6 +86,8 @@
 
     protected override async Task OnInitializedAsync()
     {
+        stateAccess.OnStateChange += StateHasChanged;
+        UserId = stateAccess.UserId;
         //var foo = sessionStorage.GetItemAsync<string>("currentUser").ToString();
         //string f = foo.Result;
         //_currentMember = JsonSerializer.Deserialize<entities.Member>(foo);
@@ -120,49 +118,13 @@
         }
         else
         {
-            //_currentMember = JsonSerializer.Deserialize<entities.Member>(await sessionStorage.GetItemAsync<string>("currentUser"));
+            if(CurrentMember is null)
+            {
+                            CurrentMember = stateAccess.Member;
+            StateHasChanged();
+            }
+
         }
+        //StateHasChanged();
     }
-
-    private async Task GetMemberByEmail()
-    {
-        //MainLayout._currentMember = await MainLayout._data.GetMemberByEmail(MainLayout._userEmail);
-        //_userName = $"{Layout._currentMember.FirstName} {Layout._currentMember.LastName}";
-        //await Task.Delay(1000);
-
-        //var jsonMember = JsonSerializer.Serialize(_currentMember);
-
-        //await sessionStorage.SetItemAsync("currentUser", jsonMember);
-        //await sessionStorage.SetItemAsync("userName", _userName);
-        //await sessionStorage.SetItemAsync("email", _currentMember.Email);
-        //await sessionStorage.SetItemAsync("userId", _currentMember.Id.ToString());
-
-        //var foo = JsonSerializer.Deserialize<entities.Member>(await sessionStorage.GetItemAsync<string>("currentUser"));
-        //_userName = await sessionStorage.GetItemAsync<string>("userName");
-        //_userEmail = await sessionStorage.GetItemAsync<string>("email");
-        //_userId = Convert.ToInt32(await sessionStorage.GetItemAsync<string>("userId"));
-
-        //_isLoaded = true;
-    }
-
-    //protected void NavigateToHome()
-    //{
-
-    //}
- 
-    //private async Task GetClaimsPrincipalData()
-    //{
-    //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    //    var user = authState.User ?? null;
-
-    //    if (user != null)
-    //    {
-    //        if (user.Identity.IsAuthenticated)
-    //        {
-    //            _userEmail = user.Identity.Name;
-    //        }
-    //    }
-    //}
-
-    //string[] messages = new string[]{"Message 1", "message 2", "message3"}
 }

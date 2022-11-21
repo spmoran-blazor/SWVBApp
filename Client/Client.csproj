@@ -13,6 +13,7 @@
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
 	  <Content Remove="Shared\AuthMemberSetup.razor" />
+	  <Content Remove="Shared\Messages.razor" />
 	  <Content Remove="Shared\MudDialog.razor" />
 	  <Content Remove="Shared\ProjectAuthComponent.razor" />
 	  <Content Remove="Shared\RemoveExceptionDate.razor" />
@@ -57,6 +58,7 @@
 	  <Script Remove="Common\ProjectLayoutComponentBase.cs" />
 	  <Script Remove="Common\SWVBLayoutComponentBase.razor" />
 	  <Script Remove="Shared\AuthMemberSetup.razor" />
+	  <Script Remove="Shared\Messages.razor" />
 	  <Script Remove="Shared\MudDialog.razor" />
 	  <Script Remove="Shared\ProjectAuthComponent.razor" />
 	  <Script Remove="Shared\RemoveExceptionDate.razor" />
@@ -67,6 +69,7 @@
 	  <None Include="Shared\AuthMemberSetup.razor" />
 	  <None Include="Components\BottomAppBar.razor" />
 	  <None Include="Components\ProjectAuthComponent.razor" />
+	  <None Include="Components\Messages.razor" />
 	  <None Include="Shared\SWVBLayoutComponentBase.razor" />
 	  <None Include="Shared\MudDialog.razor" />
 	  <None Include="Shared\RemoveExceptionDate.razor" />
@@ -75,6 +78,7 @@
 
 	<ItemGroup>
 	  <Folder Include="Common\" />
+	  <Folder Include="Services\" />
 	</ItemGroup>
 	
 	<ItemGroup>

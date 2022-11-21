@@ -1,0 +1,48 @@
+﻿@using MudBlazor
+@inject DataAccessService dataAccess
+@implements IDisposable
+
+<MudTable Items="@_messages" Elevation="0" Hover="false" Border="false"  Class="pt-8">
+        <HeaderContent>
+        </HeaderContent>
+        <RowTemplate >
+        <MudTd Class="pb-0" Style="font-weight:bold;display:block">@context.Title - @context.DateSent.ToShortDateString()</MudTd>
+        <MudTd Style="display:block">@context.Body</MudTd>
+        </RowTemplate>
+</MudTable>
+
+@code {
+    public DataAccessService? _data;
+    public List<Message>? _messages;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _data = dataAccess;
+        var msg = await _data.GetMessages();
+        _messages = msg.ToList<Message>();
+    }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (!firstRender)
+        {
+
+            //StateHasChanged();
+        }
+    }
+    //private IEnumerable<entities.Message> _messages = new List<entities.Message>()
+    //{
+    //    new entities.Message() { Id = 1, Title = "Zombie Oh Noze", Body = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium.", DateSent= Convert.ToDateTime("11/10/2022"), Type=1},
+    //    new entities.Message() { Id = 2, Title = "Meat Yum Yum", Body = "Bacon ipsum dolor amet short ribs brisket venison rump drumstick pig sausage prosciutto chicken spare ribs salami picanha doner. Kevin capicola sausage, buffalo bresaola venison turkey shoulder picanha ham pork tri-tip meatball meatloaf ribeye. Doner spare ribs andouille bacon sausage. Ground round jerky brisket pastrami shank.", DateSent= Convert.ToDateTime("11/11/2022"), Type=1},
+    //    new entities.Message() { Id = 3, Title = "Cupcakes Sweetiepie", Body = "Cupcake ipsum dolor. Sit amet marshmallow topping cheesecake muffin. Halvah croissant candy canes bonbon candy. Apple pie jelly beans topping carrot cake danish tart cake cheesecake. Muffin danish chocolate soufflé pastry icing bonbon oat cake. Powder cake jujubes oat cake. Lemon drops tootsie roll marshmallow halvah carrot cake.", DateSent= Convert.ToDateTime("11/12/2022"), Type=2}
+    //};
+
+    public void Dispose()
+    {
+        //stateAccess.OnStateChange -= StateHasChanged;
+        _data = null;
+    }
+
+}
