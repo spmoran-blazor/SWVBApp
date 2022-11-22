@@ -3,25 +3,37 @@
 
 <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1">
     <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large">
-        <MudMenuItem Href="/AddEvent" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
+        <MudMenuItem Href="/3" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
     </MudMenu>
     <MudSpacer />
-    <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/" Size="Size.Large" />
+    <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/0" Size="Size.Large" />
     <MudSpacer />
-    <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/eventregister" Size="Size.Large" />
+    <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/1" Size="Size.Large" />
     <MudSpacer />
-    <MudIconButton Icon="@Icons.Material.Filled.PermIdentity" Color="Color.Inherit" Edge="Edge.End" Href="/profile" Size="Size.Large" />
+    <MudIconButton Icon="@Icons.Material.Filled.PermIdentity" Color="Color.Inherit" Edge="Edge.End" Href="/2" Size="Size.Large" />
     <MudSpacer />
     <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" Href="/.auth/logout" Size="Size.Large" />
 </MudAppBar>
 
 @code {
-    [Parameter]
-    public Member? CurrentMember { get; set; }
+    public enum PageActions
+    {
+        Messages = 0,
+        Register = 1,
+        Profile = 2,
+        CreateGame = 3,
+        EditGame = 4
+
+
+
+
+    }
     bool _drawerOpen = true;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
+
+
 }

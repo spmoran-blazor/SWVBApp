@@ -7,16 +7,10 @@
 @inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess
 @inject StateAccessService stateAccess
-@*@implements IDisposable*@
 
 @code {
     [Parameter]
     public Member? CurrentMember { get; set; }
-    [Parameter]
-    public string? UserId { get; set; }
-    [Parameter]
-    public string? CurrentMemberString { get; set; }
-
     public DataAccessService? _data;
     public StateAccessService? _state;
     public Member? _currentMember;
@@ -26,7 +20,7 @@
     public string? _userName;
     public string? _userJson;
 
-        protected override async Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {   
         _state = stateAccess;
         _state.OnStateChange += StateHasChanged;
@@ -67,7 +61,7 @@
             _currentMember = await _data.GetMemberByEmail(_userEmail);
             if(_currentMember is not null)
             {
-                UserId = _currentMember.Id.ToString();
+                _userId = _currentMember.Id.ToString();
             }
         }
 
@@ -79,9 +73,5 @@
             await sessionStorage.SetItemAsync("currentUser", _userJson);
             await sessionStorage.SetItemAsync("userName", _userName);
         }
-
-        //_userId = await sessionStorage.GetItemAsync<string>("userId");
     }
-
-
 }

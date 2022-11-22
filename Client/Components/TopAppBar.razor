@@ -1,13 +1,53 @@
 ﻿@using MudBlazor
-@inject NavigationManager UriHelper
+@using WVBApp.Shared.Services.State
+@inject StateAccessService stateAccess
 
 <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
+    @switch (Action)
+    {
+        case null:
+            <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
+            break;
+        case "0":
+            <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
+            break;
+        case "1":
+            <MudText Typo="Typo.h5">Event Center - @_member.FirstName</MudText>
+            break;
+        case "2":
+            <MudText Typo="Typo.h5">Member Center - @_member.FirstName</MudText>
+            break;
+        default:
+            <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
+            break;
+    }
 
-        <MudText Typo="Typo.h5">Message Center - @UserName</MudText>
 
 </MudAppBar>
 
 @code {
+
     [Parameter]
-    public string UserName { get; set; }
+    public string Action { get; set; }
+
+    public StateAccessService? _state;
+    public Member? _member;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _state = stateAccess;
+        stateAccess.OnStateChange += StateHasChanged;
+        _member = _state.Member ?? null;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            if (Action is not null)
+            {
+                //StateHasChanged();
+            }
+        }
+    }
 }

@@ -1,5 +1,5 @@
 ﻿@page "/"
-@page "/{UserId}"
+@page "/{Action}"
 @attribute [Authorize]
 @using System.Security.Claims
 @using entities = WVBApp.Shared.Entities
@@ -11,120 +11,73 @@
 @using WVBApp.Shared
 @using MudBlazor
 
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
-@inject AuthenticationStateProvider authenticationStateProvider
+@*@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+@inject AuthenticationStateProvider authenticationStateProvider*@
 @inject DataAccessService dataAccess
 @inject StateAccessService stateAccess
 
 
-<Client.Components.ProjectAuthComponent CurrentMember="@CurrentMember" CurrentMemberString="@CurrentMemberString" />
+<Client.Components.ProjectAuthComponent CurrentMember="@CurrentMember" />
 
 @if (CurrentMember is not null)
 {
-    <Client.Components.TopAppBar UserName="@CurrentMember.FirstName" />
+    <Client.Components.TopAppBar Action="@Action" />
 }
 
 @if (CurrentMember is not null)
 {
-    <Client.Components.Messages />
-
-@*    <MudTable Items="@_messages" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" Class="pt-8">
-        <HeaderContent>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd Style="font-weight:bold">@context.Title - @context.DateSent.ToShortDateString()</MudTd>
-            <MudTd>@context.Body</MudTd>
-        </RowTemplate>
-    </MudTable>*@
+    switch (Action)
+    {
+        case null:
+            <Client.Components.Messages />
+            break;
+        case "0":
+            <Client.Components.Messages />
+            break;
+        case "1":
+            <Client.Components.EventRegister />
+            break;
+        case "2":
+            <Client.Components.Profile />
+            break;
+        default:
+            <Client.Components.Messages />
+            break;
+    }
 }
-@*<BottomAppBar UserId="@_userId"></BottomAppBar>*@
 <Client.Components.BottomAppBar />
 
 @code {
-    //private DataAccessService? _data;
+    [Parameter]
+    public string? Action { get; set; }
     private entities.Member _currentMember = new entities.Member();
-    //private ClaimsPrincipal? _user;
-    //[CascadingParameter]
-    //public MainLayout? Layout { get; set; }
-
-    public string? _userId;
-    private string? _userEmail;
-    private string? _userName;
-    private bool _isLoaded = false;
-    [Parameter]
-    public string? UserId { get; set; }
-    [Parameter]
-    public string? CurrentMemberString { get; set; }
-    [Parameter]
     public Member? CurrentMember { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        stateAccess.OnStateChange += StateHasChanged;
+    }
 
     public void Dispose()
     {
         stateAccess.OnStateChange -= StateHasChanged;
     }
 
-    protected override async Task OnParametersSetAsync()
-    {
-        await base.OnParametersSetAsync();
-
-        //await GetClaimsPrincipalData();
-
-        //await SavePlayDates();
-    }
-
-    //private IEnumerable<entities.Message> _messages = new List<entities.Message>()
-    //{
-    //    new entities.Message() { Id = 1, Title = "Zombie Oh Noze", Body = "Zombie ipsum reversus ab viral inferno, nam rick grimes malum cerebro. De carne lumbering animata corpora quaeritis. Summus brains sit​​, morbo vel maleficia? De apocalypsi gorger omero undead survivor dictum mauris. Hi mindless mortuis soulless creaturas, imo evil stalking monstra adventus resi dentevil vultus comedat cerebella viventium.", DateSent= Convert.ToDateTime("11/10/2022"), Type=1},
-    //    new entities.Message() { Id = 2, Title = "Meat Yum Yum", Body = "Bacon ipsum dolor amet short ribs brisket venison rump drumstick pig sausage prosciutto chicken spare ribs salami picanha doner. Kevin capicola sausage, buffalo bresaola venison turkey shoulder picanha ham pork tri-tip meatball meatloaf ribeye. Doner spare ribs andouille bacon sausage. Ground round jerky brisket pastrami shank.", DateSent= Convert.ToDateTime("11/11/2022"), Type=1},
-    //    new entities.Message() { Id = 3, Title = "Cupcakes Sweetiepie", Body = "Cupcake ipsum dolor. Sit amet marshmallow topping cheesecake muffin. Halvah croissant candy canes bonbon candy. Apple pie jelly beans topping carrot cake danish tart cake cheesecake. Muffin danish chocolate soufflé pastry icing bonbon oat cake. Powder cake jujubes oat cake. Lemon drops tootsie roll marshmallow halvah carrot cake.", DateSent= Convert.ToDateTime("11/12/2022"), Type=2}
-    //};
-
-    private void RowClickEvent(TableRowClickEventArgs<entities.Message> tableRowClickEventArgs)
-    {
-        //clickedEvents.Add("Row has been clicked");
-    }
-
-    protected override async Task OnInitializedAsync()
-    {
-        stateAccess.OnStateChange += StateHasChanged;
-        UserId = stateAccess.UserId;
-        //var foo = sessionStorage.GetItemAsync<string>("currentUser").ToString();
-        //string f = foo.Result;
-        //_currentMember = JsonSerializer.Deserialize<entities.Member>(foo);
-
-        //try
-        //{
-        //    _currentMember = JsonSerializer.Deserialize<entities.Member>(await sessionStorage.GetItemAsync<string>("currentUser"));
-        //}
-        //catch (Exception e) { }
-
-        //_userName = await sessionStorage.GetItemAsync<string>("userName");
-        //_userEmail = await sessionStorage.GetItemAsync<string>("email");
-        //UserId = Convert.ToInt32(await sessionStorage.GetItemAsync<string>("userId"));
-        //await GetClaimsPrincipalData();
-        //_data = dataAccess ?? null;
-        //await GetMemberByEmail();
-
-        _isLoaded = true;
-        //Console.WriteLine(CurrentMemberString);
-    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-
-        if (firstRender)
-        {
-            Console.WriteLine("Executed for the first render from Index.");
-        }
-        else
+        if (!firstRender)
         {
             if(CurrentMember is null)
             {
-                            CurrentMember = stateAccess.Member;
-            StateHasChanged();
+                CurrentMember = stateAccess.Member;
+                StateHasChanged();
             }
-
         }
-        //StateHasChanged();
     }
 }

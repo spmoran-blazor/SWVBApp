@@ -1,5 +1,4 @@
-﻿@page "/profile"
-@attribute [Authorize]
+﻿@attribute [Authorize]
 @using System.ComponentModel.DataAnnotations
 @using System.Net.Http
 @using System.Net.Http.Json
@@ -12,11 +11,13 @@
 @using System.Runtime.Serialization
 @using System.Runtime.Serialization.Json
 @using WVBApp.Shared.Services.Data
+@using WVBApp.Shared.Services.State
 
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService dataAccess;
 @inject IDialogService DialogService;
+@inject StateAccessService stateAccess
 
     <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
 
@@ -146,8 +147,10 @@
 
 
 @code {
-    [CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-    private entities.Member? _currentMember = new entities.Member();
+    public StateAccessService? _state;
+    public Member? _member;
+    //[CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
+    private entities.Member? _currentMember;
     private DataAccessService? _data;
     //private ClaimsPrincipal? _user;
     private int _userId;
@@ -162,6 +165,17 @@
     private int rating;
     private void OpenDialog() => visible = true;
     void Submit() => visible = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _state = stateAccess;
+        _currentMember = _state.Member;
+        _data = dataAccess ?? null;
+        GetMemberExceptionDatesById();
+        SetPlayDays();
+        StateHasChanged();
+
+    }
 
     private DialogOptions dialogOptions = new() { FullWidth = true };
 
@@ -223,39 +237,28 @@
         success = true;
         StateHasChanged();
     }
-    protected override async Task OnParametersSetAsync()
-    {
-        await base.OnParametersSetAsync();
-        //await GetClaimsPrincipalData();
-
-        //await SavePlayDates();
-    }
 
     protected async Task SetPlayDays()
     {
-        var getData = await _data.GetMemberPreferredDaysById(_userId);
-        _playDays = getData.ToList() ?? null;
-    }
+        if(_currentMember is not null)
+        {       
+            var getData = await _data.GetMemberPreferredDaysById(_currentMember.Id);
+            _playDays = getData.ToList() ?? null;
 
-    protected override async Task OnInitializedAsync()
-    {
-        var uid = await sessionStorage.GetItemAsync<string>("userId");
-        Console.WriteLine(uid);
-        _userId = Convert.ToInt32(uid.Trim());
-        Console.WriteLine(_userId);
-        _data = dataAccess ?? null;
-        //GetMemberById();
-        GetMemberExceptionDatesById();
-        SetPlayDays();
-        //StateHasChanged();
+        }
 
     }
+
+
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (!firstRender)
         {
-            //StateHasChanged();
+            if (_currentMember is null)
+            {
+                _currentMember = stateAccess.Member;
+            }
 
 
         }
@@ -265,16 +268,14 @@
         }
     }
 
-    //private async Task GetMemberById()
-    //{
-    //    _currentMember = await _data.GetMemberById(_userId);
-    //}
-
     private async Task GetMemberExceptionDatesById()
     {
-        var getData = await _data.GetMemberExceptionDates(_userId);
+        if (_currentMember is not null)
+        {
+            var getData = await _data.GetMemberExceptionDates(_currentMember.Id);
 
-        _memberExceptionDates = getData.ToList<entities.MemberExceptionDates>();
+            _memberExceptionDates = getData.ToList<entities.MemberExceptionDates>();
+        }
     }
 
 }
