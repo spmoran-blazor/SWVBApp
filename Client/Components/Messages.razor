@@ -1,15 +1,27 @@
 ﻿@using MudBlazor
+@attribute [Authorize]
 @inject DataAccessService dataAccess
 @implements IDisposable
 
-<MudTable Items="@_messages" Elevation="0" Hover="false" Border="false"  Class="pt-8">
-        <HeaderContent>
-        </HeaderContent>
-        <RowTemplate >
-        <MudTd Class="pb-0" Style="font-weight:bold;display:block">@context.Title - @context.DateSent.ToShortDateString()</MudTd>
-        <MudTd Style="display:block">@context.Body</MudTd>
-        </RowTemplate>
-</MudTable>
+<MudStack Style="border-bottom;" Class="pt-4">
+    @if (_messages is not null)
+    {
+        @foreach (var msg in _messages)
+        {
+            <MudItem Class="pa-4 pb-2">
+
+                <MudStack Row="true">
+                    <MudStack Justify="Justify.Center">
+                        <MudText Align="Align.Left" Typo="Typo.body2"><strong>@msg.Title</strong></MudText>
+                        <MudText Align="Align.Left" Typo="Typo.body2">@msg.Body</MudText>
+                        <MudText Align="Align.Left" Typo="Typo.caption">Posted on @msg.DateSent.ToShortDateString()</MudText>
+                    </MudStack>
+                </MudStack>
+            </MudItem>
+            <MudDivider />
+        }
+    }
+</MudStack>
 
 @code {
     public DataAccessService? _data;

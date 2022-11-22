@@ -19,12 +19,6 @@
 @inject IDialogService DialogService;
 @inject StateAccessService stateAccess
 
-    <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
-
-        <MudText Typo="Typo.h5">Player Center</MudText>
-
-    </MudAppBar>
-
     <MudExpansionPanels MultiExpansion="false" Square="true" DisableBorders="false" Elevation="1" Class="pt-8">
 
         <MudExpansionPanel HideIcon="true">
@@ -147,17 +141,13 @@
 
 
 @code {
-    public StateAccessService? _state;
-    public Member? _member;
-    //[CascadingParameter] private Task<AuthenticationState> authenticationStateTask { get; set; }
-    private entities.Member? _currentMember;
+    private StateAccessService? _state;
     private DataAccessService? _data;
-    //private ClaimsPrincipal? _user;
-    private int _userId;
-    //private string? _userEmail;
+    private entities.Member? _currentMember;
+
     List<entities.PlayDay>? _playDays = new List<entities.PlayDay>();
     List<entities.MemberExceptionDates>? _memberExceptionDates;
-    //private List<string> _events = new();
+
     private MudTable<entities.MemberExceptionDates> mudTable;
     private int selectedRowNumber = -1;
     bool success;

@@ -2,6 +2,10 @@
 @using WVBApp.Shared.Services.State
 @inject StateAccessService stateAccess
 
+@if(_member is not null)
+{
+    
+
 <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
     @switch (Action)
     {
@@ -21,9 +25,9 @@
             <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
             break;
     }
-
-
 </MudAppBar>
+}
+
 
 @code {
 
