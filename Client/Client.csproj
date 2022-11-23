@@ -13,6 +13,7 @@
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
 	  <Content Remove="Shared\AuthMemberSetup.razor" />
+	  <Content Remove="Shared\LoginDisplay.razor" />
 	  <Content Remove="Shared\Messages.razor" />
 	  <Content Remove="Shared\MudDialog.razor" />
 	  <Content Remove="Shared\ProjectAuthComponent.razor" />

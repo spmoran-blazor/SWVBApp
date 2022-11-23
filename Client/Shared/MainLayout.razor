@@ -14,8 +14,6 @@
                 </Authorizing>
                 <Authorized>
                     <div class="content px-4">
-@*                        <CascadingValue Value="this" Name="Layout" />*@
-@*                        <CascadingValue Value=base._userJson Name="CurrentMemberString" />*@
                         @Body
                     </div>
                 </Authorized>
@@ -23,31 +21,10 @@
                     <RedirectToLogin></RedirectToLogin>
                 </NotAuthorized>
             </AuthorizeView>
-
         </MudContainer>
     </MudMainContent>
-@*    <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1">
-        <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large" >
-        <MudMenuItem Href="/AddEvent" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
-        </MudMenu>
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/" Size="Size.Large" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/eventregister" Size="Size.Large" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.PermIdentity" Color="Color.Inherit" Edge="Edge.End" Href="/profile" Size="Size.Large" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" Href="/.auth/logout" Size="Size.Large" />
-    </MudAppBar>*@
 </MudLayout>
 
 @code {
-    //public DataAccessService? _data;
-    //private entities.Member _currentMember = new entities.Member();
-    bool _drawerOpen = true;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
+    
 }

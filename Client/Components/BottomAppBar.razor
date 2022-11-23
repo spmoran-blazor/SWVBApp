@@ -1,11 +1,25 @@
 ﻿@using MudBlazor
+@using WVBApp.Shared.Services.State
 @inject NavigationManager UriHelper
+@inject StateAccessService stateAccess
 
 <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1">
-    <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large">
-        <MudMenuItem Href="/3" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditCalendar">Manage Games</MudMenuItem>
-    </MudMenu>
-    <MudSpacer />
+    @if (_state is not null)
+    {
+        if (_state.Member is not null)
+        {
+            @if (_state.Member.IsAdmin == true)
+            {
+                <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large">
+                    <MudMenuItem Href="/3" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.Create">Create Game</MudMenuItem>
+                    <MudMenuItem Href="/4" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditNote">Edit Game</MudMenuItem>
+                </MudMenu>
+                <MudSpacer />
+            }
+        }
+    }
+
+
     <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/0" Size="Size.Large" />
     <MudSpacer />
     <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/1" Size="Size.Large" />
@@ -16,24 +30,46 @@
 </MudAppBar>
 
 @code {
-    public enum PageActions
-    {
-        Messages = 0,
-        Register = 1,
-        Profile = 2,
-        CreateGame = 3,
-        EditGame = 4
-
-
-
-
-    }
+    Member? _currentMember;
+    StateAccessService _state;
     bool _drawerOpen = true;
+    //bool _isAdmin = false;
 
     void DrawerToggle()
     {
         _drawerOpen = !_drawerOpen;
     }
 
+    protected override async Task OnInitializedAsync()
+    {
+        _state = stateAccess;
+        _state.OnStateChange += StateHasChanged;
 
+        //if (_state is not null)
+        //{
+        //    if (_state.Member is not null)
+        //    {
+        //        _currentMember = stateAccess.Member;
+
+        //        if (_currentMember.IsAdmin == true)
+        //            _isAdmin = true;
+        //    }
+        //}
+
+
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        //if (!firstRender)
+        //{
+
+
+
+
+        //    StateHasChanged();
+        //}
+    }
 }
+

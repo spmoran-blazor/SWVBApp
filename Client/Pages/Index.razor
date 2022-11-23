@@ -40,6 +40,9 @@
         case "2":
             <Client.Components.Profile />
             break;
+        case "3":
+            <Client.Components.EventCreate />
+            break;
         default:
             <Client.Components.Messages />
             break;
@@ -63,10 +66,10 @@
         stateAccess.OnStateChange += StateHasChanged;
     }
 
-    public void Dispose()
-    {
-        stateAccess.OnStateChange -= StateHasChanged;
-    }
+    //public void Dispose()
+    //{
+    //    stateAccess.OnStateChange -= StateHasChanged;
+    //}
 
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
