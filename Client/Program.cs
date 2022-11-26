@@ -1,15 +1,12 @@
 using AzureStaticWebApps.Blazor.Authentication;
+using Blazored.SessionStorage;
 using Client;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.AspNetCore.Http;
 using MudBlazor;
 using MudBlazor.Services;
 using WVBApp.Shared.Services.Data;
 using WVBApp.Shared.Services.State;
-
-using Blazored.SessionStorage;
-using System.Threading.Tasks;
 internal class Program
 {
     private static async Task Main(string[] args)

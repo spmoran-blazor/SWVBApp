@@ -11,8 +11,6 @@
 @using WVBApp.Shared
 @using MudBlazor
 
-@*@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
-@inject AuthenticationStateProvider authenticationStateProvider*@
 @inject DataAccessService dataAccess
 @inject StateAccessService stateAccess
 
@@ -65,12 +63,6 @@
     {
         stateAccess.OnStateChange += StateHasChanged;
     }
-
-    //public void Dispose()
-    //{
-    //    stateAccess.OnStateChange -= StateHasChanged;
-    //}
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

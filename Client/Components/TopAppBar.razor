@@ -21,6 +21,9 @@
         case "2":
             <MudText Typo="Typo.h5">Member Center - @_member.FirstName</MudText>
             break;
+        case "3":
+            <MudText Typo="Typo.h5">Create Game</MudText>
+            break;
         default:
             <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
             break;
@@ -50,7 +53,7 @@
         {
             if (Action is not null)
             {
-                //StateHasChanged();
+                _member = _state.Member ?? null;
             }
         }
     }

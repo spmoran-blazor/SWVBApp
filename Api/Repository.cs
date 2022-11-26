@@ -4,6 +4,7 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using WVBApp.Shared.Entities;
 
 namespace Api
@@ -54,7 +55,7 @@ namespace Api
         }
     }
 
-    
+
     public static class GetMemberByEmail
     {
         [FunctionName("GetMemberByEmail")]
@@ -85,78 +86,84 @@ namespace Api
         }
     }
 
-    public static class GetEventSchedulingCodes
-    {
-        [FunctionName("GetEventSchedulingCodes")]
-        public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "geteventschedulingcodes")] HttpRequest req,
-            ILogger log,
-            [Sql("GetSchedulingCodes", CommandType = System.Data.CommandType.StoredProcedure,
-                ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<EventSchedulingCode> eventSchedulingCodes )
-        {
-            return new OkObjectResult(eventSchedulingCodes);
-        }
+
+    //public static class CreateEvent
+    //{
+    //    [FunctionName("CreateEvent")]
+    //    public static async Task<IActionResult> Run(
+    //        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PostFunction")] HttpRequest req,
+    //        ILogger log,
+    //        [Sql("dbo.Event", ConnectionStringSetting = "SqlConnection")] IAsyncCollector<Event> event)
+    //        {
+    //            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+    //            Event event = JsonConvert.DeserializeObject<Event>(requestBody);
+
+    //            // generate a new id for the todo item
+    //            //toDoItem.Id = Guid.NewGuid();
+
+    //            // set Url from env variable ToDoUri
+    //            event.url = _baseUrl;
+
+    //        // if completed is not provided, default to false
+    //        if (event.completed == null)
+    //        {
+    //            event.completed = false;
+    //    }
+
+    //    await event.AddAsync(toDoItem);
+    //        await event.FlushAsync();
+    //        List<Event> eventList = new List<Event> { event };
+
+    //        return new OkObjectResult(eventList);
+    //}
 
 
-    }
-    public static class Future
-    {
-        //[FunctionName("InsertNewEvent")]
-        //public static IActionResult Run(
-        //    [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "insertnewevent"] HttpRequest req,
-        //    ILogger log,
-        //    [Sql("GetMemberIdByEmail", CommandType = System.Data.CommandType.StoredProcedure,
-        //        Parameters = "@Email={email}",
-        //        ConnectionStringSetting = "SqlConnection")]
-        //        IEnumerable<int> Id)
-        //{
-        //    return new OkObjectResult(Id);
-        //}
-
-        //[FunctionName("PostEvent")]
-        //public static async Task<IActionResult> Run(
-        //    [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PostEvent")] HttpRequest req,
-        //    ILogger log,
-        //    [Sql("dbo.Event", ConnectionStringSetting = "SqlConnection")] IAsyncCollector<Event> events)
-        //{
-        //    string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        //    Event newEvent = JsonConvert.DeserializeObject<Event>(requestBody);
-
-        //    // generate a new id for the todo item
-        //    //toDoItem.Id = Guid.NewGuid();
-
-        //    // set Url from env variable ToDoUri
-        //    toDoItem.url = Environment.GetEnvironmentVariable("ToDoUri") + "?id=" + toDoItem.Id.ToString();
-
-        //    // if completed is not provided, default to false
-        //    if (toDoItem.completed == null)
-        //    {
-        //        toDoItem.completed = false;
-        //    }
-
-        //    await toDoItems.AddAsync(toDoItem);
-        //    await toDoItems.FlushAsync();
-        //    List<ToDoItem> toDoItemList = new List<ToDoItem> { toDoItem };
-
-        //    return new OkObjectResult(toDoItemList);
-
-        //}
-    }
-
-    public static class GetMessages
-    {
-        [FunctionName("GetMessages")]
-        public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getmessages")] HttpRequest req,
-            ILogger log,
-            [Sql("GetMessages", CommandType = System.Data.CommandType.StoredProcedure,
+public static class GetMessages
+{
+    [FunctionName("GetMessages")]
+    public static IActionResult Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "getmessages")] HttpRequest req,
+        ILogger log,
+        [Sql("GetMessages", CommandType = System.Data.CommandType.StoredProcedure,
                 ConnectionStringSetting = "SqlConnection")]
                 IEnumerable<Message> messages)
-        {
-            return new OkObjectResult(messages);
-        }
-
-
+    {
+        return new OkObjectResult(messages);
     }
+
+
+}
+
+#region "Events"
+
+
+
+//@EventDate
+//@EventTime
+//@AreaOfPlayId
+//@EventSchedulingCodeId
+//@PartialGameId
+//@ParticipantLimit
+//@EventComment
+//@IsCancelled
+//@IsPartial
+//@UpdatedDate
+//@UpdatedBy
+
+public static class GetEventSchedulingCodes
+{
+    [FunctionName("GetEventSchedulingCodes")]
+    public static IActionResult Run(
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "geteventschedulingcodes")] HttpRequest req,
+        ILogger log,
+        [Sql("GetSchedulingCodes", CommandType = System.Data.CommandType.StoredProcedure,
+                ConnectionStringSetting = "SqlConnection")]
+                IEnumerable<EventSchedulingCode> eventSchedulingCodes)
+    {
+        return new OkObjectResult(eventSchedulingCodes);
+    }
+
+
+}
+    #endregion
 }
