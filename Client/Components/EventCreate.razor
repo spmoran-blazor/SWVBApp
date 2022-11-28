@@ -69,7 +69,7 @@
 
             <MudItem xs="12" sm="7" Class="pt-5" Style="border:none;">
                 <MudField Label="Comments" Variant="Variant.Text" InnerPadding="false">
-                    <MudTextField @bind-Value="@_newEvent.EventComment" Label="Enter any Comments" Variant="Variant.Text" Margin="Margin.Dense"></MudTextField>
+                    <MudTextField @bind-Value="@_newEvent.EventComment" Label="Enter any Comments" Variant="Variant.Text" Margin="Margin.Dense" ></MudTextField>
                 </MudField>
             </MudItem>
 
@@ -138,19 +138,13 @@
 
     private void OnValidSubmit(EditContext context)
     {
-        //BuildEventForSubmission();
-
-        //var x = "foo";
-
+        string s = JsonSerializer.Serialize<Event>((Event)context.Model);
+        Console.WriteLine(s);
     }
 
     private void OnInvalidSubmit(EditContext context)
     {
-        //BuildEventForSubmission();
-
-
-        //var x = "foo";
-
+       
     }
 
     protected override async Task OnInitializedAsync()
@@ -193,24 +187,4 @@
         //var data = await _data.GetEventSchedulingCodes();
         //_value =
     }
-
-    //private async Task GetClaimsPrincipalData()
-    //{
-    //    var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-    //    _user = authState.User ?? null;
-
-    //    if (_user != null)
-    //    {
-    //        //if (_user.Identity.IsAuthenticated)
-    //        //{
-    //        //    _userEmail = _user.Identity.Name;
-    //        //}
-    //    }
-    //}
-
-    //private async Task GetMemberByEmail()
-    //{
-    //    //_currentMember = await dataAccess.GetMemberByEmail(_userEmail);
-    //    _currentMember = await _data.GetMemberByEmail("spmoran@hotmail.com");
-    //}
 }

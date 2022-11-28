@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Data;
 using System.Net.Http.Json;
 using WVBApp.Shared.Entities;
+using Microsoft.Data.SqlClient;
 
 namespace WVBApp.Shared.Services.Data
 {
@@ -115,6 +117,25 @@ namespace WVBApp.Shared.Services.Data
 
         }
     }
+
+    public class DatabaseConfig
+    {
+        public string? ConnectionString { get; set; }
+    }
+
+
+    public class DbConnectionFactory : IDbConnectionFactory
+    {
+        public IDbConnection GetConnection(string connectionString)
+        {
+            return new SqlConnection(connectionString);
+        }
+    }
+    public interface IDbConnectionFactory
+    {
+        IDbConnection GetConnection(string connectionString);
+    }
+
 
     public interface IDataAccessService
     {

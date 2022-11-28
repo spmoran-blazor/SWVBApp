@@ -8,7 +8,7 @@ namespace WVBApp.Shared.Entities
     {
         [Required]
         [Key]
-        public Int32 Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
         public DateTime? EventDate { get; set; }
@@ -43,7 +43,5 @@ namespace WVBApp.Shared.Entities
         [MaxLength(50)]
         public String? UpdatedBy { get; set; }
 
-        [NotMapped]
-        public EventSchedulingCode? EventSchedulingCode { get; set; }
     }
 }
