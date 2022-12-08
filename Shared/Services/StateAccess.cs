@@ -1,4 +1,5 @@
 ﻿using WVBApp.Shared.Entities;
+
 namespace WVBApp.Shared.Services.State
 {
     public class StateAccessService

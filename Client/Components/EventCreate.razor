@@ -138,7 +138,7 @@
 
     private void OnValidSubmit(EditContext context)
     {
-        string s = JsonSerializer.Serialize<Event>((Event)context.Model);
+        string? s = JsonSerializer.Serialize<Event>((Event)context.Model);
         Console.WriteLine(s);
     }
 
@@ -160,7 +160,7 @@
 
         _data = dataAccess ?? null;
         await GetEventSchedulingCodes();
-        _newEvent.EventTime = _eventTime.ToString();
+        _newEvent.EventTime = _eventTime ?? null;
         _newEvent.IsPartial = false;
         _newEvent.EventDate = DateTime.Now;
     }

@@ -1,49 +1,52 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace WVBApp.Shared.Entities
 {
     [Table("Member")]
-    public class Member
+    public partial class Member
     {
+        public Member()
+        {
+            EventRosters = new HashSet<EventRoster>();
+            MemberExceptionDates = new HashSet<MemberExceptionDate>();
+        }
+
+        [Key]
+        public int Id { get; set; }
+        [StringLength(40)]
+        public string? AzureId { get; set; }
         [Required]
-        public Int32 Id { get; set; }
-
-        public string? AzureId { get; set; } = "0";
-
+        [StringLength(50)]
+        public string? FirstName { get; set; }
         [Required]
-        [MaxLength(50)]
-        public String? FirstName { get; set; }
-
+        [StringLength(50)]
+        public string? LastName { get; set; }
         [Required]
-        [MaxLength(50)]
-        public String? LastName { get; set; }
-
-        [MaxLength(50)]
-        public String? Email { get; set; }
-
+        [StringLength(20)]
+        public string? MobileNumber { get; set; }
         [Required]
-        [MaxLength(10)]
-        public String? MobileNumber { get; set; }
-
+        [StringLength(50)]
+        [Unicode(false)]
+        public string? Email { get; set; }
+        public bool IsCurrent { get; set; }
+        public bool IsAdmin { get; set; }
         [Required]
+        [StringLength(1)]
+        [Unicode(false)]
         public string? Gender { get; set; }
+        public int PlayLevel { get; set; }
+        public int PlayScore { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        [StringLength(50)]
+        public string? UpdatedBy { get; set; }
 
-        [Required]
-        public Int32 PlayLevel { get; set; }
-
-        [Required]
-        public Int32 PlayScore { get; set; }
-
-        [Required]
-        public Boolean IsCurrent { get; set; }
-
-        [Required]
-        public Boolean IsAdmin { get; set; }
-
-        public DateTime UpdatedDate { get; set; }
-
-        [MaxLength(50)]
-        public String? UpdatedBy { get; set; }
+        [InverseProperty(nameof(EventRoster.Member))]
+        public virtual ICollection<EventRoster> EventRosters { get; set; }
+        [InverseProperty(nameof(MemberExceptionDate.Member))]
+        public virtual ICollection<MemberExceptionDate> MemberExceptionDates { get; set; }
     }
 }

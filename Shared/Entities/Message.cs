@@ -1,36 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WVBApp.Shared.Entities
 {
-    public class Message
+    [Table("Message")]
+    public partial class Message
     {
+        [Key]
+        public int Id { get; set; }
         [Required]
-        public Int32 Id { get; set; }
-
+        [StringLength(100)]
+        public string? Title { get; set; }
         [Required]
-        [MaxLength(100)]
-        public String? Title { get; set; }
-
-        [Required]
-        [MaxLength(10)]
-        public String? Body { get; set; }
-
-        [Required]
+        [StringLength(500)]
+        public string? Body { get; set; }
+        [Column(TypeName = "datetime")]
         public DateTime DateSent { get; set; }
-
-        public Int32 Type { get; set; }
-
-        [Required]
+        public int? Type { get; set; }
+        [Column(TypeName = "datetime")]
         public DateTime UpdatedDate { get; set; }
-
         [Required]
-        [MaxLength(50)]
-        public String UpdatedBy { get; set; }
-
+        [StringLength(50)]
+        public string? UpdatedBy { get; set; }
     }
 }

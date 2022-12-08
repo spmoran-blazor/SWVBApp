@@ -1,12 +1,12 @@
 ﻿@inherits LayoutComponentBase
-@using WVBApp.Shared.Entities
+@using WVBApp.Shared
 @using WVBApp.Shared.Services.Data
 @using System.Security.Claims
 @using System.Text.Json
 
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
-@inject DataAccessService dataAccess
+@inject DataAccessService data
 
 @code {
     public DataAccessService? _data;
@@ -15,10 +15,10 @@
     public int _userId;
     public string? _userEmail;
     public string? _userName;
-    public string _userJson;
+    public string? _userJson;
 
     protected override void OnInitialized(){
-        _data = dataAccess;
+        _data = data;
         GetClaimsPrincipalData();
     }
 

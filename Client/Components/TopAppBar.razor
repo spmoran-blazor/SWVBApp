@@ -1,49 +1,47 @@
 ﻿@using MudBlazor
 @using WVBApp.Shared.Services.State
-@inject StateAccessService stateAccess
+@inject StateAccessService state
 
 @if(_member is not null)
 {
-    
-
-<MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
-    @switch (Action)
-    {
-        case null:
-            <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
-            break;
-        case "0":
-            <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
-            break;
-        case "1":
-            <MudText Typo="Typo.h5">Event Center - @_member.FirstName</MudText>
-            break;
-        case "2":
-            <MudText Typo="Typo.h5">Member Center - @_member.FirstName</MudText>
-            break;
-        case "3":
-            <MudText Typo="Typo.h5">Create Game</MudText>
-            break;
-        default:
-            <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
-            break;
-    }
-</MudAppBar>
+    <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
+        @switch (Action)
+        {
+            case null:
+                <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
+                break;
+            case "0":
+                <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
+                break;
+            case "1":
+                <MudText Typo="Typo.h5">Event Center - @_member.FirstName</MudText>
+                break;
+            case "2":
+                <MudText Typo="Typo.h5">Member Center - @_member.FirstName</MudText>
+                break;
+            case "3":
+                <MudText Typo="Typo.h5">Create Game</MudText>
+                break;
+            default:
+                <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
+                break;
+        }
+    </MudAppBar>
 }
 
 
 @code {
 
     [Parameter]
-    public string Action { get; set; }
+    public string? Action { get; set; }
 
     public StateAccessService? _state;
     public Member? _member;
 
     protected override async Task OnInitializedAsync()
     {
-        _state = stateAccess;
-        stateAccess.OnStateChange += StateHasChanged;
+        _state = state;
+        _state.OnStateChange += StateHasChanged;
         _member = _state.Member ?? null;
     }
 

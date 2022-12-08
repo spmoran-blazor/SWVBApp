@@ -1,22 +1,24 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using entities = WVBApp.Shared.Entities;
 
 namespace WVBApp.Shared.Entities
 {
     [Table("AreaOfPlay")]
-    public class AreaOfPlay
+    public partial class AreaOfPlay
     {
+        public AreaOfPlay()
+        {
+            Events = new HashSet<entities.Event>();
+        }
+
+        [Key]
+        public int Id { get; set; }
         [Required]
-        public Int32 Id { get; set; }
+        [StringLength(50)]
+        public string? Area { get; set; }
 
-        [Required]
-        [MaxLength(50)]
-        public String Area { get; set; }
-
-        [Required]
-        public Int32 VenueId { get; set; }
-
-        public List<AreaOfPlay> AreasOfPlay {get; set; } = new List<AreaOfPlay>();
-
+        [InverseProperty(nameof(Event.AreaOfPlay))]
+        public virtual ICollection<Event> Events { get; set; }
     }
 }

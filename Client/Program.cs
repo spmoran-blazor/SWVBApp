@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor;
 using MudBlazor.Services;
 using WVBApp.Shared.Services.Data;
+//using WVBApp.Shared.Services.Data;
 using WVBApp.Shared.Services.State;
 internal class Program
 {
@@ -16,7 +17,7 @@ internal class Program
         builder.RootComponents.Add<HeadOutlet>("head::after");
 
         builder.Services.AddHttpClient("DataAccessHttpClient", sp => sp.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
-        builder.Services.AddTransient<DataAccessService, DataAccessService>();
+        builder.Services.AddSingleton<DataAccessService, DataAccessService>();
         builder.Services.AddStaticWebAppsAuthentication();
         builder.Services.AddSingleton<StateAccessService, StateAccessService>();
         builder.Services.AddMudServices(config =>

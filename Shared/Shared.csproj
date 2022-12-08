@@ -7,7 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Services\Data\**" />
+    <EmbeddedResource Remove="Services\Data\**" />
+    <None Remove="Services\Data\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\DayOfWeek.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.0-preview2.22314.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
   </ItemGroup>

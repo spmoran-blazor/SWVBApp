@@ -6,22 +6,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WVBApp.Shared.Entities
 {
-    [Table("EventRoster")]
-    [Index(nameof(MemberId), nameof(EventId), Name = "IX_EventRoster")]
-    public partial class EventRoster
+    [Index(nameof(MemberId), nameof(DayOfWeekId), Name = "IX_MemberPreferredDays", IsUnique = true)]
+    public partial class MemberPreferredDays
     {
         [Key]
         public int Id { get; set; }
         public int MemberId { get; set; }
-        public int EventId { get; set; }
+        public int DayOfWeekId { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime UpdatedDate { get; set; }
+        public DateTime UpdateDate { get; set; }
         [Required]
         [StringLength(50)]
         public string? UpdatedBy { get; set; }
 
-        [ForeignKey(nameof(MemberId))]
-        [InverseProperty("EventRosters")]
-        public virtual Member Member { get; set; }
+        //[ForeignKey(nameof(DayOfWeekId))]
+        //[InverseProperty("MemberPreferredDays")]
+        //public virtual DayOfWeek DayOfWeek { get; set; }
     }
 }

@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 	  <Content Remove="Common\SWVBLayoutComponentBase.razor" />
+	  <Content Remove="Components\PreferredPlayDays.razor" />
 	  <Content Remove="Pages\Authentication.razor" />
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
@@ -58,6 +59,7 @@
 	<ItemGroup>
 	  <Script Remove="Common\ProjectLayoutComponentBase.cs" />
 	  <Script Remove="Common\SWVBLayoutComponentBase.razor" />
+	  <Script Remove="Components\PreferredPlayDays.razor" />
 	  <Script Remove="Shared\AuthMemberSetup.razor" />
 	  <Script Remove="Shared\Messages.razor" />
 	  <Script Remove="Shared\MudDialog.razor" />
@@ -67,6 +69,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Components\PreferredPlayDays.razor" />
 	  <None Include="Shared\AuthMemberSetup.razor" />
 	  <None Include="Components\BottomAppBar.razor" />
 	  <None Include="Components\ProjectAuthComponent.razor" />
@@ -75,6 +78,7 @@
 	  <None Include="Shared\MudDialog.razor" />
 	  <None Include="Shared\RemoveExceptionDate.razor" />
 	  <None Include="Components\TopAppBar.razor" />
+	  <None Include="Components\PreferredPlayDays.razor" />
 	</ItemGroup>
 
 	<ItemGroup>

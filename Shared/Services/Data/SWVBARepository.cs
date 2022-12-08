@@ -3,14 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using System.Threading.Tasks;
 using WVBApp.Shared.Entities;
 
-namespace Api
+namespace Shared.Services.Data
 {
     public static class GetMembers
     {
@@ -35,7 +31,7 @@ namespace Api
             [Sql("[GetMemberExceptionDatesById]", CommandType = System.Data.CommandType.StoredProcedure,
                 Parameters = "@Id={Id}",
                 ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<MemberExceptionDates> memberExceptionDates)
+                IEnumerable<MemberExceptionDate> memberExceptionDates)
         {
             return new OkObjectResult(memberExceptionDates);
         }
@@ -65,9 +61,9 @@ namespace Api
             [Sql("GetMemberByEmail", CommandType = System.Data.CommandType.StoredProcedure,
                 Parameters = "@Email={email}",
                 ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<Member> members)
+                Member member)
         {
-            return new OkObjectResult(members);
+            return new OkObjectResult(member);
         }
     }
 
@@ -80,31 +76,100 @@ namespace Api
             [Sql("GetMemberPreferredDaysById", CommandType = System.Data.CommandType.StoredProcedure,
                 Parameters = "@Id={Id}",
                 ConnectionStringSetting = "SqlConnection")]
-                IEnumerable<PlayDay> playDays)
+                IEnumerable<PreferredPlayDays> playDays)
         {
             return new OkObjectResult(playDays);
         }
     }
 
+    //public static class CreateEvent
+    //{
+    //    [FunctionName("CreateEvent")]
+    //    public static IActionResult Run(
+    //        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "postevent")] HttpRequest req,
+    //        ILogger log,
+    //        [Sql("dbo.Event", ConnectionStringSetting = "SqlConnection")] out Event foo)
+    //    {
+    //        Task<string> requestBody = new StreamReader(req.Body).ReadToEndAsync();
+    //        Event newevent = JsonSerializer.Deserialize<Event>(requestBody.Result);
 
-    public static class CreateEvent
-    {
-        [FunctionName("CreateEvent")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "PostEvent")] HttpRequest req,
-            ILogger log,
-            [Sql("dbo.Event", ConnectionStringSetting = "SqlConnection")] IAsyncCollector<Event> eventscollector)
-        {
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic newEvent = JsonSerializer.Deserialize<Event>(requestBody);
+    //        foo = new Event
+    //        {
+    //            Id = Guid.NewGuid()
+    //            ,
+    //            EventDate = Convert.ToDateTime("2022-11-30T00:00:00")
+    //,
+    //            EventTime = "18:30:00"
+    //,
+    //            AreaOfPlayId = 1
+    //,
+    //            EventSchedulingCodeId = 1
+    //,
+    //            PartialGameId = 0
+    //,
+    //            ParticipantLimit = 10
+    //,
+    //            EventComment = null
+    //,
+    //            IsCancelled = false
+    //,
+    //            IsPartial = false
+    //,
+    //            UpdatedDate = Convert.ToDateTime("0001-01-01T00:00:00")
+    //,
+    //            UpdatedBy = "spmoran@hotmail.com"
 
-            newEvent.Id = Guid.NewGuid();
-            await eventscollector.AddAsync(newEvent);
-            await eventscollector.FlushAsync();
+    //        };
+    //        //newevent.Id = Guid.NewGuid();
+    //        //await eventscollector.AddAsync(newEvent);
+    //        //await eventscollector.FlushAsync();
 
-            return new OkObjectResult(newEvent);
-        }
-    }
+    //        return new CreatedResult($"/api/postevent", foo);
+    //    }
+    //}
+
+    //public static class CreateEvent
+    //{
+    //    [FunctionName("CreateEvent")]
+    //    public static async Task<IActionResult> Run(
+    //        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "createactivity")] HttpRequest req,
+    //        ILogger log,
+    //        [Sql("[dbo].[Activity]", ConnectionStringSetting = "SqlConnection")] IAsyncCollector<Event> activities)
+    //    {
+    //        string? requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+    //        Event data = JsonSerializer.Deserialize<Event>(requestBody);
+    //        //Event foo = new Event();
+    //        //{
+    //            //data.Id = Guid.NewGuid();
+    //            //foo.EventDate = Convert.ToDateTime("2022-11-30T00:00:00");
+    //            //foo.EventTime = "18:30:00";
+
+    //            //foo.AreaOfPlayId = 1;
+
+    //            //foo.EventSchedulingCodeId = 1;
+
+    //            //foo.PartialGameId = 0;
+
+    //            //foo.ParticipantLimit = 10;
+
+    //            //foo.EventComment = null;
+
+    //            //foo.IsCancelled = false;
+
+    //            //foo.IsPartial = false;
+
+    //            //data.UpdatedDate = DateTime.Now;
+
+    //            //foo.UpdatedBy = "spmoran@hotmail.com";
+
+    //        //};
+    //        //await activities.AddAsync(data);
+    //        //await activities.FlushAsync();
+    //        //List<Activity> activityList = new List<Activity> { data };
+
+    //        return new OkObjectResult(data);
+    //    }
+    //}
 
 
     public static class GetMessages

@@ -5,9 +5,9 @@
 @using System.Text.Json
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
-@inject DataAccessService dataAccess
+@inject WVBApp.Shared.Services.Data.DataAccessService data
 @inject StateAccessService stateAccess
-
+@inject IHttpClientFactory factory
 @code {
     [Parameter]
     public Member? CurrentMember { get; set; }
@@ -20,17 +20,22 @@
     public string? _userName;
     public string? _userJson;
     public bool _isAdmin;
+    private HttpClient _http;
 
     protected override async Task OnInitializedAsync()
     {   
         _state = stateAccess;
         _state.OnStateChange += StateHasChanged;
-        _data = dataAccess;
+        _http = factory.CreateClient("DataAccessHttpClient");
+        _data = data;
 
         await GetClaimsPrincipalData();
+
         await GetMemberByEmail();
+
         _state.SetMemberValue(_currentMember);
     }
+
     private async Task GetClaimsPrincipalData()
     {
         var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
@@ -68,11 +73,14 @@
 
         if (_currentMember is not null)
         {
-           _userName = $"{_currentMember.FirstName} {_currentMember.LastName}";
+            _userName = $"{_currentMember.FirstName} {_currentMember.LastName}";
             await sessionStorage.SetItemAsync("email", _currentMember.Email);
             await sessionStorage.SetItemAsync("userId", _currentMember.Id.ToString());
             await sessionStorage.SetItemAsync("currentUser", _userJson);
             await sessionStorage.SetItemAsync("userName", _userName);
         }
+
+
     }
+
 }

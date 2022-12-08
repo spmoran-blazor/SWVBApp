@@ -1,0 +1,88 @@
+﻿@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Forms;
+@using MudBlazor
+@using WVBApp.Shared.Entities;
+@using WVBApp.Shared.Services.Data;
+
+@inject DataAccessService data
+
+@*<EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
+    <DataAnnotationsValidator />
+    <MudStack>
+        @foreach (var prefday in _preferredDays)
+        {
+            <MudItem xs="12" sm="7" Class="pt-5">
+                <MudCheckBox @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" />
+            </MudItem>
+        }
+    </MudStack>
+</EditForm>
+<MudPaper Height="200px" Width="100%" Elevation="0">
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+    </MudContainer>
+</MudPaper>*@
+
+@code {
+    [Parameter]
+    public Member CurrentMember { get; set; }
+    private DataAccessService? _data;
+    List<PreferredPlayDays> _preferredDays = new List<PreferredPlayDays>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        //_state = state;
+        //_currentMember = _state.Member;
+        _data = data ?? null;
+        SetPlayDays();
+
+    }
+
+    private void HandleValidPlayDaySubmit(EditContext context)
+    {
+
+        StateHasChanged();
+    }
+
+    protected async Task SetPlayDays()
+    {
+        if (CurrentMember is not null)
+        {
+            var getData = await _data.GetMemberPreferredDaysById(CurrentMember.Id);
+            var playDays = getData.ToList() ?? null;
+            List<int> vals = new List<int>();
+
+            if (playDays is not null)
+            {
+                foreach (var mpd in playDays)
+                {
+                    vals.Add(mpd.DayOfWeekId);
+                }
+            }
+
+            if (vals.Count > 0)
+            {
+                DateTime baseDate = new DateTime(0001, 01, 02).AddDays(362);
+                for (int i = 0; i < 7; i++)
+                {
+                    PreferredPlayDays ppd = new PreferredPlayDays()
+                        {
+                            MemberId = CurrentMember.Id,
+                            DayOfWeekId = i,
+                            IsPreferred = false,
+                            Day = baseDate.AddDays(i).DayOfWeek.ToString()
+                        };
+
+                    if (vals.Contains(ppd.DayOfWeekId))
+                    {
+                        ppd.IsPreferred = true;
+                    }
+                    _preferredDays.Add(ppd);
+                }
+
+            }
+        }
+
+    }
+}
