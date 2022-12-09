@@ -1,6 +1,6 @@
 ﻿@page "/"
 @page "/{Action}"
-@attribute [Authorize]
+@*@attribute [Authorize]*@
 @using System.Security.Claims
 @using entities = WVBApp.Shared.Entities
 @using System.Runtime.Serialization
@@ -20,6 +20,7 @@
 {
     <Client.Components.TopAppBar Action="@Action" />
 }
+
 
 @if (CurrentMember is not null)
 {

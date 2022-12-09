@@ -1,4 +1,4 @@
-﻿@attribute [Authorize]
+﻿@*@attribute [Authorize]*@
 @using Microsoft.AspNetCore.Authorization;
 @using Microsoft.AspNetCore.Components.Forms;
 @using MudBlazor
@@ -7,8 +7,7 @@
 
 @inject DataAccessService data
 
-<div>Foo Bar</div>
-@*<EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
+@*<EditForm @ref="form" Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
     <DataAnnotationsValidator />
     <MudStack>
         @foreach (var prefday in _preferredDays)
@@ -25,18 +24,20 @@
     </MudContainer>
 </MudPaper>*@
 
+<h1>BAH</h1>
 @code {
-    //[Parameter]
-    //public Member CurrentMember { get; set; }
+    [Parameter]
+    public Member CurrentMember { get; set; }
     private DataAccessService? _data;
     List<PreferredPlayDays> _preferredDays = new List<PreferredPlayDays>();
+    EditForm? form;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         //_state = state;
         //_currentMember = _state.Member;
         _data = data ?? null;
-        SetPlayDays();
+        //SetPlayDays();
 
     }
 

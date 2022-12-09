@@ -1,4 +1,4 @@
-﻿@attribute [Authorize]
+﻿@*@attribute [Authorize]*@
 @*@using System.ComponentModel.DataAnnotations*@
 @using System.Net.Http
 @using System.Net.Http.Json
@@ -18,6 +18,8 @@
 @inject DataAccessService data
 @inject IDialogService DialogService
 @inject StateAccessService state
+
+
 
 <MudExpansionPanels MultiExpansion="false" Square="true" DisableBorders="false" Elevation="1" Class="pt-8">
 
@@ -73,7 +75,7 @@
         <ChildContent>
 
 
-            @*<EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
+            <EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
                 <DataAnnotationsValidator />
                 <MudStack>
                     @foreach (var prefday in _preferredDays)
@@ -83,12 +85,14 @@
                         </MudItem>
                     }
                 </MudStack>
-            </EditForm>*@
-@*            <MudPaper Height="200px" Width="100%" Elevation="0">
+            </EditForm>
+            <MudPaper Height="200px" Width="100%" Elevation="0">
                 <MudContainer MaxWidth="MaxWidth.Small">
                     <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
                 </MudContainer>
-            </MudPaper>*@
+            </MudPaper>
+
+
         </ChildContent>
     </MudExpansionPanel>
     <MudExpansionPanel HideIcon="true" Text="Member Data" Icon="@Icons.Filled.Person" Style="font-weight:bold">
@@ -144,7 +148,7 @@
     private StateAccessService? _state;
     private DataAccessService? _data;
     private entities.Member? _currentMember;
-    //List<PreferredPlayDays> _preferredDays = new List<PreferredPlayDays>();
+    List<PreferredPlayDays> _preferredDays = new List<PreferredPlayDays>();
     List<entities.MemberExceptionDate>? _memberExceptionDates;
 
     private MudTable<entities.MemberExceptionDate> mudTable;
@@ -161,7 +165,7 @@
         _currentMember = _state.Member;
         _data = data ?? null;
         GetMemberExceptionDatesById();
-        //SetPlayDays();
+        SetPlayDays();
         StateHasChanged();
 
     }
@@ -215,11 +219,11 @@
         StateHasChanged();
     }
 
-    //private void HandleValidPlayDaySubmit(EditContext context)
-    //{
-    //    success = true;
-    //    StateHasChanged();
-    //}
+    private void HandleValidPlayDaySubmit(EditContext context)
+    {
+        success = true;
+        StateHasChanged();
+    }
 
     private void HandleValidExceptionDatesSubmit(EditContext context)
     {
@@ -227,46 +231,46 @@
         StateHasChanged();
     }
 
-    //protected async Task SetPlayDays()
-    //{
-    //    if (_currentMember is not null)
-    //    {
-    //        var getData = await _data.GetMemberPreferredDaysById(_currentMember.Id);
-    //        var playDays = getData.ToList() ?? null;
-    //        List<int> vals = new List<int>();
+    protected async Task SetPlayDays()
+    {
+        if (_currentMember is not null)
+        {
+            var getData = await _data.GetMemberPreferredDaysById(_currentMember.Id);
+            var playDays = getData.ToList() ?? null;
+            List<int> vals = new List<int>();
 
-    //        if (playDays is not null)
-    //        {
-    //            foreach (var mpd in playDays)
-    //            {
-    //                vals.Add(mpd.DayOfWeekId);
-    //            }
-    //        }
+            if (playDays is not null)
+            {
+                foreach (var mpd in playDays)
+                {
+                    vals.Add(mpd.DayOfWeekId);
+                }
+            }
 
-    //        if (vals.Count > 0)
-    //        {
-    //            DateTime baseDate = new DateTime(0001, 01, 02).AddDays(362);
-    //            for (int i = 0; i < 7; i++)
-    //            {
-    //                PreferredPlayDays ppd = new PreferredPlayDays()
-    //                    {
-    //                        MemberId = _currentMember.Id,
-    //                        DayOfWeekId = i,
-    //                        IsPreferred = false,
-    //                        Day = baseDate.AddDays(i).DayOfWeek.ToString()
-    //                    };
+            if (vals.Count > 0)
+            {
+                DateTime baseDate = new DateTime(0001, 01, 02).AddDays(362);
+                for (int i = 0; i < 7; i++)
+                {
+                    PreferredPlayDays ppd = new PreferredPlayDays()
+                        {
+                            MemberId = _currentMember.Id,
+                            DayOfWeekId = i,
+                            IsPreferred = false,
+                            Day = baseDate.AddDays(i).DayOfWeek.ToString()
+                        };
 
-    //                if (vals.Contains(ppd.DayOfWeekId))
-    //                {
-    //                    ppd.IsPreferred = true;
-    //                }
-    //                _preferredDays.Add(ppd);
-    //            }
+                    if (vals.Contains(ppd.DayOfWeekId))
+                    {
+                        ppd.IsPreferred = true;
+                    }
+                    _preferredDays.Add(ppd);
+                }
 
-    //        }
-    //    }
+            }
+        }
 
-    //}
+    }
 
 
 
