@@ -7,6 +7,7 @@
 
 @inject DataAccessService data
 
+<div>Foo Bar</div>
 @*<EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
     <DataAnnotationsValidator />
     <MudStack>
@@ -25,8 +26,8 @@
 </MudPaper>*@
 
 @code {
-    [Parameter]
-    public Member CurrentMember { get; set; }
+    //[Parameter]
+    //public Member CurrentMember { get; set; }
     private DataAccessService? _data;
     List<PreferredPlayDays> _preferredDays = new List<PreferredPlayDays>();
 

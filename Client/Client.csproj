@@ -78,7 +78,6 @@
 	  <None Include="Shared\MudDialog.razor" />
 	  <None Include="Shared\RemoveExceptionDate.razor" />
 	  <None Include="Components\TopAppBar.razor" />
-	  <None Include="Components\PreferredPlayDays.razor" />
 	</ItemGroup>
 
 	<ItemGroup>

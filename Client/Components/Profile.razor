@@ -12,7 +12,7 @@
 @using System.Runtime.Serialization.Json
 @using WVBApp.Shared.Services.Data
 @using WVBApp.Shared.Services.State
-
+@using Client.Components
 @inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService data
@@ -71,7 +71,7 @@
             </div>
         </TitleContent>
         <ChildContent>
-            <PreferredPlayDays CurrentMember="@_currentMember"></PreferredPlayDays>
+
 
             @*<EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
                 <DataAnnotationsValidator />
@@ -139,8 +139,6 @@
         </ChildContent>
     </MudExpansionPanel>
 </MudExpansionPanels>
-
-
 
 @code {
     private StateAccessService? _state;
