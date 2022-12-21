@@ -1,33 +1,22 @@
 ﻿@page "/"
 @page "/{Action}"
 @*@attribute [Authorize]*@
-@using System.Security.Claims
-@using entities = WVBApp.Shared.Entities
-@using System.Runtime.Serialization
-@using System.Runtime.Serialization.Json
-@using System.Text.Json
-@using WVBApp.Shared.Services.Data
-@using WVBApp.Shared.Services.State
-@using WVBApp.Shared
-@using MudBlazor
-
 @inject DataAccessService dataAccess
 @inject StateAccessService stateAccess
 
-<Client.Components.ProjectAuthComponent CurrentMember="@CurrentMember" />
+<Client.Components.ProjectAuthComponent />
 
 @if (CurrentMember is not null)
 {
     <Client.Components.TopAppBar Action="@Action" />
 }
 
-
 @if (CurrentMember is not null)
 {
     switch (Action)
     {
         case null:
-            <Client.Components.Messages />
+            <Client.Components.NavScreen />
             break;
         case "0":
             <Client.Components.Messages />
@@ -39,10 +28,13 @@
             <Client.Components.Profile />
             break;
         case "3":
-            <Client.Components.EventCreate />
+            <Client.Components.PreferredDays />
+            break;
+        case "4":
+            <Client.Components.ExceptionDates />
             break;
         default:
-            <Client.Components.Messages />
+            <Client.Components.NavScreen />
             break;
     }
 }

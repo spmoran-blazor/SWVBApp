@@ -1,0 +1,111 @@
+﻿@inject DataAccessService data
+@inject IDialogService DialogService
+@inject StateAccessService state
+
+@if (success == true && _memberExceptionDates.Count == 0)
+{
+    <MudButton>Add Date</MudButton>
+}
+
+@*<EditForm Model="@_memberExceptionDates" OnValidSubmit="HandleValidExceptionDatesSubmit">
+    <DataAnnotationsValidator />*@
+@if (success == true && _memberExceptionDates.Count > 0)
+{
+    <MudTable Class="pt-8" @ref="@mudTable" Items="@_memberExceptionDates" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" RowClassFunc="@SelectedRowClassFunc">
+        <HeaderContent>
+            <MudTh>Begin Date</MudTh>
+            <MudTh>End Date</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="BeginDate">@context.BeginDate.ToShortDateString()</MudTd>
+            <MudTd DataLabel="End Date">@context.EndDate.ToShortDateString()</MudTd>
+            <MudTd>
+                <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large" OnClick="@((e) => DeleteExceptionDate(@context.Id))">Delete</MudButton>
+            </MudTd>
+        </RowTemplate>
+
+    </MudTable>
+    }
+@*</EditForm>*@
+<MudPaper Height="200px" Width="100%" Elevation="0">
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+    </MudContainer>
+</MudPaper>
+
+@code {
+    private MudTable<entities.MemberExceptionDate> mudTable;
+    private StateAccessService? _state;
+    private DataAccessService? _data;
+    private bool success = false;
+    private int selectedRowNumber = -1;
+    private entities.Member? _currentMember;
+    List<entities.MemberExceptionDate>? _memberExceptionDates = new List<MemberExceptionDate>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _state = state;
+        _currentMember = _state.Member;
+        _data = data ?? null;
+        await GetMemberExceptionDatesById();
+    }
+
+    private DialogOptions dialogOptions = new() { FullWidth = true };
+
+    private async Task GetMemberExceptionDatesById()
+    {
+        if (_currentMember is not null)
+        {
+            var getData = await _data.GetMemberExceptionDatesById(_currentMember.Id);
+            _memberExceptionDates = getData.ToList<entities.MemberExceptionDate>();
+            success = true;
+        }
+    }
+
+    private void HandleValidExceptionDatesSubmit(EditContext context)
+    {
+        success = true;
+        StateHasChanged();
+    }
+
+    async Task DeleteExceptionDate(int exceptionDate)
+    {
+        var parameters = new DialogParameters { ["dateId"] = exceptionDate };
+        //this.OpenDialog();
+
+        //var dialog = DialogService.Show<RemoveExceptionDate>("Delete Server", parameters);
+        //var result = await dialog.Result;
+
+        ////if (!result.Cancelled)
+        ////{
+        ////    //In a real world scenario we would reload the data from the source here since we "removed" it in the dialog already.
+        ////    Guid.TryParse(result.Data.ToString(), out Guid deletedServer);
+        ////    //Servers.RemoveAll(item => item.Id == deletedServer);
+        ////}
+    }
+
+    private void RowClickEvent(TableRowClickEventArgs<entities.MemberExceptionDate> tableRowClickEventArgs)
+    {
+        Console.Write("Row has been clicked");
+    }
+
+    private string? SelectedRowClassFunc(entities.MemberExceptionDate element, int rowNumber)
+    {
+        if (selectedRowNumber == rowNumber)
+        {
+            selectedRowNumber = -1;
+            //clickedEvents.Add("Selected Row: None");
+            return string.Empty;
+        }
+        else if (mudTable.SelectedItem != null && mudTable.SelectedItem.Equals(element))
+        {
+            selectedRowNumber = rowNumber;
+            //clickedEvents.Add($"Selected Row: {rowNumber}");
+            return "selected";
+        }
+        else
+        {
+            return string.Empty;
+        }
+    }
+}

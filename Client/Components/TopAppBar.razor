@@ -8,24 +8,30 @@
         @switch (Action)
         {
             case null:
-                <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
+                <MudText Typo="Typo.h5">Navigation Center - @_member.FirstName</MudText>
                 break;
             case "0":
                 <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
                 break;
             case "1":
-                <MudText Typo="Typo.h5">Event Center - @_member.FirstName</MudText>
+                <MudText Typo="Typo.h5">Game Center - @_member.FirstName</MudText>
                 break;
             case "2":
-                <MudText Typo="Typo.h5">Member Center - @_member.FirstName</MudText>
+                <MudText Typo="Typo.h5">Profile Center - @_member.FirstName</MudText>
                 break;
             case "3":
-                <MudText Typo="Typo.h5">Create Game</MudText>
+                <MudText Typo="Typo.h5">Availability Center  - @_member.FirstName</MudText>
+                break;
+            case "4":
+                <MudText Typo="Typo.h5">Exceptions Center  - @_member.FirstName</MudText>
                 break;
             default:
-                <MudText Typo="Typo.h5">Message Center - @_member.FirstName</MudText>
+                <MudText Typo="Typo.h5">Navigation Center - @_member.FirstName</MudText>
                 break;
         }
+        <MudSpacer />
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Filled.Home" DisableElevation="true" Href="/" />
+
     </MudAppBar>
 }
 

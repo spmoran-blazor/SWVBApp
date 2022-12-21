@@ -5,19 +5,24 @@
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+		<DebugType>portable</DebugType>
 	</PropertyGroup>
-
+	
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<DefineConstants>$(DefineConstants)TRACE;$(DefineConstants)DEBUG</DefineConstants>
+		<DebugType>portable</DebugType>
+	</PropertyGroup>
+	
 	<ItemGroup>
 	  <Content Remove="Common\SWVBLayoutComponentBase.razor" />
-	  <Content Remove="Components\PlayDays.razor" />
-	  <Content Remove="Components\PreferredDays.razor" />
 	  <Content Remove="Pages\Authentication.razor" />
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
-	  <Content Remove="Shared\AuthMemberSetup.razor" />
+	  <Content Remove="Shared\ExceptionDates.razor" />
 	  <Content Remove="Shared\LoginDisplay.razor" />
 	  <Content Remove="Shared\Messages.razor" />
 	  <Content Remove="Shared\MudDialog.razor" />
+	  <Content Remove="Shared\NavScreen.razor" />
 	  <Content Remove="Shared\ProjectAuthComponent.razor" />
 	  <Content Remove="Shared\RemoveExceptionDate.razor" />
 	  <Content Remove="Shared\TopAppBar.razor" />
@@ -26,15 +31,10 @@
 	<ItemGroup>
 		<PackageReference Include="AnthonyChu.AzureStaticWebApps.Blazor.Authentication" Version="0.0.2-preview" />
 		<PackageReference Include="Blazored.SessionStorage" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
-		<PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
-		<PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.12" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.1" />
 		<PackageReference Include="MudBlazor" Version="6.1.2" />
 	</ItemGroup>
 
@@ -60,26 +60,25 @@
 	<ItemGroup>
 	  <Script Remove="Common\ProjectLayoutComponentBase.cs" />
 	  <Script Remove="Common\SWVBLayoutComponentBase.razor" />
-	  <Script Remove="Components\PlayDays.razor" />
 	  <Script Remove="Components\PreferredDays.razor" />
-	  <Script Remove="Shared\AuthMemberSetup.razor" />
+	  <Script Remove="Shared\ExceptionDates.razor" />
 	  <Script Remove="Shared\Messages.razor" />
 	  <Script Remove="Shared\MudDialog.razor" />
+	  <Script Remove="Shared\NavScreen.razor" />
 	  <Script Remove="Shared\ProjectAuthComponent.razor" />
 	  <Script Remove="Shared\RemoveExceptionDate.razor" />
 	  <Script Remove="Shared\TopAppBar.razor" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Include="Components\PlayDays.razor" />
 	  <None Include="Components\PreferredDays.razor" />
-	  <None Include="Shared\AuthMemberSetup.razor" />
 	  <None Include="Components\BottomAppBar.razor" />
 	  <None Include="Components\ProjectAuthComponent.razor" />
 	  <None Include="Components\Messages.razor" />
-	  <None Include="Shared\SWVBLayoutComponentBase.razor" />
-	  <None Include="Shared\MudDialog.razor" />
-	  <None Include="Shared\RemoveExceptionDate.razor" />
+	  <None Include="Components\NavScreen.razor" />
+	  <None Include="Components\ExceptionDates.razor" />
+	  <None Include="Components\MudDialog.razor" />
+	  <None Include="Components\RemoveExceptionDate.razor" />
 	  <None Include="Components\TopAppBar.razor" />
 	</ItemGroup>
 

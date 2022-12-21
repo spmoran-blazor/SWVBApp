@@ -1,279 +1,63 @@
 ﻿@*@attribute [Authorize]*@
-@*@using System.ComponentModel.DataAnnotations*@
-@using System.Net.Http
-@using System.Net.Http.Json
-@using System.Threading.Tasks
-@using Microsoft.AspNetCore.Http
-@using System.Security.Claims
-@using System.Text.Json
-@using System.Text
-@using entities = WVBApp.Shared.Entities
-@using System.Runtime.Serialization
-@using System.Runtime.Serialization.Json
-@using WVBApp.Shared.Services.Data
-@using WVBApp.Shared.Services.State
-@using Client.Components
-@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService data
 @inject IDialogService DialogService
 @inject StateAccessService state
 
+<EditForm Model="@_currentMember" OnValidSubmit="HandleValidMemberSubmit" class="pt-5">
+    <DataAnnotationsValidator />
+    <MudGrid>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudTextField @bind-Value="@_currentMember.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudTextField @bind-Value="@_currentMember.LastName" Label="Last Name" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudTextField @bind-Value="@_currentMember.MobileNumber" Label="Mobile Number" Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudTextField @bind-Value="@_currentMember.Email" Label="Email" Disabled Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudTextField @bind-Value="@_currentMember.Gender" Label="Gender" Disabled Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudTextField @bind-Value="@_currentMember.PlayLevel" Label="Level" Disabled Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudTextField @bind-Value="@_currentMember.PlayScore" Label="Player Score" Disabled Variant="Variant.Text"></MudTextField>
+        </MudItem>
+        <MudItem xs="12" sm="7" Class="pt-5">
+            <MudTextField @bind-Value="@_currentMember.IsAdmin" Label="Admin User" Disabled Variant="Variant.Text"></MudTextField>
+        </MudItem>
+    </MudGrid>
+</EditForm>
+<MudPaper Height="200px" Width="100%" Elevation="0">
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+    </MudContainer>
+</MudPaper>
 
-
-<MudExpansionPanels MultiExpansion="false" Square="true" DisableBorders="false" Elevation="1" Class="pt-8">
-
-    <MudExpansionPanel HideIcon="true">
-        <TitleContent>
-            <div class="d-flex">
-                <MudText><strong>Exception Dates</strong></MudText>
-                <MudIcon Icon="@Icons.Filled.EditCalendar" class="ml-auto" Color="Color.Primary" Size="Size.Large"></MudIcon>
-
-            </div>
-        </TitleContent>
-        <ChildContent>
-            <MudTable Items="@_memberExceptionDates" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" @ref="mudTable" RowClassFunc="@SelectedRowClassFunc">
-                <HeaderContent>
-                    <MudTh>Begin Date</MudTh>
-                    <MudTh>End Date</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="BeginDate">@context.BeginDate.ToShortDateString()</MudTd>
-                    <MudTd DataLabel="End Date">@context.EndDate.ToShortDateString()</MudTd>
-                    <MudTd>
-                        <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large" OnClick="@((e) => DeleteExceptionDate(@context.Id))">Delete</MudButton>
-                    </MudTd>
-                </RowTemplate>
-
-            </MudTable>
-
-            <MudDialog @bind-IsVisible="visible" Options="dialogOptions">
-                <TitleContent>
-                    <MudText Typo="Typo.h6">
-                        <MudIcon Icon="@Icons.Material.Filled.Edit" Class="mr-3" /> Edit Dates <text></text>
-                    </MudText>
-                </TitleContent>
-                <DialogContent>
-                    <MudDateRangePicker></MudDateRangePicker>
-                </DialogContent>
-                <DialogActions>
-                    <MudButton Variant="Variant.Outlined" Color="Color.Primary" OnClick="Submit" Class="px-10">Close</MudButton>
-                </DialogActions>
-            </MudDialog>
-            @*                    <RemoveExceptionDate exceptionDates=@_memberExceptionDates>Foof</RemoveExceptionDate>*@
-        </ChildContent>
-    </MudExpansionPanel>
-
-    <MudExpansionPanel HideIcon="true" Text="Preferred Play Days" Style="font-weight:bold" Size="Size.Large">
-        <TitleContent>
-            <div class="d-flex">
-                <MudText><strong>Preferred Play Days</strong></MudText>
-                <MudIcon Icon="@Icons.Filled.Today" class="ml-auto" Color="Color.Primary" Size="Size.Large"></MudIcon>
-
-            </div>
-        </TitleContent>
-        <ChildContent>
-
-
-            <EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
-                <DataAnnotationsValidator />
-                <MudStack>
-                    @foreach (var prefday in _preferredDays)
-                    {
-                        <MudItem xs="12" sm="7" Class="pt-5">
-                            <MudCheckBox @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" />
-                        </MudItem>
-                    }
-                </MudStack>
-            </EditForm>
-            <MudPaper Height="200px" Width="100%" Elevation="0">
-                <MudContainer MaxWidth="MaxWidth.Small">
-                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
-                </MudContainer>
-            </MudPaper>
-
-
-        </ChildContent>
-    </MudExpansionPanel>
-    <MudExpansionPanel HideIcon="true" Text="Member Data" Icon="@Icons.Filled.Person" Style="font-weight:bold">
-        <TitleContent>
-            <div class="d-flex">
-                <MudText><strong>Member Data</strong></MudText>
-                <MudIcon Icon="@Icons.Filled.Person" class="ml-auto" Color="Color.Primary" Size="Size.Large" Style="font-weight:bold"></MudIcon>
-
-            </div>
-        </TitleContent>
-        <ChildContent>
-
-
-            <EditForm Model="@_currentMember" OnValidSubmit="HandleValidMemberSubmit">
-                <DataAnnotationsValidator />
-                <MudGrid>
-                    <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudTextField @bind-Value="@_currentMember.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudTextField @bind-Value="@_currentMember.LastName" Label="Last Name" Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudTextField @bind-Value="@_currentMember.Email" Label="Email" Disabled Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudTextField @bind-Value="@_currentMember.MobileNumber" Label="Mobile Number" Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudTextField @bind-Value="@_currentMember.Gender" Label="Gender" Disabled Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudTextField @bind-Value="@_currentMember.PlayLevel" Label="Level" Disabled Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudTextField @bind-Value="@_currentMember.PlayScore" Label="Player Score" Disabled Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                    <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudTextField @bind-Value="@_currentMember.IsAdmin" Label="Admin User" Disabled Variant="Variant.Text"></MudTextField>
-                    </MudItem>
-                </MudGrid>
-            </EditForm>
-            <MudPaper Height="200px" Width="100%" Elevation="0">
-                <MudContainer MaxWidth="MaxWidth.Small">
-                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
-                </MudContainer>
-            </MudPaper>
-        </ChildContent>
-    </MudExpansionPanel>
-</MudExpansionPanels>
 
 @code {
     private StateAccessService? _state;
     private DataAccessService? _data;
     private entities.Member? _currentMember;
-    List<PreferredPlayDays> _preferredDays = new List<PreferredPlayDays>();
-    List<entities.MemberExceptionDate>? _memberExceptionDates;
-
-    private MudTable<entities.MemberExceptionDate> mudTable;
-    private int selectedRowNumber = -1;
-    bool success;
-    private bool visible;
-    private int rating;
-    private void OpenDialog() => visible = true;
-    void Submit() => visible = false;
+    private bool _success;
 
     protected override async Task OnInitializedAsync()
     {
         _state = state;
         _currentMember = _state.Member;
         _data = data ?? null;
-        GetMemberExceptionDatesById();
-        SetPlayDays();
-        StateHasChanged();
-
-    }
-
-    private DialogOptions dialogOptions = new() { FullWidth = true };
-
-    async Task DeleteExceptionDate(int exceptionDate)
-    {
-        var parameters = new DialogParameters { ["dateId"] = exceptionDate };
-        //this.OpenDialog();
-
-        //var dialog = DialogService.Show<RemoveExceptionDate>("Delete Server", parameters);
-        //var result = await dialog.Result;
-
-        ////if (!result.Cancelled)
-        ////{
-        ////    //In a real world scenario we would reload the data from the source here since we "removed" it in the dialog already.
-        ////    Guid.TryParse(result.Data.ToString(), out Guid deletedServer);
-        ////    //Servers.RemoveAll(item => item.Id == deletedServer);
-        ////}
-    }
-
-    private void RowClickEvent(TableRowClickEventArgs<entities.MemberExceptionDate> tableRowClickEventArgs)
-    {
-        Console.Write("Row has been clicked");
-    }
-
-    private string? SelectedRowClassFunc(entities.MemberExceptionDate element, int rowNumber)
-    {
-        if (selectedRowNumber == rowNumber)
-        {
-            selectedRowNumber = -1;
-            //clickedEvents.Add("Selected Row: None");
-            return string.Empty;
-        }
-        else if (mudTable.SelectedItem != null && mudTable.SelectedItem.Equals(element))
-        {
-            selectedRowNumber = rowNumber;
-            //clickedEvents.Add($"Selected Row: {rowNumber}");
-            return "selected";
-        }
-        else
-        {
-            return string.Empty;
-        }
     }
 
     private void HandleValidMemberSubmit(EditContext context)
     {
-        success = true;
+        _success = true;
         StateHasChanged();
     }
-
-    private void HandleValidPlayDaySubmit(EditContext context)
-    {
-        success = true;
-        StateHasChanged();
-    }
-
-    private void HandleValidExceptionDatesSubmit(EditContext context)
-    {
-        success = true;
-        StateHasChanged();
-    }
-
-    protected async Task SetPlayDays()
-    {
-        if (_currentMember is not null)
-        {
-            var getData = await _data.GetMemberPreferredDaysById(_currentMember.Id);
-            var playDays = getData.ToList() ?? null;
-            List<int> vals = new List<int>();
-
-            if (playDays is not null)
-            {
-                foreach (var mpd in playDays)
-                {
-                    vals.Add(mpd.DayOfWeekId);
-                }
-            }
-
-            if (vals.Count > 0)
-            {
-                DateTime baseDate = new DateTime(0001, 01, 02).AddDays(362);
-                for (int i = 0; i < 7; i++)
-                {
-                    PreferredPlayDays ppd = new PreferredPlayDays()
-                        {
-                            MemberId = _currentMember.Id,
-                            DayOfWeekId = i,
-                            IsPreferred = false,
-                            Day = baseDate.AddDays(i).DayOfWeek.ToString()
-                        };
-
-                    if (vals.Contains(ppd.DayOfWeekId))
-                    {
-                        ppd.IsPreferred = true;
-                    }
-                    _preferredDays.Add(ppd);
-                }
-
-            }
-        }
-
-    }
-
-
-
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -283,25 +67,8 @@
             {
                 _currentMember = _state.Member;
             }
-
-
-        }
-        else
-        {
-
         }
     }
 
-    private async Task GetMemberExceptionDatesById()
-    {
-        if (_currentMember is not null)
-        {
-            var getData = await _data.GetMemberExceptionDatesById(_currentMember.Id);
-            _memberExceptionDates = getData.ToList<entities.MemberExceptionDate>();
-        }
-
-
-
-    }
 
 }
