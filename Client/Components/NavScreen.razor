@@ -1,4 +1,6 @@
 ﻿@attribute [Authorize]
+@inject StateAccessService state
+
 <MudStack AlignItems="AlignItems.Start" Class="pt-12">
     <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.Message" Href="/0" Size="Size.Large">Messages</MudButton>
     <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.SportsVolleyball" Href="/1" Size="Size.Large">Available Games</MudButton>
@@ -8,7 +10,23 @@
     <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Material.Filled.Logout" Href="/.auth/logout" Size="Size.Large">Logout</MudButton>
 </MudStack>
 
-
+@if (_admin is not null && _admin == true)
+{
+    <MudStack AlignItems="AlignItems.Start" Class="pt-3">
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.Create" Href="/10" Size="Size.Large">Create Game</MudButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.EditAttributes" Href="/11" Size="Size.Large">Edit Game</MudButton>
+    </MudStack>
+}
 @code {
+    private StateAccessService _state;
+    private bool? _admin = null;
 
+    protected override async Task OnInitializedAsync()
+    {
+        _state = state;
+        if (_state.Member.IsAdmin)
+        {
+            _admin = true;
+        }
+    }
 }

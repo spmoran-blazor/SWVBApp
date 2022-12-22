@@ -91,9 +91,9 @@ namespace WVBApp.Shared.Services.Data
         {
             string retval = string.Empty;
             retval = "https://swvbsa.azurewebsites.net/";
-//#if DEBUG
-//            retval = "http://localhost:7289/";
-//#endif
+#if DEBUG
+            retval = "http://localhost:7289/";
+#endif
             return retval;
         }
     }
