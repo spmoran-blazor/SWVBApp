@@ -3,6 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Api.Data;
 using System;
+using Microsoft.IdentityModel.Protocols;
+using Microsoft.Extensions.Configuration;
+
 [assembly: FunctionsStartup(typeof(Api.StartUp))]
 
 namespace Api
@@ -11,7 +14,7 @@ namespace Api
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            string connectionString = Environment.GetEnvironmentVariable("SqlConnection");
+            string connectionString = Environment.GetEnvironmentVariable("ConnectionStrings:SqlConnection");
             builder.Services.AddDbContext<SWVBADbContext>(
               options => SqlServerDbContextOptionsExtensions.UseSqlServer(options, connectionString));
         }

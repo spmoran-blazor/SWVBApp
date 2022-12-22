@@ -15,7 +15,6 @@ namespace Api.Data
         }
 
         public virtual DbSet<entities.AreaOfPlay> AreaOfPlay { get; set; }
-        //public virtual DbSet<entities.DayOfWeek> DayOfWeek { get; set; }
         public virtual DbSet<entities.Event> Event { get; set; }
         public virtual DbSet<entities.EventRoster> EventRoster { get; set; }
         public virtual DbSet<entities.EventSchedulingCode> EventSchedulingCode { get; set; }
@@ -35,11 +34,6 @@ namespace Api.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            ////modelBuilder.Entity<entities.DayOfWeek>(entity =>
-            ////{
-            ////    entity.Property(e => e.Day).IsFixedLength();
-            ////});
-
             modelBuilder.Entity<entities.Event>(entity =>
             {
                 entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
