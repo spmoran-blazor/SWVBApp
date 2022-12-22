@@ -1,4 +1,5 @@
-﻿@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
+﻿@attribute [Authorize]
+@inject Blazored.SessionStorage.ISessionStorageService sessionStorage
 @inject Microsoft.AspNetCore.Components.Authorization.AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService data
 @inject StateAccessService state

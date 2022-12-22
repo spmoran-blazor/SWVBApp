@@ -14,7 +14,6 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
-	  <Content Remove="Common\SWVBLayoutComponentBase.razor" />
 	  <Content Remove="Pages\Authentication.razor" />
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
@@ -54,12 +53,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Common\ProjectLayoutComponentBase.cs" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Script Remove="Common\ProjectLayoutComponentBase.cs" />
-	  <Script Remove="Common\SWVBLayoutComponentBase.razor" />
 	  <Script Remove="Components\PreferredDays.razor" />
 	  <Script Remove="Shared\ExceptionDates.razor" />
 	  <Script Remove="Shared\Messages.razor" />
@@ -83,7 +76,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Common\" />
 	  <Folder Include="Services\" />
 	</ItemGroup>
 	
