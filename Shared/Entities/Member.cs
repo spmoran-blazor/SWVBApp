@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -9,26 +10,25 @@ namespace WVBApp.Shared.Entities
     [Table("Member")]
     public partial class Member
     {
-        public Member()
-        {
-            EventRosters = new HashSet<EventRoster>();
-            MemberExceptionDates = new HashSet<MemberExceptionDate>();
-        }
+        //public Member()
+        //{
+        //    EventRosters = new HashSet<EventRoster>();
+        //    MemberExceptionDates = new HashSet<MemberExceptionDate>();
+        //}
 
         [Key]
         public int Id { get; set; }
         [StringLength(40)]
         public string? AzureId { get; set; }
-        [Required]
+        [Required(ErrorMessage = "First name required.")]
         [StringLength(50)]
         public string? FirstName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Last name required.")]
         [StringLength(50)]
         public string? LastName { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Mobile number reuired.")]
         [StringLength(20)]
         public string? MobileNumber { get; set; }
-        [Required]
         [StringLength(50)]
         [Unicode(false)]
         public string? Email { get; set; }
@@ -44,9 +44,9 @@ namespace WVBApp.Shared.Entities
         [StringLength(50)]
         public string? UpdatedBy { get; set; }
 
-        [InverseProperty(nameof(EventRoster.Member))]
-        public virtual ICollection<EventRoster> EventRosters { get; set; }
-        [InverseProperty(nameof(MemberExceptionDate.Member))]
-        public virtual ICollection<MemberExceptionDate> MemberExceptionDates { get; set; }
+        //[InverseProperty(nameof(EventRoster.Member))]
+        //public virtual ICollection<EventRoster> EventRosters { get; set; }
+        //[InverseProperty(nameof(MemberExceptionDate.Member))]
+        //public virtual ICollection<MemberExceptionDate> MemberExceptionDates { get; set; }
     }
 }

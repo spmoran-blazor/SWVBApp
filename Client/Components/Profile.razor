@@ -8,13 +8,20 @@
     <DataAnnotationsValidator />
     <MudGrid>
         <MudItem xs="12" sm="7" Class="pt-5">
-            <MudTextField @bind-Value="@_currentMember.FirstName" Label="First Name" Variant="Variant.Text"></MudTextField>
+            <MudTextField @bind-Value="@_currentMember.FirstName" Label="First Name" Variant="Variant.Text" For="@(() => @_currentMember.FirstName)" Immediate=true @onclick="ClearSuccess"></MudTextField>
         </MudItem>
         <MudItem xs="12" sm="7" Class="pt-5">
-            <MudTextField @bind-Value="@_currentMember.LastName" Label="Last Name" Variant="Variant.Text"></MudTextField>
+            <MudTextField @bind-Value="@_currentMember.LastName" Label="Last Name" Variant="Variant.Text" For="@(() => @_currentMember.LastName)" Immediate=true @onclick="ClearSuccess"></MudTextField>
         </MudItem>
         <MudItem xs="12" sm="7" Class="pt-5">
-            <MudTextField @bind-Value="@_currentMember.MobileNumber" Label="Mobile Number" Variant="Variant.Text"></MudTextField>
+            <MudTextField @bind-Value="@_currentMember.MobileNumber" Label="Mobile Number" Variant="Variant.Text" For="@(() => @_currentMember.MobileNumber)" Immediate=true @onclick="ClearSuccess"></MudTextField>
+        </MudItem>
+                <MudItem xs="12" sm="7" Class="pt-5">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+@if (_success)
+            {
+                <MudChip class="pl-5 ml-5" Color="Color.Success">Success</MudChip>
+            }
         </MudItem>
         <MudItem xs="12" sm="7" Class="pt-5">
             <MudTextField @bind-Value="@_currentMember.Email" Label="Email" Disabled Variant="Variant.Text"></MudTextField>
@@ -32,8 +39,9 @@
             <MudTextField @bind-Value="@_currentMember.IsAdmin" Label="Admin User" Disabled Variant="Variant.Text"></MudTextField>
         </MudItem>
     </MudGrid>
+
 </EditForm>
-<MudPaper Height="200px" Width="100%" Elevation="0">
+<MudPaper Height="100px" Width="100%" Elevation="0">
     <MudContainer MaxWidth="MaxWidth.Small">
         <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
     </MudContainer>
@@ -53,8 +61,15 @@
         _data = data ?? null;
     }
 
-    private void HandleValidMemberSubmit(EditContext context)
+    private async Task ClearSuccess()
     {
+        _success = false;
+        StateHasChanged();
+    }
+    private async Task HandleValidMemberSubmit(EditContext context)
+    {
+        _currentMember.UpdatedBy = _currentMember.Email;
+        _currentMember = await _data.SaveMember(_currentMember);
         _success = true;
         StateHasChanged();
     }

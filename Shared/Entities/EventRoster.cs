@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace WVBApp.Shared.Entities
 {
     [Table("EventRoster")]
-    [Index(nameof(MemberId), nameof(EventId), Name = "IX_EventRoster")]
+    //[Index(nameof(MemberId), nameof(EventId), Name = "IX_EventRoster")]
     public partial class EventRoster
     {
         [Key]
@@ -20,8 +20,8 @@ namespace WVBApp.Shared.Entities
         [StringLength(50)]
         public string? UpdatedBy { get; set; }
 
-        [ForeignKey(nameof(MemberId))]
-        [InverseProperty("EventRosters")]
-        public virtual Member Member { get; set; }
+        //[ForeignKey(nameof(MemberId))]
+        //[InverseProperty("EventRosters")]
+        //public virtual Member Member { get; set; }
     }
 }

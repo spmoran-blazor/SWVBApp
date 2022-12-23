@@ -1,11 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Net.Http.Json;
+using System.Text.Json;
 using WVBApp.Shared.Entities;
 
 namespace WVBApp.Shared.Services.Data
 {
-    public class DataAccessService
+    public partial class DataAccessService
     {
         HttpClient _http;
         private string? _baseUrl;
@@ -58,6 +59,14 @@ namespace WVBApp.Shared.Services.Data
             return memberPreferredDays;
         }
 
+        public async Task<Member?> SaveMember(Member member)
+        {
+            JsonContent memberString = JsonContent.Create<Member>(member);
+            var response = await _http.PostAsync($"{_baseUrl}api/savemember", memberString);
+            //memberPreferredDays = await response.Content.ReadFromJsonAsync<IEnumerable<Entities.MemberPreferredDays>>() ?? null;
+            var retval = await response.Content.ReadFromJsonAsync<Member>();
+            return retval;
+        }
         #endregion
 
         #region "EventData"

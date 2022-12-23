@@ -4,6 +4,7 @@
 
 @if (_preferredDays.Count > 0)
 {
+
     <EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
         <DataAnnotationsValidator />
         <MudStack>
@@ -13,8 +14,12 @@
                     <MudCheckBox @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" />
                 </MudItem>
             }
+            <MudItem xs="12" sm="7" Class="pt-2">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+            </MudItem>
         </MudStack>
     </EditForm>
+
 }
 <MudPaper Height="200px" Width="100%" Elevation="0">
     <MudContainer MaxWidth="MaxWidth.Small">

@@ -53,11 +53,11 @@ namespace Api.Data
 
             modelBuilder.Entity<entities.EventRoster>(entity =>
             {
-                entity.HasOne(d => d.Member)
-                    .WithMany(p => p.EventRosters)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_EventRoster_Member");
+                //entity.HasOne(d => d.Member)
+                    //.WithMany(p => p.EventRosters)
+                    //.HasForeignKey(d => d.MemberId)
+                    //.OnDelete(DeleteBehavior.ClientSetNull)
+                    //.HasConstraintName("FK_EventRoster_Member");
             });
 
             modelBuilder.Entity<entities.EventSchedulingCode>(entity =>
@@ -80,11 +80,11 @@ namespace Api.Data
             {
                 entity.Property(e => e.UpdatedDate).HasDefaultValueSql("(getdate())");
 
-                entity.HasOne(d => d.Member)
-                    .WithMany(p => p.MemberExceptionDates)
-                    .HasForeignKey(d => d.MemberId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_MemberExceptionDates_Member");
+                //entity.HasOne(d => d.Member);
+                    //.WithMany(p => p.MemberExceptionDates)
+                    //.HasForeignKey(d => d.MemberId)
+                    //.OnDelete(DeleteBehavior.ClientSetNull)
+                    //.HasConstraintName("FK_MemberExceptionDates_Member");
             });
 
             modelBuilder.Entity<entities.MemberPreferredDays>(entity =>

@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WVBApp.Shared.Entities
 {
-    [Index(nameof(BeginDate), Name = "IX_MemberExceptionDates_BeginDate")]
-    [Index(nameof(MemberId), nameof(BeginDate), nameof(EndDate), Name = "IX_MemberExceptionDates_Composite")]
-    [Index(nameof(EndDate), Name = "IX_MemberExceptionDates_EndDate")]
+    //[Index(nameof(BeginDate), Name = "IX_MemberExceptionDates_BeginDate")]
+    //[Index(nameof(MemberId), nameof(BeginDate), nameof(EndDate), Name = "IX_MemberExceptionDates_Composite")]
+    //[Index(nameof(EndDate), Name = "IX_MemberExceptionDates_EndDate")]
     public partial class MemberExceptionDate
     {
         [Key]
@@ -22,8 +22,8 @@ namespace WVBApp.Shared.Entities
         [StringLength(50)]
         public string? UpdatedBy { get; set; }
 
-        [ForeignKey(nameof(MemberId))]
-        [InverseProperty("MemberExceptionDates")]
-        public virtual Member Member { get; set; }
+        //[ForeignKey(nameof(MemberId))]
+        //[InverseProperty("MemberExceptionDates")]
+        //public virtual Member Member { get; set; }
     }
 }
