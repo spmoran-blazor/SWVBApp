@@ -11,21 +11,25 @@
     <DataAnnotationsValidator />*@
 @if (success == true && _memberExceptionDates.Count > 0)
 {
-    <MudTable Class="pt-8" @ref="@mudTable" Items="@_memberExceptionDates" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" RowClassFunc="@SelectedRowClassFunc">
-        <HeaderContent>
-            <MudTh>Begin Date</MudTh>
-            <MudTh>End Date</MudTh>
-        </HeaderContent>
-        <RowTemplate>
-            <MudTd DataLabel="BeginDate">@context.BeginDate.ToShortDateString()</MudTd>
-            <MudTd DataLabel="End Date">@context.EndDate.ToShortDateString()</MudTd>
-            <MudTd>
-                <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large" OnClick="@((e) => DeleteExceptionDate(@context.Id))">Delete</MudButton>
-            </MudTd>
-        </RowTemplate>
+    <MudPaper Height="400px" Width="100%" Elevation="0">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <MudTable Class="pt-8" @ref="@mudTable" Items="@_memberExceptionDates" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" RowClassFunc="@SelectedRowClassFunc">
+                <HeaderContent>
+                    <MudTh>Begin Date</MudTh>
+                    <MudTh>End Date</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="BeginDate">@context.BeginDate.ToShortDateString()</MudTd>
+                    <MudTd DataLabel="End Date">@context.EndDate.ToShortDateString()</MudTd>
+                    <MudTd>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large" OnClick="@((e) => DeleteExceptionDate(@context.Id))">Delete</MudButton>
+                    </MudTd>
+                </RowTemplate>
 
-    </MudTable>
-    }
+            </MudTable>
+        </MudContainer>
+    </MudPaper>
+}
 @*</EditForm>*@
 <MudPaper Height="200px" Width="100%" Elevation="0">
     <MudContainer MaxWidth="MaxWidth.Small">

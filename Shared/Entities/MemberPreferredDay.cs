@@ -18,9 +18,5 @@ namespace WVBApp.Shared.Entities
         [Required]
         [StringLength(50)]
         public string? UpdatedBy { get; set; }
-
-        //[ForeignKey(nameof(DayOfWeekId))]
-        //[InverseProperty("MemberPreferredDays")]
-        //public virtual DayOfWeek DayOfWeek { get; set; }
     }
 }

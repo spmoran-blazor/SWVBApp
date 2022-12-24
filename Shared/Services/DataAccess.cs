@@ -2,6 +2,7 @@
 using System.Data;
 using System.Net.Http.Json;
 using System.Text.Json;
+using WVBApp.Shared.DTOs;
 using WVBApp.Shared.Entities;
 
 namespace WVBApp.Shared.Services.Data
@@ -65,6 +66,14 @@ namespace WVBApp.Shared.Services.Data
             var response = await _http.PostAsync($"{_baseUrl}api/savemember", memberString);
             //memberPreferredDays = await response.Content.ReadFromJsonAsync<IEnumerable<Entities.MemberPreferredDays>>() ?? null;
             var retval = await response.Content.ReadFromJsonAsync<Member>();
+            return retval;
+        }
+
+        public async Task<List<MemberPreferredDays>> SavePreferredDays(PreferredDaysPackage days)
+        {
+            JsonContent incoming = JsonContent.Create<PreferredDaysPackage>(days);
+            var response = await _http.PostAsync($"{_baseUrl}api/savepreferreddays", incoming);
+            var retval = await response.Content.ReadFromJsonAsync<List<MemberPreferredDays>>();
             return retval;
         }
         #endregion

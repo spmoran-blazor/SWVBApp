@@ -1,29 +1,15 @@
 ﻿@attribute [Authorize]
 @inject StateAccessService stateAccess
 
-<MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1" Dense="true">
+<MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1" Dense="true" >
     @if (_state is not null)
     {
         if (_state.Member is not null)
         {
-@*            @if (_state.Member.IsAdmin == true)
-            {
-                <MudMenu Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" Size="Size.Large">
-                    <MudMenuItem Href="/3" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.Create">Create Game</MudMenuItem>
-                    <MudMenuItem Href="/4" Match="NavLinkMatch.Prefix" Icon="@Icons.Filled.EditNote">Edit Game</MudMenuItem>
-                </MudMenu>
-                <MudSpacer />
-            }*@
+            <MudItem>@_state.Member.FirstName  @_state.Member.LastName</MudItem>
         }
     }
 
-@*    <MudIconButton Icon="@Icons.Filled.Message" Color="Color.Inherit" Edge="Edge.End" Href="/0" Size="Size.Large" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Filled.EditCalendar" Color="Color.Inherit" Edge="Edge.End" Href="/1" Size="Size.Large" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Material.Filled.PermIdentity" Color="Color.Inherit" Edge="Edge.End" Href="/2" Size="Size.Large" />
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" Edge="Edge.End" Href="/.auth/logout" Size="Size.Large" />*@
 </MudAppBar>
 
 @code {

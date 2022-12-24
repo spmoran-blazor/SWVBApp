@@ -2,23 +2,32 @@
 @inject DataAccessService data
 @inject StateAccessService state
 
-@if (_preferredDays.Count > 0)
+@if (_preferredDaysDisplay.Count > 0)
 {
 
-    <EditForm Model="@_preferredDays" OnValidSubmit="HandleValidPlayDaySubmit">
-        <DataAnnotationsValidator />
-        <MudStack>
-            @foreach (var prefday in _preferredDays)
-            {
-                <MudItem xs="12" sm="7" Class="pt-6">
-                    <MudCheckBox @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" />
-                </MudItem>
-            }
-            <MudItem xs="12" sm="7" Class="pt-2">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
-            </MudItem>
-        </MudStack>
-    </EditForm>
+    <MudPaper Height="400px" Width="100%" Elevation="0">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <EditForm Model="@_preferredDaysDisplay" OnValidSubmit="HandleValidPlayDaySubmit">
+                <DataAnnotationsValidator />
+                <MudStack Class="pt-6">
+                    @foreach (var prefday in _preferredDaysDisplay)
+                    {
+                        <MudItem xs="12" sm="7">
+                            <MudSwitch @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
+                        </MudItem>
+                    }
+                    <MudItem xs="12" sm="7" Class="pt-2">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+                        @if (@_success)
+                        {
+                            <MudChip class="pl-5 ml-5" Color="Color.Success">Success</MudChip>
+                        }
+                    </MudItem>
+                </MudStack>
+            </EditForm>
+        </MudContainer>
+    </MudPaper>
+ 
 
 }
 <MudPaper Height="200px" Width="100%" Elevation="0">
@@ -31,32 +40,68 @@
     private StateAccessService? _state;
     private DataAccessService? _data;
     private entities.Member? _currentMember;
-    List<PreferredPlayDays> _preferredDays = new List<PreferredPlayDays>();
+    private bool _success = false;
+    List<PreferredPlayDays> _preferredDaysDisplay = new List<PreferredPlayDays>();
+    List<MemberPreferredDays> _currentPlayDays = new List<MemberPreferredDays>();
 
     protected override async Task OnInitializedAsync()
     {
         _state = state;
         _currentMember = _state.Member;
         _data = data ?? null;
-        await SetPlayDays();
+        await GetCurrentPlayDays();
+        await ShowPlayDays();
     }
 
-    private void HandleValidPlayDaySubmit(EditContext context)
+    private async Task HandleValidPlayDaySubmit(EditContext context)
     {
+        WVBApp.Shared.DTOs.PreferredDaysPackage preferredDaysPackage = new PreferredDaysPackage();
+        preferredDaysPackage.DeleteDays = _currentPlayDays;
+
+        List<MemberPreferredDays> mpds = new List<MemberPreferredDays>();
+        @foreach (var prefday in _preferredDaysDisplay)
+        {
+            if (prefday.IsPreferred == true)
+            {
+                MemberPreferredDays mpd = new MemberPreferredDays();
+                mpd.UpdatedBy = _state.Member.Email;
+                mpd.DayOfWeekId = prefday.DayOfWeekId;
+                mpd.MemberId = prefday.MemberId;
+                mpd.Id = prefday.Id;
+
+                mpds.Add(mpd);
+            }
+        }
+
+        preferredDaysPackage.AddDays = mpds;
+        //_currentMember.UpdatedBy = _currentMember.Email;
+        _currentPlayDays = await _data.SavePreferredDays(preferredDaysPackage);
+        _success = true;
+        StateHasChanged();
+
+    }
+
+    private async Task ClearSuccess()
+    {
+        _success = false;
         StateHasChanged();
     }
 
-    protected async Task SetPlayDays()
+    protected async Task GetCurrentPlayDays()
+    {
+        var getData = await _data.GetMemberPreferredDaysById(_currentMember.Id);
+        _currentPlayDays = getData.ToList() ?? null;
+    }
+
+    protected async Task ShowPlayDays()
     {
         if (_currentMember is not null)
         {
-            var getData = await _data.GetMemberPreferredDaysById(_currentMember.Id);
-            var playDays = getData.ToList() ?? null;
             List<int> vals = new List<int>();
 
-            if (playDays is not null)
+            if (_currentPlayDays is not null)
             {
-                foreach (var mpd in playDays)
+                foreach (var mpd in _currentPlayDays)
                 {
                     vals.Add(mpd.DayOfWeekId);
                 }
@@ -72,14 +117,14 @@
                             MemberId = _currentMember.Id,
                             DayOfWeekId = i,
                             IsPreferred = false,
-                            Day = baseDate.AddDays(i).DayOfWeek.ToString()
+                            Day = baseDate.AddDays(i).DayOfWeek.ToString(),
                         };
 
                     if (vals.Contains(ppd.DayOfWeekId))
                     {
                         ppd.IsPreferred = true;
                     }
-                    _preferredDays.Add(ppd);
+                    _preferredDaysDisplay.Add(ppd);
                 }
 
             }
