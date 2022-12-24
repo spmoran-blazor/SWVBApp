@@ -2,19 +2,19 @@
 @inject StateAccessService state
 
 <MudStack AlignItems="AlignItems.Start" Class="pt-12">
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.Message" Href="/0" Size="Size.Large">Messages</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.SportsVolleyball" Href="/1" Size="Size.Large">Available Games</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Material.Filled.CalendarMonth" Href="/3" Size="Size.Large">Preferred Days</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Material.Filled.EditCalendar" Href="/4" Size="Size.Large">Exception Dates</MudButton>
+@*    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.Message" Href="/0" Size="Size.Large">Messages</MudButton>*@
+    <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" StartIcon="@Icons.Filled.SportsVolleyball" Href="/1" Size="Size.Large">Available Games</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true" StartIcon="@Icons.Material.Filled.CalendarMonth" Href="/3" Size="Size.Large">Preferred Days</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Error" FullWidth="true" StartIcon="@Icons.Material.Filled.EditCalendar" Href="/4" Size="Size.Large">Exception Dates</MudButton>
     <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Material.Filled.PermIdentity" Href="/2" Size="Size.Large">Profile</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Material.Filled.Logout" Href="/.auth/logout" Size="Size.Large">Logout</MudButton>
+    <MudButton Variant="Variant.Filled" Color="Color.Tertiary" FullWidth="true" StartIcon="@Icons.Material.Filled.Logout" Href="/.auth/logout" Size="Size.Large">Logout</MudButton>
 </MudStack>
 
 @if (_admin is not null && _admin == true)
 {
     <MudStack AlignItems="AlignItems.Start" Class="pt-3">
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.Create" Href="/10" Size="Size.Large">Create Game</MudButton>
-        <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.EditAttributes" Href="/11" Size="Size.Large">Edit Game</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.Create" Href="/10" Size="Size.Large">Create Game</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.EditAttributes" Href="/11" Size="Size.Large">Edit Game</MudButton>
     </MudStack>
 }
 @code {

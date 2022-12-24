@@ -1,32 +1,38 @@
 ﻿@inject StateAccessService state
 
-@if(_member is not null)
+@if (_member is not null)
 {
-    <MudAppBar Color="Color.Primary" Fixed="true" Elevation="0">
-        @switch (Action)
-        {
-            case null:
-                <MudText Typo="Typo.h5">Navigation Center</MudText>
-                break;
-            case "0":
-                <MudText Typo="Typo.h5">Message Center</MudText>
-                break;
-            case "1":
-                <MudText Typo="Typo.h5">Game Center</MudText>
-                break;
-            case "2":
-                <MudText Typo="Typo.h5">Profile Center</MudText>
-                break;
-            case "3":
-                <MudText Typo="Typo.h5">Availability Center</MudText>
-                break;
-            case "4":
-                <MudText Typo="Typo.h5">Exceptions Center</MudText>
-                break;
-            default:
-                <MudText Typo="Typo.h5">Navigation Center</MudText>
-                break;
-        }
+
+
+    @switch (Action)
+    {
+        case null:
+            _centerText = "Navigation Center";
+            _style = "background-color:#594ae2ff";
+            break;
+        case "1":
+            _centerText = "Game Center";
+            _style = "background-color:#00c853ff";
+            break;
+        case "2":
+            _centerText = "Profile Center";
+            _style = "background-color:#594ae2ff";
+            break;
+        case "3":
+            _centerText = "Availability Center";
+            _style = "background-color:#ff4081ff";
+            break;
+        case "4":
+            _centerText = "Exceptions Center";
+            _style = "background-color:#f44336ff";
+            break;
+        default:
+            _centerText = "Navigation Center";
+            _style = "background-color:#594ae2ff";
+            break;
+    }
+    <MudAppBar Fixed="true" Elevation="0" style="@_style">
+        <MudText Typo="Typo.h5">@_centerText</MudText>
         <MudSpacer />
         <MudIconButton Icon="@Icons.Filled.Home" Size="Size.Large" Color="Color.Inherit" DisableElevation="true" Href="/" />
 
@@ -38,9 +44,11 @@
 
     [Parameter]
     public string? Action { get; set; }
-
+    public MudAppBar _appBar;
     public StateAccessService? _state;
     public Member? _member;
+    private string _style = "Color:Color.Primary";
+    private string _centerText = string.Empty;
 
     protected override async Task OnInitializedAsync()
     {
