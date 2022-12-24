@@ -19,15 +19,16 @@ namespace Api.Data.SWVBAFunctions
 
         [FunctionName("GetMemberPreferredDaysById")]
         public IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "getgemberpreferreddaysbyid/{Id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "getmemberpreferreddaysbyid/{Id}")] HttpRequest req,
             int Id, ILogger log)
         {
-            List<WVBApp.Shared.Entities.MemberPreferredDays> daysOfWeek = _dbContext.MemberPreferredDays.Where(a => a.MemberId == Id).ToList();
+            List<WVBApp.Shared.Entities.MemberPreferredDays> daysOfWeek = new List<WVBApp.Shared.Entities.MemberPreferredDays>();
+            daysOfWeek = _dbContext.MemberPreferredDays.Where(a => a.MemberId == Id).ToList();
 
-            if(daysOfWeek.Count == 0)
-            {
-                return new NoContentResult();
-            }
+            //if(daysOfWeek.Count == 0)
+            //{
+            //    return new NoContentResult();
+            //}
 
             return new OkObjectResult(daysOfWeek);
         }

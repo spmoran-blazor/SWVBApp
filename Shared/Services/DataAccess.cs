@@ -25,7 +25,7 @@ namespace WVBApp.Shared.Services.Data
             Member? member = new Member();
 
             var response = await _http.GetAsync($"{_baseUrl}api/getmemberbyemail/{email}");
-            member = await response.Content.ReadFromJsonAsync<Member>() ?? null;
+            member = await response.Content.ReadFromJsonAsync<Member>();
 
             return member ?? null;
         }
@@ -35,7 +35,7 @@ namespace WVBApp.Shared.Services.Data
             Member? member = new Member();
 
             var response = await _http.GetAsync($"{_baseUrl}api/getmemberbyid/{Id}");
-            member = await response.Content.ReadFromJsonAsync<Member>() ?? null;
+            member = await response.Content.ReadFromJsonAsync<Member>();
 
             return member ?? null;
         }
@@ -45,7 +45,7 @@ namespace WVBApp.Shared.Services.Data
             IEnumerable<MemberExceptionDate>? memberExceptionDates;
 
             var response = await _http.GetAsync($"{_baseUrl}api/GetMemberExceptionDatesById/{Id}");
-            memberExceptionDates = await response.Content.ReadFromJsonAsync<IEnumerable<MemberExceptionDate>>() ?? null;
+            memberExceptionDates = await response.Content.ReadFromJsonAsync<IEnumerable<MemberExceptionDate>>();
 
             return memberExceptionDates;
         }
@@ -54,8 +54,8 @@ namespace WVBApp.Shared.Services.Data
         {
             IEnumerable<Entities.MemberPreferredDays>? memberPreferredDays;
 
-            var response = await _http.GetAsync($"{_baseUrl}api/getgemberpreferreddaysbyid/{Id}");
-            memberPreferredDays = await response.Content.ReadFromJsonAsync<IEnumerable<Entities.MemberPreferredDays>>() ?? null;
+            var response = await _http.GetAsync($"{_baseUrl}api/getmemberpreferreddaysbyid/{Id}");
+            memberPreferredDays = await response.Content.ReadFromJsonAsync<IEnumerable<Entities.MemberPreferredDays>>();
 
             return memberPreferredDays;
         }
