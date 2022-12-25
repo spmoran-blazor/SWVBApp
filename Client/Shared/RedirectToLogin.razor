@@ -1,31 +1,16 @@
-@inject NavigationManager Navigation
-
-@*<MudContainer MaxWidth="Width.lg">
-<MudButton FullWidth="true" Href="/.auth/login/aad" Variant="Variant.Text" Color="Color.Error" Style="height: 90px;margin-top:220px;" ic>Login</MudButton>
-</MudContainer>*@
-
-@*<MudPaper Width="100%">
-    <MudContainer MaxWidth="MaxWidth.Small">
-
-        <MudPaper Width="100%" Square="true" Class="mud-theme-primary">
-            <MudButton FullWidth="true" Href="/.auth/login/aad" Variant="Variant.Text" Color="Color.Error">Login</MudButton>
-        </MudPaper>
-    </MudContainer>
-</MudPaper>*@
-
-<MudPaper Outlined="true" Class="border-none" >
+    <MudAppBar Fixed="true" Elevation="0" Color="Color.Primary">
+        <MudText Typo="Typo.h6">Solivita Water Volleyball Club</MudText>
+    </MudAppBar>
+    
+    <MudPaper Outlined="true" Class="border-none" >
     <MudStack Justify="@Justify.SpaceEvenly" AlignItems="@AlignItems.Center" Row="false" Reverse="false" Style="height:400px;">
         <MudSpacer></MudSpacer>
-@*        <MudPaper Class="py-1 px-3 mud-theme-transparent" Elevation="0" >Item 1</MudPaper>*@
         <MudPaper Class="py-10 px-10 mud-theme-transparent" Elevation="0">
-@*            <MudButton FullWidth="true" Href="/.auth/login/aad" Variant="Variant.Outlined" Color="Color.Error" Style="font-size:xx-large">Login</MudButton>*@
             <MudFab Href="/.auth/login/aad" StartIcon="@Icons.Filled.Login" Color=Color.Error Label ="Log In" />
         </MudPaper>
         <MudSpacer></MudSpacer>
-@*        <MudPaper Class="py-5 px-3 mud-theme-transparent">Item 3</MudPaper>*@
     </MudStack>
 </MudPaper>
-
 @*<MudStack Row="true" Justify="Justify.Center">
     <MudChipSet Filter="true" Mandatory="true">
         <MudChip Text="Justify Start" OnClick="@(() => _justify = Justify.FlexStart)" SelectedColor="Color.Primary" Variant="Variant.Text" />
