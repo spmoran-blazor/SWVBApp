@@ -1,5 +1,48 @@
 @inject NavigationManager Navigation
 
-<MudContainer>
-<MudButton FullWidth="true" Href="/.auth/login/aad" Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.Login" Color="Color.Primary" Style="height: 90px;margin-top:220px;" ic>Login</MudButton>
-</MudContainer>
+@*<MudContainer MaxWidth="Width.lg">
+<MudButton FullWidth="true" Href="/.auth/login/aad" Variant="Variant.Text" Color="Color.Error" Style="height: 90px;margin-top:220px;" ic>Login</MudButton>
+</MudContainer>*@
+
+@*<MudPaper Width="100%">
+    <MudContainer MaxWidth="MaxWidth.Small">
+
+        <MudPaper Width="100%" Square="true" Class="mud-theme-primary">
+            <MudButton FullWidth="true" Href="/.auth/login/aad" Variant="Variant.Text" Color="Color.Error">Login</MudButton>
+        </MudPaper>
+    </MudContainer>
+</MudPaper>*@
+
+<MudPaper Outlined="true" Class="border-none" >
+    <MudStack Justify="@Justify.SpaceEvenly" AlignItems="@AlignItems.Center" Row="false" Reverse="false" Style="height:400px;">
+        <MudSpacer></MudSpacer>
+@*        <MudPaper Class="py-1 px-3 mud-theme-transparent" Elevation="0" >Item 1</MudPaper>*@
+        <MudPaper Class="py-10 px-10 mud-theme-transparent" Elevation="0">
+@*            <MudButton FullWidth="true" Href="/.auth/login/aad" Variant="Variant.Outlined" Color="Color.Error" Style="font-size:xx-large">Login</MudButton>*@
+            <MudFab Href="/.auth/login/aad" StartIcon="@Icons.Filled.Login" Color=Color.Error Label ="Log In" />
+        </MudPaper>
+        <MudSpacer></MudSpacer>
+@*        <MudPaper Class="py-5 px-3 mud-theme-transparent">Item 3</MudPaper>*@
+    </MudStack>
+</MudPaper>
+
+@*<MudStack Row="true" Justify="Justify.Center">
+    <MudChipSet Filter="true" Mandatory="true">
+        <MudChip Text="Justify Start" OnClick="@(() => _justify = Justify.FlexStart)" SelectedColor="Color.Primary" Variant="Variant.Text" />
+        <MudChip Text="Justify Center" OnClick="@(() => _justify = Justify.Center)" SelectedColor="Color.Primary" Variant="Variant.Text" Default="true" />
+        <MudChip Text="Justify End" OnClick="@(() => _justify = Justify.FlexEnd)" SelectedColor="Color.Primary" Variant="Variant.Text" />
+        <MudChip Text="Justify Space Around" OnClick="@(() => _justify = Justify.SpaceAround)" SelectedColor="Color.Primary" Variant="Variant.Text" />
+        <MudChip Text="Justify Space Between" OnClick="@(() => _justify = Justify.SpaceBetween)" SelectedColor="Color.Primary" Variant="Variant.Text" />
+        <MudChip Text="Justify Space Evenly" OnClick="@(() => _justify = Justify.SpaceEvenly)" SelectedColor="Color.Primary" Variant="Variant.Text" />
+    </MudChipSet>
+</MudStack>
+
+<MudStack Row="true" Justify="Justify.Center">
+    <MudChipSet Filter="true" Mandatory="true">
+        <MudChip Text="Align Start" OnClick="@(() => _align = AlignItems.Start)" SelectedColor="Color.Secondary" Variant="Variant.Text" />
+        <MudChip Text="Align Center" OnClick="@(() => _align = AlignItems.Center)" SelectedColor="Color.Secondary" Variant="Variant.Text" Default="true" />
+        <MudChip Text="Align End" OnClick="@(() => _align = AlignItems.End)" SelectedColor="Color.Secondary" Variant="Variant.Text" />
+        <MudChip Text="Align Stretch" OnClick="@(() => _align = AlignItems.Stretch)" SelectedColor="Color.Secondary" Variant="Variant.Text" />
+        <MudChip Text="Align Baseline" OnClick="@(() => _align = AlignItems.Baseline)" SelectedColor="Color.Secondary" Variant="Variant.Text" />
+    </MudChipSet>
+</MudStack>*@

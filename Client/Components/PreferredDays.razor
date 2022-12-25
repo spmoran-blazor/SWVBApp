@@ -9,11 +9,12 @@
         <MudContainer MaxWidth="MaxWidth.Small">
             <EditForm Model="@_preferredDaysDisplay" OnValidSubmit="HandleValidPlayDaySubmit">
                 <DataAnnotationsValidator />
-                <MudStack Class="pt-6">
+                <MudStack Class="pt-10 pl-5">
                     @foreach (var prefday in _preferredDaysDisplay)
                     {
                         <MudItem xs="12" sm="7">
-                            <MudSwitch @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" Color="Color.Primary" UnCheckedColor="Color.Secondary" />
+@*                            <MudSwitch @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" Color="Color.Primary" UnCheckedColor="Color.Secondary" />*@
+                            <MudSwitch @bind-Checked="prefday.IsPreferred" ThumbIcon="@(prefday.IsPreferred==true ? Icons.Material.Filled.Done : Icons.Material.Outlined.Close)" ThumbIconColor="Color.Transparent" Label="@prefday.Day" Color="Color.Primary" UnCheckedColor="Color.Secondary"  />
                         </MudItem>
                     }
                     <MudItem xs="12" sm="7" Class="pt-2">

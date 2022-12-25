@@ -14,6 +14,7 @@
 	</PropertyGroup>
 	
 	<ItemGroup>
+	  <Content Remove="Components\Login.razor" />
 	  <Content Remove="Pages\Authentication.razor" />
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
