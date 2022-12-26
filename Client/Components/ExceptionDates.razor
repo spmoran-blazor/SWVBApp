@@ -1,6 +1,7 @@
 ﻿@inject DataAccessService data
 @inject IDialogService DialogService
 @inject StateAccessService state
+@implements IDisposable;
 
 @if (success == true && _memberExceptionDates.Count == 0)
 {
@@ -111,5 +112,11 @@
         {
             return string.Empty;
         }
+    }
+    void IDisposable.Dispose()
+    {
+        _state = null;
+        _currentMember = null;
+        _data = null;
     }
 }

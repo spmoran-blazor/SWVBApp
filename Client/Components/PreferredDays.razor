@@ -1,6 +1,7 @@
 ﻿@attribute [Authorize]
 @inject DataAccessService data
 @inject StateAccessService state
+@implements IDisposable;
 
 @if (_preferredDaysDisplay.Count > 0)
 {
@@ -134,4 +135,11 @@
         }
 
     }
+    void IDisposable.Dispose()
+    {
+        _data = null;
+        _state = null;
+        _currentMember = null;
+    }
+
 }

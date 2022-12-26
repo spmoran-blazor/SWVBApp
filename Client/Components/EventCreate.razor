@@ -4,6 +4,7 @@
 @inject DataAccessService data;
 @inject StateAccessService state
 @inject IDialogService DialogService;
+@implements IDisposable;
 
 @if (_codes is not null)
 {
@@ -80,15 +81,16 @@
     private List<EventSchedulingCode>? _codes;
     private EventSchedulingCode? _selectedCode;
     private MudSelect<EventSchedulingCode>? _mudSelect;
-    private Event _newEvent = new Event();
+    private Event? _newEvent = new Event();
     private DateTime? _eventDate = DateTime.Now;
     private TimeSpan? _eventTime = new TimeSpan(18, 30, 00);
-    private StateAccessService _state;
+    private StateAccessService? _state;
     bool success;
     string[] errors = { };
 
     EditForm? form;
     MudDatePicker? _picker;
+
 
     //private void BuildEventForSubmission()
     //{
@@ -136,7 +138,7 @@
 
     private void OnInvalidSubmit(EditContext context)
     {
-       
+
     }
 
     protected override async Task OnInitializedAsync()
@@ -175,5 +177,15 @@
             _newEvent.EventSchedulingCodeId = _selectedCode.Id;
         }
         catch (Exception e) { }
+    }
+
+    void IDisposable.Dispose()
+    {
+        _data = null;
+        _codes = null;
+        _selectedCode = null;
+        _mudSelect = null;
+        _state = null;
+        _newEvent = null;
     }
 }

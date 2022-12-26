@@ -3,6 +3,7 @@
 @inject DataAccessService data
 @inject IDialogService DialogService
 @inject StateAccessService state
+@implements IDisposable;
 <MudPaper Height="400px" Width="100%" Elevation="0">
     <MudContainer MaxWidth="MaxWidth.Small">
         <EditForm Model="@_currentMember" OnValidSubmit="HandleValidMemberSubmit" class="pt-5">
@@ -85,6 +86,13 @@
                 _currentMember = _state.Member;
             }
         }
+    }
+
+    void IDisposable.Dispose()
+    {
+        _data = null;
+        _state = null;
+        _currentMember = null;
     }
 
 
