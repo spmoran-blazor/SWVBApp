@@ -1,33 +1,12 @@
-    <MudAppBar Fixed="true" Elevation="0" Color="Color.Primary">
-        <MudText Typo="Typo.h6">Solivita Water Volleyball Club</MudText>
-    </MudAppBar>
-    
-    <MudPaper Outlined="true" Class="border-none" >
-    <MudStack Justify="@Justify.SpaceEvenly" AlignItems="@AlignItems.Center" Row="false" Reverse="false" Style="height:400px;">
-        <MudSpacer></MudSpacer>
-        <MudPaper Class="py-10 px-10 mud-theme-transparent" Elevation="0">
-            <MudFab Href="/.auth/login/aad" StartIcon="@Icons.Filled.Login" Color=Color.Error Label ="Log In" />
-        </MudPaper>
-        <MudSpacer></MudSpacer>
-    </MudStack>
-</MudPaper>
-@*<MudStack Row="true" Justify="Justify.Center">
-    <MudChipSet Filter="true" Mandatory="true">
-        <MudChip Text="Justify Start" OnClick="@(() => _justify = Justify.FlexStart)" SelectedColor="Color.Primary" Variant="Variant.Text" />
-        <MudChip Text="Justify Center" OnClick="@(() => _justify = Justify.Center)" SelectedColor="Color.Primary" Variant="Variant.Text" Default="true" />
-        <MudChip Text="Justify End" OnClick="@(() => _justify = Justify.FlexEnd)" SelectedColor="Color.Primary" Variant="Variant.Text" />
-        <MudChip Text="Justify Space Around" OnClick="@(() => _justify = Justify.SpaceAround)" SelectedColor="Color.Primary" Variant="Variant.Text" />
-        <MudChip Text="Justify Space Between" OnClick="@(() => _justify = Justify.SpaceBetween)" SelectedColor="Color.Primary" Variant="Variant.Text" />
-        <MudChip Text="Justify Space Evenly" OnClick="@(() => _justify = Justify.SpaceEvenly)" SelectedColor="Color.Primary" Variant="Variant.Text" />
-    </MudChipSet>
-</MudStack>
 
-<MudStack Row="true" Justify="Justify.Center">
-    <MudChipSet Filter="true" Mandatory="true">
-        <MudChip Text="Align Start" OnClick="@(() => _align = AlignItems.Start)" SelectedColor="Color.Secondary" Variant="Variant.Text" />
-        <MudChip Text="Align Center" OnClick="@(() => _align = AlignItems.Center)" SelectedColor="Color.Secondary" Variant="Variant.Text" Default="true" />
-        <MudChip Text="Align End" OnClick="@(() => _align = AlignItems.End)" SelectedColor="Color.Secondary" Variant="Variant.Text" />
-        <MudChip Text="Align Stretch" OnClick="@(() => _align = AlignItems.Stretch)" SelectedColor="Color.Secondary" Variant="Variant.Text" />
-        <MudChip Text="Align Baseline" OnClick="@(() => _align = AlignItems.Baseline)" SelectedColor="Color.Secondary" Variant="Variant.Text" />
-    </MudChipSet>
-</MudStack>*@
+<MudPaper Class="d-flex justify-center flex-grow-1 gap-4" Elevation="0">
+    <MudImage Src="img/logo.png" Class="rounded-circle" Height="250" />
+</MudPaper>
+
+<MudPaper Class="d-flex py-10 px-10 justify-center" Elevation="0">
+    <MudFab Href="/.auth/login/aad" StartIcon="@Icons.Filled.Login" Color=Color.Error Label="Log In" DisableElevation="true" />
+
+</MudPaper>
+
+
+
