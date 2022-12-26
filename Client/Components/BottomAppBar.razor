@@ -1,20 +1,25 @@
 ﻿@attribute [Authorize]
 @inject StateAccessService stateAccess
 
-<MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1" Dense="true" >
-    @if (_state is not null)
+@if (_state is not null)
+{
+    if (_state.Member is not null)
     {
-        if (_state.Member is not null)
-        {
-            <MudItem>@_state.Member.FirstName  @_state.Member.LastName</MudItem>
-        }
+        <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1" Dense="true">
+
+            <MudText>@_state.Member.FirstName  @_state.Member.LastName</MudText>
+            <MudSpacer />
+
+            <MudText Style="@_style">Admin</MudText>
+            <MudSpacer />
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" EndIcon="@Icons.Material.Filled.Logout" Href="/.auth/logout" DisableElevation="true" Size="Size.Large"></MudButton>
+        </MudAppBar>
     }
-
-</MudAppBar>
-
+}
 @code {
-    StateAccessService _state;
+    StateAccessService? _state;
     bool _drawerOpen = true;
+    string _style = String.Empty;
 
     void DrawerToggle()
     {
@@ -26,5 +31,15 @@
         _state = stateAccess;
         stateAccess.OnStateChange += StateHasChanged;
     }
+
+    protected void AdminVisible ()
+    {
+        if(_state.Member.IsAdmin == true)
+        {
+            _style = "display:none;";
+        }
+
+                
+            }
 }
 
