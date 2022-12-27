@@ -1,37 +1,81 @@
 ﻿@inject DataAccessService data
 @inject IDialogService DialogService
 @inject StateAccessService state
+@inject ISnackbar Snackbar
 @implements IDisposable;
 
-@if (success == true && _memberExceptionDates.Count == 0)
+@if (success == true)
 {
-    <MudButton>Add Date</MudButton>
+     <MudPaper Width="100%" Elevation="0">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <EditForm Model="@_memberExceptionDates" OnValidSubmit="HandleValidExceptionDatesSubmit">
+                <DataAnnotationsValidator />
+                <MudExpansionPanels DisableBorders="true" Elevation="0" class="pt-8">
+                    <MudExpansionPanel @bind-IsExpanded="isOpen" HideIcon="true">
+                        <TitleContent>
+                            <div class="d-flex">
+                                <MudChip Size="Size.Large" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="d-flex ml-auto">Add Dates</MudChip>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            <MudDateRangePicker @ref="_picker" Label="Add Date Range" @bind-DateRange="_dateRange" Elevation="0" AutoClose="true" PickerVariant="PickerVariant.Dialog" />
+                            <MudItem xs="12" sm="7" Class="pt-6">
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+@*                                @if (@_success)
+                                {
+                                    <MudChip class="pl-5 ml-5" Color="Color.Success">Success</MudChip>
+                                }*@
+                            </MudItem>
+                        </ChildContent>
+
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+            </EditForm>
+        </MudContainer>
+    </MudPaper>
 }
 
-@*<EditForm Model="@_memberExceptionDates" OnValidSubmit="HandleValidExceptionDatesSubmit">
-    <DataAnnotationsValidator />*@
+
 @if (success == true && _memberExceptionDates.Count > 0)
 {
-    <MudPaper Height="400px" Width="100%" Elevation="0">
+    <MudPaper Height="400px" Width="100%" Elevation="0" Class="pt-6 pl-6">
         <MudContainer MaxWidth="MaxWidth.Small">
-            <MudTable Class="pt-8" @ref="@mudTable" Items="@_memberExceptionDates" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" RowClassFunc="@SelectedRowClassFunc">
+            @foreach (var ed in @_memberExceptionDates)
+            {
+                <MudGrid Spacing="6" Justify="Justify.SpaceBetween">
+                    <MudItem>
+                        <MudPaper Elevation="0">
+                            <MudText Typo="Typo.subtitle2">Begin Date: </MudText><MudText Typo.body>@ed.BeginDate.ToShortDateString()</MudText>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem>
+                        <MudPaper Elevation="0">
+                            <MudText Typo="Typo.subtitle2">End Date: </MudText><MudText Typo.body>@ed.EndDate.ToShortDateString()</MudText>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem>
+                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium" />
+                    </MudItem>
+                </MudGrid>
+            }
+            @*<MudTable Class="pt-8" @ref="@mudTable" Items="@_memberExceptionDates" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" RowClassFunc="@SelectedRowClassFunc">
                 <HeaderContent>
                     <MudTh>Begin Date</MudTh>
                     <MudTh>End Date</MudTh>
                 </HeaderContent>
                 <RowTemplate>
-                    <MudTd DataLabel="BeginDate">@context.BeginDate.ToShortDateString()</MudTd>
+                    <MudTd DataLabel="Begin Date">@context.BeginDate.ToShortDateString()</MudTd>
                     <MudTd DataLabel="End Date">@context.EndDate.ToShortDateString()</MudTd>
                     <MudTd>
-                        <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Large" OnClick="@((e) => DeleteExceptionDate(@context.Id))">Delete</MudButton>
-                    </MudTd>
+                        <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="@((e) => DeleteExceptionDate(@context.Id))">Delete</MudButton>*@
+@*                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Order</MudButton>*@
+@*                    </MudTd>
                 </RowTemplate>
-
-            </MudTable>
+            </MudTable>*@
         </MudContainer>
     </MudPaper>
 }
-@*</EditForm>*@
+
 <MudPaper Height="200px" Width="100%" Elevation="0">
     <MudContainer MaxWidth="MaxWidth.Small">
         <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
@@ -45,6 +89,12 @@
     private bool success = false;
     private int selectedRowNumber = -1;
     private entities.Member? _currentMember;
+    private MudDateRangePicker? _picker;
+    private DateRange? _dateRange = new DateRange();
+    private bool _autoClose;
+    private bool _success;
+    //private Snackbar? _snackbar;
+    bool isOpen = false;
     List<entities.MemberExceptionDate>? _memberExceptionDates = new List<MemberExceptionDate>();
 
     protected override async Task OnInitializedAsync()
@@ -70,8 +120,25 @@
     private void HandleValidExceptionDatesSubmit(EditContext context)
     {
         success = true;
+        Snackbar.Configuration.PositionClass = "Top-Center";
+        Snackbar.Add("Dates Saved!", Severity.Success);
+
+        //Snackbar.Add<MudChip>(new Dictionary<string, object>() {
+        //    { "Text", "This is a snackbar with a chip!" },
+        //    { "Color", Color.Primary }
+        //});
         StateHasChanged();
     }
+
+    //private async Task Submit()
+    //{
+    //    await form.Validate();
+
+    //    if (form.IsValid)
+    //    {
+    //        Snackbar.Add("Submited!");
+    //    }
+    //}
 
     async Task DeleteExceptionDate(int exceptionDate)
     {

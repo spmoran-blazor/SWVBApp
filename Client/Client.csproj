@@ -18,7 +18,6 @@
 	  <Content Remove="Pages\Authentication.razor" />
 	  <Content Remove="Pages\Counter.razor" />
 	  <Content Remove="Pages\FetchData.razor" />
-	  <Content Remove="Shared\ExceptionDates.razor" />
 	  <Content Remove="Shared\LoginDisplay.razor" />
 	  <Content Remove="Shared\Messages.razor" />
 	  <Content Remove="Shared\MudDialog.razor" />

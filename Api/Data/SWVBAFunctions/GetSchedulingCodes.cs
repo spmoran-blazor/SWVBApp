@@ -8,18 +8,18 @@ using WVBApp.Shared.Entities;
 
 namespace Api.Data.SWVBAFunctions
 {
-    public class GetSchedulingCodes
+    public class GetEventSchedulingCodes
     {
         private SWVBADbContext _dbContext;
 
-        public GetSchedulingCodes(SWVBADbContext dbContext)
+        public GetEventSchedulingCodes(SWVBADbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
         [FunctionName("GetSchedulingCodes")]
         public IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "getschedulingcodes")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "geteventschedulingcodes")] HttpRequest req,
             ILogger log)
         {
             var data = _dbContext.EventSchedulingCode;
