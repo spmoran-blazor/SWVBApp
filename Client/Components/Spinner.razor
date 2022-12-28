@@ -1,0 +1,14 @@
+﻿<MudItem style="@_fullStyle">
+    <MudImage style="margin: auto;  display: block; width:100%" src="img/Color-Loading-2.gif" ; />
+</MudItem>
+@code{
+    [Parameter]
+    public string? DisplayStyle{ get; set; }
+    private string _fullStyle = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _fullStyle = "text-align: center;" + DisplayStyle;
+        StateHasChanged();
+    }
+}

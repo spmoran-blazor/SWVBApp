@@ -6,62 +6,52 @@
 
 @if (success == true)
 {
-     <MudPaper Width="100%" Elevation="0">
-        <MudContainer MaxWidth="MaxWidth.Small">
-            <EditForm Model="@_memberExceptionDates" OnValidSubmit="HandleValidExceptionDatesSubmit">
-                <DataAnnotationsValidator />
-                <MudExpansionPanels DisableBorders="true" Elevation="0" class="pt-8">
-                    <MudExpansionPanel @bind-IsExpanded="isOpen" HideIcon="true">
-                        <TitleContent>
-                            <div class="d-flex">
-                                <MudChip Size="Size.Large" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="d-flex ml-auto">Add Dates</MudChip>
-                            </div>
-                        </TitleContent>
-                        <ChildContent>
-                            <MudDateRangePicker @ref="_picker" Label="Add Date Range" @bind-DateRange="_dateRange" Elevation="0" AutoClose="true" PickerVariant="PickerVariant.Dialog" />
-                            <MudItem xs="12" sm="7" Class="pt-6">
-                                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
-@*                                @if (@_success)
-                                {
-                                    <MudChip class="pl-5 ml-5" Color="Color.Success">Success</MudChip>
-                                }*@
-                            </MudItem>
-                        </ChildContent>
-
-                    </MudExpansionPanel>
-                </MudExpansionPanels>
-            </EditForm>
-        </MudContainer>
-    </MudPaper>
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <EditForm Model="@_dateRange" OnValidSubmit="HandleValidExceptionDatesSubmit">
+            <DataAnnotationsValidator />
+            <MudExpansionPanels DisableBorders="true" Elevation="0" Class="pt-10">
+                <MudExpansionPanel @bind-IsExpanded="_isOpen" HideIcon="true" Style="py-0" >
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudChip Size="Size.Large" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="d-flex ml-auto">Add Dates</MudChip>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudDateRangePicker @ref="_picker" Label="Add Date Range" @bind-DateRange="_dateRange" Elevation="0" AutoClose="true" PickerVariant="PickerVariant.Dialog" For="@(() => _dateRange.Start)" />
+                        <MudItem xs="12" sm="7" Class="pt-6 align-end">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+                        </MudItem>
+                    </ChildContent>
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        </EditForm>
+    </MudContainer>
 }
 
 
-@if (success == true && _memberExceptionDates.Count > 0)
+@if (_memberExceptionDates is not null && success == true && _memberExceptionDates.Count > 0)
 {
-    <MudPaper Height="400px" Width="100%" Elevation="0" Class="pt-6">
-        <MudContainer MaxWidth="MaxWidth.Small">
-            @foreach (var ed in @_memberExceptionDates)
-            {
-                <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
-                    <MudItem>
-                        <MudPaper Elevation="0">
-                            <MudText Typo="Typo.subtitle2">Begin Date: </MudText><MudText Typo.body>@ed.BeginDate.ToShortDateString()</MudText>
+    <MudPaper Width="100%" Elevation="0" Class="pt-6">
+        <MudContainer MaxWidth="MaxWidth.Small" Class="pt-6">
+            <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
+                @foreach (var ed in @_memberExceptionDates)
+                {
+                    <MudItem xs="9">
+                        <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-center mud-width-full py-2" Width="100%" Elevation="0">
+                            <MudText Class="d-flex align-center justify-start py-1">@ed.BeginDate.ToShortDateString() -  @ed.EndDate.ToShortDateString()</MudText>
                         </MudPaper>
                     </MudItem>
-                    <MudItem>
-                        <MudPaper Elevation="0">
-                            <MudText Typo="Typo.subtitle2">End Date: </MudText><MudText Typo.body>@ed.EndDate.ToShortDateString()</MudText>
+                    <MudItem xs="3">
+                        <MudPaper Class="d-flex align-center py-2" Elevation="0" Width="80px">
+                            <MudIconButton Class="d-flex align-center justify-end py-1" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium" @onclick="(e => DropExceptionDate(ed))" />
                         </MudPaper>
                     </MudItem>
-                    <MudItem>
-                        <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium" />
-                    </MudItem>
-                </MudGrid>
-            }
-          
+                }
+            </MudGrid>
         </MudContainer>
     </MudPaper>
 }
+
 
 <MudPaper Height="200px" Width="100%" Elevation="0">
     <MudContainer MaxWidth="MaxWidth.Small">
@@ -70,18 +60,15 @@
 </MudPaper>
 
 @code {
-    private MudTable<entities.MemberExceptionDate> mudTable;
     private StateAccessService? _state;
     private DataAccessService? _data;
     private bool success = false;
     private int selectedRowNumber = -1;
     private entities.Member? _currentMember;
     private MudDateRangePicker? _picker;
-    private DateRange? _dateRange = new DateRange();
-    private bool _autoClose;
+    private DateRange _dateRange = new DateRange();
     private bool _success;
-    //private Snackbar? _snackbar;
-    bool isOpen = false;
+    bool _isOpen = false;
     List<entities.MemberExceptionDate>? _memberExceptionDates = new List<MemberExceptionDate>();
 
     protected override async Task OnInitializedAsync()
@@ -92,81 +79,46 @@
         await GetMemberExceptionDatesById();
     }
 
-    private DialogOptions dialogOptions = new() { FullWidth = true };
+    //private DialogOptions dialogOptions = new() { FullWidth = true };
 
     private async Task GetMemberExceptionDatesById()
     {
         if (_currentMember is not null)
         {
             var getData = await _data.GetMemberExceptionDatesById(_currentMember.Id);
-            _memberExceptionDates = getData.ToList<entities.MemberExceptionDate>();
+            _memberExceptionDates = getData.OrderBy(x => x.BeginDate).ToList<entities.MemberExceptionDate>();
             success = true;
         }
     }
 
-    private void HandleValidExceptionDatesSubmit(EditContext context)
+    private async Task HandleValidExceptionDatesSubmit(EditContext context)
     {
-        success = true;
-        Snackbar.Configuration.PositionClass = "Top-Center";
-        Snackbar.Add("Dates Saved!", Severity.Success);
+        MemberExceptionDate ed = new MemberExceptionDate();
+        ed.BeginDate = Convert.ToDateTime(_dateRange.Start);
+        ed.EndDate = Convert.ToDateTime(_dateRange.End);
+        ed.MemberId = _state.Member.Id;
+        ed.UpdatedBy = _state.Member.Email;
+        ed.UpdatedDate = DateTime.Now;
 
-        //Snackbar.Add<MudChip>(new Dictionary<string, object>() {
-        //    { "Text", "This is a snackbar with a chip!" },
-        //    { "Color", Color.Primary }
-        //});
+        var getData = await _data.SaveExceptionDate(ed);
+
+        success = true;
+        await GetMemberExceptionDatesById();
+        _dateRange = new DateRange();
+        Snackbar.Configuration.PositionClass = "Top-Center";
+        Snackbar.Add("Date Saved!", Severity.Success);
         StateHasChanged();
     }
 
-    //private async Task Submit()
-    //{
-    //    await form.Validate();
-
-    //    if (form.IsValid)
-    //    {
-    //        Snackbar.Add("Submited!");
-    //    }
-    //}
-
-    async Task DeleteExceptionDate(int exceptionDate)
+    private async void DropExceptionDate(MemberExceptionDate date)
     {
-        var parameters = new DialogParameters { ["dateId"] = exceptionDate };
-        //this.OpenDialog();
-
-        //var dialog = DialogService.Show<RemoveExceptionDate>("Delete Server", parameters);
-        //var result = await dialog.Result;
-
-        ////if (!result.Cancelled)
-        ////{
-        ////    //In a real world scenario we would reload the data from the source here since we "removed" it in the dialog already.
-        ////    Guid.TryParse(result.Data.ToString(), out Guid deletedServer);
-        ////    //Servers.RemoveAll(item => item.Id == deletedServer);
-        ////}
+        var postData = await _data.RemoveExceptionDate(date);
+        success = true;
+        Snackbar.Configuration.PositionClass = "Top-Center";
+        Snackbar.Add("Date Removed!", Severity.Success);
+        StateHasChanged();
     }
 
-    private void RowClickEvent(TableRowClickEventArgs<entities.MemberExceptionDate> tableRowClickEventArgs)
-    {
-        Console.Write("Row has been clicked");
-    }
-
-    private string? SelectedRowClassFunc(entities.MemberExceptionDate element, int rowNumber)
-    {
-        if (selectedRowNumber == rowNumber)
-        {
-            selectedRowNumber = -1;
-            //clickedEvents.Add("Selected Row: None");
-            return string.Empty;
-        }
-        else if (mudTable.SelectedItem != null && mudTable.SelectedItem.Equals(element))
-        {
-            selectedRowNumber = rowNumber;
-            //clickedEvents.Add($"Selected Row: {rowNumber}");
-            return "selected";
-        }
-        else
-        {
-            return string.Empty;
-        }
-    }
     void IDisposable.Dispose()
     {
         _state = null;

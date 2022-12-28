@@ -54,6 +54,7 @@
 
 	<ItemGroup>
 	  <Script Remove="Components\PreferredDays.razor" />
+	  <Script Remove="Components\Spinner.razor" />
 	  <Script Remove="Shared\ExceptionDates.razor" />
 	  <Script Remove="Shared\Messages.razor" />
 	  <Script Remove="Shared\MudDialog.razor" />
@@ -72,6 +73,7 @@
 	  <None Include="Components\ExceptionDates.razor" />
 	  <None Include="Components\MudDialog.razor" />
 	  <None Include="Components\RemoveExceptionDate.razor" />
+	  <None Include="Components\Spinner.razor" />
 	  <None Include="Components\TopAppBar.razor" />
 	</ItemGroup>
 

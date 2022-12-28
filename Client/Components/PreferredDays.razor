@@ -14,10 +14,7 @@
                     @foreach (var prefday in _preferredDaysDisplay)
                     {
                         <MudItem xs="12" sm="7">
-@*                            <MudSwitch @bind-Checked="ThumbIcon="@(_checked3==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)" ThumbIconColor="@(_checked3==true ? Color.Success : Color.Error)">Changing</MudSwitch>" Label="@prefday.Day" Color="Color.Primary" UnCheckedColor="Color.Secondary" />*@
-@*                            <MudSwitch @bind-Checked="prefday.IsPreferred" ThumbIcon="@(prefday.IsPreferred==true ? Icons.Material.Filled.Done : Icons.Material.Outlined.Close)" ThumbIconColor="Color.Inherit" Label="@prefday.Day" Color="Color.Primary" UnCheckedColor="Color.Secondary"  />*@
                             <MudSwitch Color="Color.Primary" UnCheckedColor="Color.Secondary" @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" />
-
                         </MudItem>
                     }
                     <MudItem xs="12" sm="7" Class="pt-2">

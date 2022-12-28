@@ -1,5 +1,6 @@
 ﻿@attribute [Authorize]
 @inject StateAccessService stateAccess
+@implements IDisposable;
 
 @if (_state is not null)
 {
@@ -16,6 +17,7 @@
         </MudAppBar>
     }
 }
+
 @code {
     StateAccessService? _state;
     bool _drawerOpen = true;
@@ -29,17 +31,19 @@
     protected override async Task OnInitializedAsync()
     {
         _state = stateAccess;
-        stateAccess.OnStateChange += StateHasChanged;
     }
 
-    protected void AdminVisible ()
+    protected void AdminVisible()
     {
-        if(_state.Member.IsAdmin == true)
+        if (_state is not null && _state.Member is not null && _state.Member.IsAdmin == true)
         {
             _style = "display:none;";
         }
+    }
 
-                
-            }
+    void IDisposable.Dispose()
+    {
+        _state = null;
+    }
 }
 

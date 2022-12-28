@@ -7,8 +7,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
-using WVBApp.Shared.Entities;
 using WVBApp.Shared.DTOs;
+using WVBApp.Shared.Entities;
 
 namespace Api.Data.SWVBAFunctions
 {

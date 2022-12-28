@@ -1,7 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Net.Http.Json;
-using System.Text.Json;
 using WVBApp.Shared.DTOs;
 using WVBApp.Shared.Entities;
 
@@ -64,8 +63,15 @@ namespace WVBApp.Shared.Services.Data
         {
             JsonContent memberString = JsonContent.Create<Member>(member);
             var response = await _http.PostAsync($"{_baseUrl}api/savemember", memberString);
-            //memberPreferredDays = await response.Content.ReadFromJsonAsync<IEnumerable<Entities.MemberPreferredDays>>() ?? null;
             var retval = await response.Content.ReadFromJsonAsync<Member>();
+            return retval;
+        }
+
+        public async Task<MemberExceptionDate?> SaveExceptionDate(MemberExceptionDate mxd)
+        {
+            JsonContent valueString = JsonContent.Create<MemberExceptionDate>(mxd);
+            var response = await _http.PostAsync($"{_baseUrl}api/saveexceptiondate", valueString);
+            var retval = await response.Content.ReadFromJsonAsync<MemberExceptionDate>();
             return retval;
         }
 
@@ -75,6 +81,14 @@ namespace WVBApp.Shared.Services.Data
             var response = await _http.PostAsync($"{_baseUrl}api/savepreferreddays", incoming);
             var retval = await response.Content.ReadFromJsonAsync<List<MemberPreferredDays>>();
             return retval;
+        }
+
+        public async Task<bool> RemoveExceptionDate(MemberExceptionDate date)
+        {
+            JsonContent incoming = JsonContent.Create<MemberExceptionDate>(date);
+            var response = await _http.PostAsync($"{_baseUrl}api/deleteexceptiondate", incoming);
+            var retval = await response.Content.ReadFromJsonAsync<List<MemberPreferredDays>>();
+            return response.IsSuccessStatusCode;
         }
         #endregion
 

@@ -1,6 +1,7 @@
 ﻿@attribute [Authorize]
 @inject StateAccessService state
 
+@*<Client.Components.Spinner DisplayStyle="display:none;" />*@
 
 <MudStack Spacing="2" Row="true" Justify="Justify.Center" Class="pb-2 pt-10">
     <MudButton Variant="Variant.Filled" Style="@($"background-color:{Colors.Blue.Default}; color:{Colors.Shades.White};width: 200px; height: 60px;")" StartIcon="@Icons.Filled.SportsVolleyball" Href="/1" Size="Size.Large">Games</MudButton>
@@ -11,31 +12,6 @@
     <MudButton Style="width: 200px; height: 60px;" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.EditCalendar" Href="/4" Size="Size.Large">Exceptions</MudButton>
     <MudButton Style="width: 200px; height: 60px;" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.PermIdentity" Href="/2" Size="Size.Large">Profile</MudButton>
 </MudStack>
-
-@*<MudGrid Spacing="1" Justify="Justify.Center">
-    <MudItem xs="12" sm="6">
-
-
-        <MudButton Style="width: 180px; height: 60px;" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Filled.SportsVolleyball" Href="/1" Size="Size.Large">Available Games</MudButton>
-        <MudButton Style="width: 200px; height: 60px;" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.CalendarMonth" Href="/3" Size="Size.Large">Preferred Days</MudButton>
-
-    </MudItem>
-    <MudItem xs="12" sm="6">
-
-
-
-
-    </MudItem>
-</MudGrid>*@
-
-@*<MudStack AlignItems="AlignItems.Start" Class="pt-12">
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Filled.Message" Href="/0" Size="Size.Large">Messages</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Success" FullWidth="true" StartIcon="@Icons.Filled.SportsVolleyball" Href="/1" Size="Size.Large" Style="justify-content:left;padding-left:90px;">Available Games</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Secondary" FullWidth="true" StartIcon="@Icons.Material.Filled.CalendarMonth" Href="/3" Size="Size.Large" Style="justify-content:left;padding-left:90px;">Preferred Days</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Error" FullWidth="true" StartIcon="@Icons.Material.Filled.EditCalendar" Href="/4" Size="Size.Large" Style="justify-content:left;padding-left:90px;">Exception Dates</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" StartIcon="@Icons.Material.Filled.PermIdentity" Href="/2" Size="Size.Large" Style="justify-content:left;padding-left:90px;">Profile</MudButton>
-    <MudButton Variant="Variant.Filled" Color="Color.Warning" FullWidth="true" StartIcon="@Icons.Material.Filled.Logout" Href="/.auth/logout" Size="Size.Large" Style="justify-content:left;padding-left:90px;">Logout</MudButton>
-</MudStack>*@
 
 @if (_admin is not null && _admin == true)
 {
@@ -55,5 +31,7 @@
         {
             _admin = true;
         }
+
+
     }
 }
