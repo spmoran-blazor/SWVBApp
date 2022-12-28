@@ -42,7 +42,7 @@
         <MudContainer MaxWidth="MaxWidth.Small">
             @foreach (var ed in @_memberExceptionDates)
             {
-                <MudGrid Spacing="6" Justify="Justify.SpaceBetween">
+                <MudGrid Spacing="3" Justify="Justify.SpaceAround">
                     <MudItem>
                         <MudPaper Elevation="0">
                             <MudText Typo="Typo.subtitle2">Begin Date: </MudText><MudText Typo.body>@ed.BeginDate.ToShortDateString()</MudText>
