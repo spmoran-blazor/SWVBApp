@@ -58,20 +58,7 @@
                     </MudItem>
                 </MudGrid>
             }
-            @*<MudTable Class="pt-8" @ref="@mudTable" Items="@_memberExceptionDates" Elevation="0" Hover="false" Border="false" Breakpoint="Breakpoint.Sm" RowClassFunc="@SelectedRowClassFunc">
-                <HeaderContent>
-                    <MudTh>Begin Date</MudTh>
-                    <MudTh>End Date</MudTh>
-                </HeaderContent>
-                <RowTemplate>
-                    <MudTd DataLabel="Begin Date">@context.BeginDate.ToShortDateString()</MudTd>
-                    <MudTd DataLabel="End Date">@context.EndDate.ToShortDateString()</MudTd>
-                    <MudTd>
-                        <MudButton Variant="Variant.Outlined" Color="Color.Error" Size="Size.Medium" OnClick="@((e) => DeleteExceptionDate(@context.Id))">Delete</MudButton>*@
-@*                        <MudButton Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Order</MudButton>*@
-@*                    </MudTd>
-                </RowTemplate>
-            </MudTable>*@
+          
         </MudContainer>
     </MudPaper>
 }
