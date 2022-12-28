@@ -38,11 +38,11 @@
 
 @if (success == true && _memberExceptionDates.Count > 0)
 {
-    <MudPaper Height="400px" Width="100%" Elevation="0" Class="pt-6 pl-6">
+    <MudPaper Height="400px" Width="100%" Elevation="0" Class="pt-6">
         <MudContainer MaxWidth="MaxWidth.Small">
             @foreach (var ed in @_memberExceptionDates)
             {
-                <MudGrid Spacing="3" Justify="Justify.SpaceAround">
+                <MudGrid Spacing="3" Justify="Justify.SpaceBetween">
                     <MudItem>
                         <MudPaper Elevation="0">
                             <MudText Typo="Typo.subtitle2">Begin Date: </MudText><MudText Typo.body>@ed.BeginDate.ToShortDateString()</MudText>
