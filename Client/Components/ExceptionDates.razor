@@ -37,7 +37,7 @@
                 @foreach (var ed in @_memberExceptionDates)
                 {
                     <MudItem xs="9">
-                        <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-center mud-width-full py-2" Width="100%" Elevation="0">
+                        <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-left mud-width-full py-2 pl-3" Width="100%" Elevation="0">
                             <MudText Class="d-flex align-center justify-start py-1">@ed.BeginDate.ToShortDateString() -  @ed.EndDate.ToShortDateString()</MudText>
                         </MudPaper>
                     </MudItem>
@@ -113,6 +113,7 @@
     private async void DropExceptionDate(MemberExceptionDate date)
     {
         var postData = await _data.RemoveExceptionDate(date);
+        await GetMemberExceptionDatesById();
         success = true;
         Snackbar.Configuration.PositionClass = "Top-Center";
         Snackbar.Add("Date Removed!", Severity.Success);

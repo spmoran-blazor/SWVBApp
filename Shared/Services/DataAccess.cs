@@ -87,7 +87,7 @@ namespace WVBApp.Shared.Services.Data
         {
             JsonContent incoming = JsonContent.Create<MemberExceptionDate>(date);
             var response = await _http.PostAsync($"{_baseUrl}api/deleteexceptiondate", incoming);
-            var retval = await response.Content.ReadFromJsonAsync<List<MemberPreferredDays>>();
+            //var retval = await response.Content.ReadFromJsonAsync<List<MemberPreferredDays>>();
             return response.IsSuccessStatusCode;
         }
         #endregion
