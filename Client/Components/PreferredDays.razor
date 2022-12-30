@@ -1,6 +1,7 @@
 ﻿@attribute [Authorize]
 @inject DataAccessService data
 @inject StateAccessService state
+@inject ISnackbar Snackbar
 @implements IDisposable;
 
 @if (_preferredDaysDisplay.Count > 0)
@@ -19,10 +20,6 @@
                     }
                     <MudItem xs="12" sm="7" Class="pt-2">
                         <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
-                        @if (@_success)
-                        {
-                            <MudChip class="pl-5 ml-5" Color="Color.Success">Success</MudChip>
-                        }
                     </MudItem>
                 </MudStack>
             </EditForm>
@@ -75,9 +72,10 @@
         }
 
         preferredDaysPackage.AddDays = mpds;
-        //_currentMember.UpdatedBy = _currentMember.Email;
         _currentPlayDays = await _data.SavePreferredDays(preferredDaysPackage);
         _success = true;
+        Snackbar.Configuration.PositionClass = "Top-Center";
+        Snackbar.Add("Days Saved!", Severity.Success);
         StateHasChanged();
 
     }

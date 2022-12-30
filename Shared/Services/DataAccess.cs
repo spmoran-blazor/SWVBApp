@@ -87,7 +87,6 @@ namespace WVBApp.Shared.Services.Data
         {
             JsonContent incoming = JsonContent.Create<MemberExceptionDate>(date);
             var response = await _http.PostAsync($"{_baseUrl}api/deleteexceptiondate", incoming);
-            //var retval = await response.Content.ReadFromJsonAsync<List<MemberPreferredDays>>();
             return response.IsSuccessStatusCode;
         }
         #endregion
@@ -103,6 +102,14 @@ namespace WVBApp.Shared.Services.Data
             codes = await response.Content.ReadFromJsonAsync<IEnumerable<EventSchedulingCode>?>() ?? null;
 
             return codes ?? null;
+        }
+
+        public async Task<Event?> SaveEvent(Event evt)
+        {
+            JsonContent memberString = JsonContent.Create<Event>(evt);
+            var response = await _http.PostAsync($"{_baseUrl}api/saveevent", memberString);
+            var retval = await response.Content.ReadFromJsonAsync<Event>();
+            return retval;
         }
         #endregion
 

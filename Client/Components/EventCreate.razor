@@ -1,80 +1,86 @@
 ﻿@attribute [Authorize]
-@*@using System.ComponentModel.DataAnnotations*@
-@inject AuthenticationStateProvider AuthenticationStateProvider
 @inject DataAccessService data;
 @inject StateAccessService state
-@inject IDialogService DialogService;
+@inject ISnackbar Snackbar
 @implements IDisposable;
 
-@if (_codes is not null)
-{
-    <MudSelect T="EventSchedulingCode" @ref="@_mudSelect" AnchorOrigin="Origin.BottomCenter" Label="Select Game Type" Clearable="true" Required="true" SelectedValuesChanged="OnSelectedCodeValuesChanged" Class="pt-8 pb-3">
-        @foreach (var evt in _codes)
+<MudPaper Width="100%" Elevation="0">
+    <MudContainer MaxWidth="MaxWidth.Small">
+        @if (_codes is not null)
         {
-            <MudSelectItem Value="@(evt)">@evt.Code - @evt.Description - @evt.Notes</MudSelectItem>
+            <MudSelect T="EventSchedulingCode" @ref="@_mudSelect" AnchorOrigin="Origin.BottomCenter" Label="Select Game Type" Clearable="true" Required="true" SelectedValuesChanged="OnSelectedCodeValuesChanged" Class="pt-8 pb-3">
+                @foreach (var evt in _codes)
+                {
+                    <MudSelectItem Value="@(evt)">@evt.Code - @evt.Description - @evt.Notes</MudSelectItem>
+                }
+            </MudSelect>
         }
-    </MudSelect>
-}
+    </MudContainer>
+</MudPaper>
 
 @if (_selectedCode is not null)
 {
-    <EditForm @ref="form" Model="@_newEvent" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
-        <DataAnnotationsValidator />
-        <MudGrid Class="overflow-scroll">
-            <MudItem xs="12" sm="7" Class="pt-5">
-                <MudDatePicker @ref="@_picker" Label="Event Date" PickerVariant="PickerVariant.Dialog" @bind-Date="@_newEvent.EventDate" Mask="@(new DateMask("MM/dd/yyyy"))" DateFormat="MM/dd/yyyy" Placeholder="Enter Event Date" AutoClose="false" For="@(() => @_newEvent.EventDate)">
-                    <PickerActions Context="dateContext">
-                        <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
-                        <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
-                        <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
-                    </PickerActions>
-                </MudDatePicker>
-            </MudItem>
-            <MudItem xs="12" sm="7">
-                <MudTimePicker Label="Event Time" AmPm="true" @bind-Time="_eventTime" PickerVariant="PickerVariant.Dialog" />
-            </MudItem>
-            <MudItem xs="12" sm="7">
-                <MudField Label="Area of Play" Variant="Variant.Text" InnerPadding="true">
-                    <MudRadioGroup @bind-SelectedOption="@_newEvent.AreaOfPlayId" Class="pl-4">
-                        <MudRadio Option="1" Color="Color.Primary" Size="Size.Small" Dense>North End</MudRadio>
-                        <MudRadio Option="2" Color="Color.Secondary" Size="Size.Small" Dense>South End</MudRadio>
-                    </MudRadioGroup>
-                </MudField>
-            </MudItem>
+    <MudPaper Height="400px" Width="100%" Elevation="0">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <EditForm @ref="form" Model="@_newEvent" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
+                <DataAnnotationsValidator />
+                <MudGrid Class="overflow-scroll">
+                    <MudItem xs="12" sm="7" Class="pt-5">
+                        <MudDatePicker @ref="@_picker" Label="Event Date" PickerVariant="PickerVariant.Dialog" @bind-Date="@_eventDate" Mask="@(new DateMask("MM/dd/yyyy"))" DateFormat="MM/dd/yyyy" Placeholder="Enter Event Date" AutoClose="false" For="@(() => @_eventDate)">
+                            <PickerActions Context="dateContext">
+                                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
+                                <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
+                                <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
+                            </PickerActions>
 
-            <MudItem xs="12" sm="7" Class="pt-5">
-                <MudNumericField @bind-Value="@_selectedCode.MinLevelMain" Label="Min Player Level" Variant="Variant.Text" Min="1" ReadOnly="true" />
-            </MudItem>
-            <MudItem xs="12" sm="7" Class="pt-5">
-                <MudNumericField @bind-Value="@_selectedCode.MaxLevelMain" Label="Max Player Level" Variant="Variant.Text" Min="1" ReadOnly="true" />
-            </MudItem>
+                        </MudDatePicker>
 
-            <MudItem xs="12" sm="7" Class="pt-5">
-                <MudNumericField @bind-Value="@_newEvent.ParticipantLimit" Label="Number of Players Needed" Variant="Variant.Text" Min="0" Max="10" />
-            </MudItem>
+                    </MudItem>
+                    <MudItem xs="12" sm="7">
+                        <MudTimePicker Label="Event Time" AmPm="true" @bind-Time="_eventTime" PickerVariant="PickerVariant.Dialog" />
+                    </MudItem>
+                    <MudItem xs="12" sm="7">
+                        <MudField Label="Area of Play" Variant="Variant.Text" InnerPadding="true">
+                            <MudRadioGroup T="int" @bind-SelectedOption="@_areaOfPlayId" Class="pl-4" For="@(() => @_areaOfPlayId)">
+                                <MudRadio Option="1" Color="Color.Primary" Size="Size.Small" Dense>North End</MudRadio>
+                                <MudRadio Option="2" Color="Color.Secondary" Size="Size.Small" Dense>South End</MudRadio>
+                            </MudRadioGroup>
+                        </MudField>
+                    </MudItem>
 
-            <MudItem xs="12" sm="7" Class="pt-5">
-                <MudField Label="Partial Game" Variant="Variant.Text">
-                    <MudCheckBox @bind-Checked="@_newEvent.IsPartial" Label="Is Partial Game" Size="Size.Small" Disabled></MudCheckBox>
-                </MudField>
-            </MudItem>
-            <MudHidden>@_newEvent.EventSchedulingCodeId</MudHidden>
-            <MudHidden>@_newEvent.UpdatedBy</MudHidden>
+                    <MudItem xs="12" sm="7" Class="pt-5">
+                        <MudNumericField @bind-Value="@_selectedCode.MinLevelMain" Label="Min Player Level" Variant="Variant.Text" Min="1" ReadOnly="true" />
+                    </MudItem>
+                    <MudItem xs="12" sm="7" Class="pt-5">
+                        <MudNumericField @bind-Value="@_selectedCode.MaxLevelMain" Label="Max Player Level" Variant="Variant.Text" Min="1" ReadOnly="true" />
+                    </MudItem>
 
-            <MudItem xs="12" sm="7" Class="pt-5" Style="border:none;">
-                <MudField Label="Comments" Variant="Variant.Text" InnerPadding="false">
-                    <MudTextField @bind-Value="@_newEvent.EventComment" Label="Enter any Comments" Variant="Variant.Text" Margin="Margin.Dense" ></MudTextField>
-                </MudField>
-            </MudItem>
+                    <MudItem xs="12" sm="7" Class="pt-5">
+                        <MudNumericField @bind-Value="@_participantLimit" Label="Number of Players Needed" Variant="Variant.Text" Min="0" Max="10" />
+                    </MudItem>
 
-            <MudItem xs="12" sm="7" Class="pt-5 pb-5">
-                <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save Game</MudButton>
-            </MudItem>
-        </MudGrid>
-    </EditForm>
-    <MudContainer MaxWidth="MaxWidth.Small">
-        <MudPaper Height="100px" Width="100%" Square="true"></MudPaper>
-    </MudContainer>
+                    <MudItem xs="12" sm="7" Class="pt-5">
+                        <MudField Label="Partial Game" Variant="Variant.Text">
+                            <MudCheckBox @bind-Checked="@_isPartial" Label="Is Partial Game" Size="Size.Small" Disabled></MudCheckBox>
+                        </MudField>
+                    </MudItem>
+@*                    <MudHidden>@_newEvent.EventSchedulingCodeId</MudHidden>
+                    <MudHidden>@_newEvent.UpdatedBy</MudHidden>*@
+
+                    <MudItem xs="12" sm="7" Class="pt-5" Style="border:none;">
+                        <MudField Label="Comments" Variant="Variant.Text" InnerPadding="false">
+                            <MudTextField @bind-Value="@_eventComment" Label="Enter any Comments" Variant="Variant.Text" Margin="Margin.Dense"></MudTextField>
+                        </MudField>
+                    </MudItem>
+
+                    <MudItem xs="12" sm="7" Class="pt-5 pb-5">
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save Game</MudButton>
+                    </MudItem>
+                </MudGrid>
+            </EditForm>
+        </MudContainer>
+    </MudPaper>
+
 }
 @code {
     private DataAccessService? _data;
@@ -82,17 +88,86 @@
     private EventSchedulingCode? _selectedCode;
     private MudSelect<EventSchedulingCode>? _mudSelect;
     private Event? _newEvent = new Event();
-    private DateTime? _eventDate = DateTime.Now;
+    private DateTime? _eventDate = DateTime.Now.Date;
     private TimeSpan? _eventTime = new TimeSpan(18, 30, 00);
+    private int _participantLimit;
+    private bool _isPartial = false;
+    private bool _isCancelled = false;
+    private int _areaOfPlayId = -1;
+    private bool _valid = false;
+    private string? _eventComment;
+
     private StateAccessService? _state;
-    bool success;
+    bool _success;
     string[] errors = { };
 
     EditForm? form;
     MudDatePicker? _picker;
 
 
-    //private void BuildEventForSubmission()
+    private async Task BuildEventForSubmission()
+    {
+        if (_selectedCode is not null)
+        {
+            _newEvent.EventSchedulingCodeId = _selectedCode.Id;
+        }
+        else
+        {
+            _valid = false;
+            return;
+        }
+
+        if (_eventDate is not null)
+        {
+            _newEvent.EventDate = _eventDate;
+        }
+        else
+        {
+            _valid = false;
+            return;
+        }
+
+        if (_eventTime is not null)
+        {
+            _newEvent.EventTime = _eventTime;
+        }
+        else
+        {
+            _valid = false;
+            return;
+        }
+
+        if (_areaOfPlayId == 0 || _areaOfPlayId == 1)
+        {
+            _newEvent.AreaOfPlayId = _areaOfPlayId;
+        }
+        else
+        {
+            _valid = false;
+            return;
+        }
+
+        if(_participantLimit > 0)
+        {
+            _newEvent.ParticipantLimit = _participantLimit;
+        }
+        else
+        {
+            _valid = false;
+            return;
+        }
+
+
+        _newEvent.IsPartial = _isPartial;
+        _newEvent.IsCancelled = _isCancelled;
+        _newEvent.EventComment = _eventComment;
+        _newEvent.UpdatedDate = DateTime.Now;
+        _newEvent.UpdatedBy = _state.Member.Email;
+
+        _valid = true;
+    }
+
+    //private async Task CustomValidateEvent()
     //{
     //    if (_selectedCode is not null)
     //    {
@@ -106,7 +181,7 @@
 
     //    if (_eventTime is not null)
     //    {
-    //        _newEvent.EventTime = _eventTime.ToString();
+    //        _newEvent.EventTime = _eventTime;
     //    }
 
     //    if (_areaOfPlayId > 0)
@@ -122,19 +197,30 @@
 
     //    _newEvent.EventComment = _eventComment;
 
-    //    //_newEvent.UpdatedDate = DateTime.Now;
-
-    //    //_newEvent.UpdatedBy = _userEmail;
-    //    _newEvent.UpdatedBy = "spmoran@hotmail.com";
-
-
+    //    _newEvent.UpdatedDate = DateTime.Now;
+    //    _newEvent.UpdatedBy = _state.Member.Email;
     //}
 
-    private void OnValidSubmit(EditContext context)
+    private async Task OnValidSubmit(EditContext context)
     {
-        string? s = JsonSerializer.Serialize<Event>((Event)context.Model);
-        Console.WriteLine(s);
+        await BuildEventForSubmission();
+
+        if(_valid != true)
+        {
+            Snackbar.Configuration.PositionClass = "Top-Center";
+            Snackbar.Add("Save failed. All fields except Comments are required.", Severity.Error);
+            StateHasChanged();
+            return;
+        }
+
+        _newEvent = await _data.SaveEvent(_newEvent);
+        _success = true;
+        Snackbar.Configuration.PositionClass = "Top-Center";
+        Snackbar.Add("Event Saved!", Severity.Success);
+        StateHasChanged();
     }
+
+
 
     private void OnInvalidSubmit(EditContext context)
     {
@@ -144,9 +230,9 @@
     protected override async Task OnInitializedAsync()
     {
         _state = state;
-        if(_state is not null)
+        if (_state is not null)
         {
-            if(_state.Member is not null)
+            if (_state.Member is not null)
             {
                 _newEvent.UpdatedBy = _state.Member.Email;
             }
@@ -161,7 +247,7 @@
 
     private async Task GetEventSchedulingCodes()
     {
-        if(_data is not null)
+        if (_data is not null)
         {
             var data = await _data.GetEventSchedulingCodes();
             _codes = data.ToList<EventSchedulingCode>();
