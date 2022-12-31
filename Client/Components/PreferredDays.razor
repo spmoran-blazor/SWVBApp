@@ -19,7 +19,7 @@
                         </MudItem>
                     }
                     <MudItem xs="12" sm="7" Class="pt-2">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+                        <MudFab StartIcon="@Icons.Material.Filled.Save" Label="Save" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudFab>
                     </MudItem>
                 </MudStack>
             </EditForm>
@@ -106,8 +106,6 @@
                 }
             }
 
-            //if (vals.Count > 0)
-            //{
                 DateTime baseDate = new DateTime(0001, 01, 02).AddDays(362);
                 for (int i = 0; i < 7; i++)
                 {
@@ -125,8 +123,6 @@
                     }
                     _preferredDaysDisplay.Add(ppd);
                 }
-
-            //}
         }
 
     }

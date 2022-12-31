@@ -28,9 +28,6 @@ namespace Api
 
             //email = req.Query["email"];
             var member = _dbContext.Member.FirstOrDefault<Member>(a => a.Email == $"{email}");
-            //string requestBody = new StreamReader(req.Body).ReadToEndAsync();
-            //dynamic data = JsonConvert.DeserializeObject(requestBody);
-            //name = name ?? data?.name;
 
             string responseMessage = string.IsNullOrEmpty(email)
                 ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."

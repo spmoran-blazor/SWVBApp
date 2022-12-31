@@ -1,0 +1,103 @@
+﻿@attribute [Authorize]
+@inject DataAccessService data;
+@inject StateAccessService state
+@inject ISnackbar Snackbar
+@implements IDisposable;
+
+@if (_fullEvents is not null && _fullEvents.Count > 0)
+{
+    <MudPaper Width="100%" Elevation="0" Class="pt-10">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
+                @foreach (var ev in @_fullEvents)
+                {
+                    <MudItem xs="10">
+                        <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-left mud-width-full py-2" Width="100%" Elevation="0">
+                            <MudText Class="d-flex align-center justify-start py-1 pt-4">@ev.EventDate.ToShortDateString() - @ev.Code - @ev.Area - @ev.Description</MudText>
+                        </MudPaper>
+                    </MudItem>
+                    <MudItem xs="2">
+                        <MudPaper Class="d-flex align-center py-2" Elevation="0" Width="80px">
+                            <MudFab Class="d-flex align-center justify-center py-1" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Size="Size.Medium" @onclick="(e => RemoveEvent(ev))" />
+
+                            </MudPaper>
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudContainer>
+    </MudPaper>
+}
+else
+{
+    <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-left mud-width-full py-2" Width="100%" Elevation="0">
+        <MudText Typo="Typo.h6" Class="d-flex align-center justify-start py-1 pt-4">No Scheduled Events Were Found</MudText>
+    </MudPaper>
+}
+
+@code {
+    private DataAccessService? _data;
+    private List<Event> _events = new List<Event>();
+    private List<EventWithCodeInfo> _fullEvents = new List<EventWithCodeInfo>();
+    private StateAccessService? _state;
+    bool _success;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _state = state;     
+        _data = data ?? null;
+        await GetScheduledEvents();       
+    }
+
+    private async void RemoveEvent(EventWithCodeInfo evc)
+    {
+        Event? evt = _events.Where(a => a.Id == evc.Id).FirstOrDefault();
+        var postData = await _data.DeleteEvent(evt);
+        await GetScheduledEvents();
+        _success = true;
+        Snackbar.Configuration.PositionClass = "Top-Center";
+        Snackbar.Add("Event Removed!", Severity.Success);
+        StateHasChanged();
+    }
+
+    private async Task GetScheduledEvents()
+    {
+        if (_data is not null)
+        {
+            var data = await _data.GetScheduledEvents();
+            _fullEvents = data.ToList();
+            await FashionEvents(_fullEvents);
+            StateHasChanged();
+        }
+
+    }
+
+    private async Task FashionEvents(List<WVBApp.Shared.DTOs.EventWithCodeInfo> eventWithCodeInfos)
+    {
+        _events.Clear();
+        foreach (var item in eventWithCodeInfos)
+        {
+            Event evt = new Event();
+            evt.Id = item.Id;
+            evt.AreaOfPlayId = item.AreaOfPlayId;
+            evt.IsPartial = item.IsPartial;
+            evt.ParticipantLimit = item.ParticipantLimit;
+            evt.PartialGameId = item.PartialGameId;
+            evt.EventComment = item.EventComment ?? null;
+            evt.EventDate = item.EventDate;
+            evt.EventTime = item.EventTime;
+            evt.EventSchedulingCodeId = item.EventSchedulingCodeId;
+            evt.IsCancelled = item.IsCancelled;
+            evt.UpdatedBy = item.UpdatedBy;
+            evt.UpdatedDate = item.UpdatedDate;
+            _events.Add(evt);
+
+        }
+    }
+
+    void IDisposable.Dispose()
+    {
+        _data = null;
+        _state = null;
+
+    }
+}

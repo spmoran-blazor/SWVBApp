@@ -23,7 +23,7 @@
     <MudPaper Height="400px" Width="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.Small">
             <EditForm @ref="form" Model="@_newEvent" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
-                <DataAnnotationsValidator />
+@*                <DataAnnotationsValidator />*@
                 <MudGrid Class="overflow-scroll">
                     <MudItem xs="12" sm="7" Class="pt-5">
                         <MudDatePicker @ref="@_picker" Label="Event Date" PickerVariant="PickerVariant.Dialog" @bind-Date="@_eventDate" Mask="@(new DateMask("MM/dd/yyyy"))" DateFormat="MM/dd/yyyy" Placeholder="Enter Event Date" AutoClose="false" For="@(() => @_eventDate)">
@@ -42,8 +42,8 @@
                     <MudItem xs="12" sm="7">
                         <MudField Label="Area of Play" Variant="Variant.Text" InnerPadding="true">
                             <MudRadioGroup T="int" @bind-SelectedOption="@_areaOfPlayId" Class="pl-4" For="@(() => @_areaOfPlayId)">
-                                <MudRadio Option="1" Color="Color.Primary" Size="Size.Small" Dense>North End</MudRadio>
-                                <MudRadio Option="2" Color="Color.Secondary" Size="Size.Small" Dense>South End</MudRadio>
+                                <MudRadio Option="5" Color="Color.Primary" Size="Size.Small" Dense>North-All</MudRadio>
+                                <MudRadio Option="6" Color="Color.Secondary" Size="Size.Small" Dense>South-All</MudRadio>
                             </MudRadioGroup>
                         </MudField>
                     </MudItem>
@@ -64,9 +64,6 @@
                             <MudCheckBox @bind-Checked="@_isPartial" Label="Is Partial Game" Size="Size.Small" Disabled></MudCheckBox>
                         </MudField>
                     </MudItem>
-@*                    <MudHidden>@_newEvent.EventSchedulingCodeId</MudHidden>
-                    <MudHidden>@_newEvent.UpdatedBy</MudHidden>*@
-
                     <MudItem xs="12" sm="7" Class="pt-5" Style="border:none;">
                         <MudField Label="Comments" Variant="Variant.Text" InnerPadding="false">
                             <MudTextField @bind-Value="@_eventComment" Label="Enter any Comments" Variant="Variant.Text" Margin="Margin.Dense"></MudTextField>
@@ -74,10 +71,15 @@
                     </MudItem>
 
                     <MudItem xs="12" sm="7" Class="pt-5 pb-5">
-                        <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save Game</MudButton>
+                        <MudFab StartIcon="@Icons.Material.Filled.Save" Label="Save" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" />
                     </MudItem>
                 </MudGrid>
             </EditForm>
+            <MudPaper Height="100px" Width="100%" Elevation="0">
+                <MudContainer MaxWidth="MaxWidth.Small">
+                    <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+                </MudContainer>
+            </MudPaper>
         </MudContainer>
     </MudPaper>
 
@@ -137,7 +139,7 @@
             return;
         }
 
-        if (_areaOfPlayId == 0 || _areaOfPlayId == 1)
+        if (_areaOfPlayId == 5 || _areaOfPlayId == 6)
         {
             _newEvent.AreaOfPlayId = _areaOfPlayId;
         }

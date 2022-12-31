@@ -36,6 +36,9 @@
         case "101":
             <Client.Components.EventCreate />
             break;
+        case "102":
+            <Client.Components.DeleteEvent />
+            break;
         default:
             <Client.Components.NavScreen />
             break;
@@ -48,7 +51,6 @@
     public string? Action { get; set; }
     private entities.Member _currentMember = new entities.Member();
     public Member? CurrentMember { get; set; }
-    //private string _showSpinner = string.Empty;
 
     protected override async Task OnParametersSetAsync()
     {

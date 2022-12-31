@@ -1,6 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using System.Data;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using WVBApp.Shared.DTOs;
 using WVBApp.Shared.Entities;
 
@@ -93,6 +95,13 @@ namespace WVBApp.Shared.Services.Data
 
         #region "EventData"
 
+        public async Task<bool> DeleteEvent(Event evt)
+        {
+            JsonContent incoming = JsonContent.Create<Event>(evt);
+            var response = await _http.PostAsync($"{_baseUrl}api/deleteevent", incoming);
+            return response.IsSuccessStatusCode;
+        }
+
         public async Task<IEnumerable<EventSchedulingCode>?> GetEventSchedulingCodes()
         {
             SetBaseUri();
@@ -104,6 +113,25 @@ namespace WVBApp.Shared.Services.Data
             return codes ?? null;
         }
 
+        public async Task<IEnumerable<EventWithCodeInfo>> GetScheduledEvents()
+        {
+            SetBaseUri();
+            IEnumerable<EventWithCodeInfo> codes = new List<EventWithCodeInfo>();
+
+            var options = new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.IgnoreCycles,
+                WriteIndented = true,
+                PropertyNameCaseInsensitive = true
+            };
+
+            var response = await _http.GetAsync($"{_baseUrl}api/getscheduledevents");
+
+            codes = await response.Content.ReadFromJsonAsync<IEnumerable<EventWithCodeInfo>>(options);
+
+            return codes;
+        }
+
         public async Task<Event?> SaveEvent(Event evt)
         {
             JsonContent memberString = JsonContent.Create<Event>(evt);
@@ -111,6 +139,7 @@ namespace WVBApp.Shared.Services.Data
             var retval = await response.Content.ReadFromJsonAsync<Event>();
             return retval;
         }
+
         #endregion
 
         #region "MessageData"

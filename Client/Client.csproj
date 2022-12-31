@@ -34,7 +34,7 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.12" />
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="6.0.0" />
-		<PackageReference Include="MudBlazor" Version="6.1.2" />
+		<PackageReference Include="MudBlazor" Version="6.1.6" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -53,6 +53,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Script Remove="Components\DeleteEvent.razor" />
 	  <Script Remove="Components\PreferredDays.razor" />
 	  <Script Remove="Components\Spinner.razor" />
 	  <Script Remove="Shared\ExceptionDates.razor" />
@@ -65,6 +66,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Include="Components\DeleteEvent.razor" />
 	  <None Include="Components\PreferredDays.razor" />
 	  <None Include="Components\BottomAppBar.razor" />
 	  <None Include="Components\ProjectAuthComponent.razor" />

@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using entities = WVBApp.Shared.Entities;
+using dtos = WVBApp.Shared.DTOs;
+using WVBApp.Shared.DTOs;
 
 namespace Api.Data
 {
@@ -22,6 +24,8 @@ namespace Api.Data
         public virtual DbSet<entities.MemberExceptionDate> MemberExceptionDate { get; set; }
         public virtual DbSet<entities.MemberPreferredDays> MemberPreferredDays { get; set; }
         public virtual DbSet<entities.Message> Message { get; set; }
+        public virtual DbSet<EventWithCodeInfo> EventWithCodeInfo { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

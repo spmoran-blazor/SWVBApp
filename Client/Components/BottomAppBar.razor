@@ -1,12 +1,12 @@
 ﻿@attribute [Authorize]
-@inject StateAccessService stateAccess
+@inject StateAccessService state
 @implements IDisposable;
 
 @if (_state is not null)
 {
     if (_state.Member is not null)
     {
-        <MudAppBar Bottom="true" Fixed="true" Color="Color.Primary" Elevation="1" Dense="true">
+        <MudAppBar Bottom="true" Fixed="true" Elevation="0" Dense="true" Color="Color.Primary">
 
             <MudText>@_state.Member.FirstName  @_state.Member.LastName</MudText>
             <MudSpacer />
@@ -20,25 +20,38 @@
 
 @code {
     StateAccessService? _state;
-    bool _drawerOpen = true;
     string _style = String.Empty;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
+    Member? _currentMember;
 
     protected override async Task OnInitializedAsync()
     {
-        _state = stateAccess;
-    }
+        state.OnStateChange += StateHasChanged;
+        _state = state;
 
-    protected void AdminVisible()
-    {
         if (_state is not null && _state.Member is not null && _state.Member.IsAdmin == true)
         {
             _style = "display:none;";
         }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            if (_state is not null)
+            {
+                _currentMember = _state.Member;
+                //StateHasChanged();
+            }
+        }
+    }
+
+    protected void AdminVisible()
+    {
+        //if (_state is not null && _state.Member is not null && _state.Member.IsAdmin == true)
+        //{
+        //    _style = "display:none;";
+        //}
     }
 
     void IDisposable.Dispose()

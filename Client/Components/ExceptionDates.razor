@@ -10,7 +10,7 @@
         <EditForm Model="@_dateRange" OnValidSubmit="HandleValidExceptionDatesSubmit">
             <DataAnnotationsValidator />
             <MudExpansionPanels DisableBorders="true" Elevation="0" Class="pt-10">
-                <MudExpansionPanel @bind-IsExpanded="_isOpen" HideIcon="true" Style="py-0" >
+                <MudExpansionPanel @bind-IsExpanded="_isOpen" HideIcon="true" Style="py-0 width:300px;" >
                     <TitleContent>
                         <div class="d-flex">
                             <MudChip Size="Size.Large" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="d-flex ml-auto">Add Dates</MudChip>
@@ -19,7 +19,7 @@
                     <ChildContent>
                         <MudDateRangePicker @ref="_picker" Label="Add Date Range" @bind-DateRange="_dateRange" Elevation="0" AutoClose="true" PickerVariant="PickerVariant.Dialog" For="@(() => _dateRange.Start)" />
                         <MudItem xs="12" sm="7" Class="pt-6 align-end">
-                            <MudButton Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+                            <MudFab Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Save" Label="Save" Color="Color.Primary" ButtonType="ButtonType.Submit"></MudFab>
                         </MudItem>
                     </ChildContent>
                 </MudExpansionPanel>
@@ -36,14 +36,14 @@
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 @foreach (var ed in @_memberExceptionDates)
                 {
-                    <MudItem xs="10">
-                        <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-left mud-width-full py-2" Width="100%" Elevation="0">
+                    <MudItem xs="9" py-2>
+                        <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-left mud-width-full py-2" Width="90%" Elevation="0">
                             <MudText Class="d-flex align-center justify-start py-1">@ed.BeginDate.ToShortDateString()-@ed.EndDate.ToShortDateString()</MudText>
                         </MudPaper>
                     </MudItem>
-                    <MudItem xs="2">
-                        <MudPaper Class="d-flex align-center py-2" Elevation="0" Width="80px">
-                            <MudIconButton Class="d-flex align-center justify-end py-1" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" Color="Color.Primary" Size="Size.Medium" @onclick="(e => DropExceptionDate(ed))" />
+                    <MudItem xs="3" py-2>
+                        <MudPaper Class="d-flex align-center" Elevation="0">
+                            <MudFab Class="d-flex align-center justify-center py-1" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Size="Size.Medium" @onclick="(e => DropExceptionDate(ed))" />
                         </MudPaper>
                     </MudItem>
                 }
