@@ -2,6 +2,7 @@
 @inject DataAccessService data;
 @inject StateAccessService state
 @inject ISnackbar Snackbar
+@inject IDialogService DialogService
 @implements IDisposable;
 
 @if (_fullEvents is not null && _fullEvents.Count > 0)
@@ -20,10 +21,15 @@
                         <MudPaper Class="d-flex align-center py-2" Elevation="0" Width="80px">
                             <MudFab Class="d-flex align-center justify-center py-1" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Size="Size.Medium" @onclick="(e => RemoveEvent(ev))" />
 
-                            </MudPaper>
+                        </MudPaper>
                     </MudItem>
                 }
             </MudGrid>
+        </MudContainer>
+    </MudPaper>
+    <MudPaper Height="100px" Width="100%" Elevation="0">
+        <MudContainer MaxWidth="MaxWidth.Small">
+            <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
         </MudContainer>
     </MudPaper>
 }
@@ -43,20 +49,28 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        _state = state;     
+        _state = state;
         _data = data ?? null;
-        await GetScheduledEvents();       
+        await GetScheduledEvents();
     }
 
     private async void RemoveEvent(EventWithCodeInfo evc)
     {
-        Event? evt = _events.Where(a => a.Id == evc.Id).FirstOrDefault();
-        var postData = await _data.DeleteEvent(evt);
-        await GetScheduledEvents();
-        _success = true;
-        Snackbar.Configuration.PositionClass = "Top-Center";
-        Snackbar.Add("Event Removed!", Severity.Success);
-        StateHasChanged();
+        bool? result = await DialogService.ShowMessageBox(
+            "Warning",
+            "Deleting can not be undone!",
+            yesText: "Delete!", cancelText: "Cancel");
+
+        if (result is not null && result == true)
+        {
+            Event? evt = _events.Where(a => a.Id == evc.Id).FirstOrDefault();
+            var postData = await _data.DeleteEvent(evt);
+            await GetScheduledEvents();
+            _success = true;
+            Snackbar.Configuration.PositionClass = "Top-Center";
+            Snackbar.Add("Event Removed!", Severity.Success);
+            StateHasChanged();
+        }
     }
 
     private async Task GetScheduledEvents()
@@ -71,7 +85,8 @@ else
 
     }
 
-    private async Task FashionEvents(List<WVBApp.Shared.DTOs.EventWithCodeInfo> eventWithCodeInfos)
+    private async Task FashionEvents(List<WVBApp.Shared.DTOs.EventWithCodeInfo>
+    eventWithCodeInfos)
     {
         _events.Clear();
         foreach (var item in eventWithCodeInfos)

@@ -26,15 +26,8 @@
 @*                <DataAnnotationsValidator />*@
                 <MudGrid Class="overflow-scroll">
                     <MudItem xs="12" sm="7" Class="pt-5">
-                        <MudDatePicker @ref="@_picker" Label="Event Date" PickerVariant="PickerVariant.Dialog" @bind-Date="@_eventDate" Mask="@(new DateMask("MM/dd/yyyy"))" DateFormat="MM/dd/yyyy" Placeholder="Enter Event Date" AutoClose="false" For="@(() => @_eventDate)">
-                            <PickerActions Context="dateContext">
-                                <MudButton Class="mr-auto align-self-start" OnClick="@(() => _picker.Clear())">Clear</MudButton>
-                                <MudButton OnClick="@(() => _picker.Close(false))">Cancel</MudButton>
-                                <MudButton Color="Color.Primary" OnClick="@(() => _picker.Close())">Ok</MudButton>
-                            </PickerActions>
-
+                        <MudDatePicker @ref="@_picker" @bind-Date="_eventDate" Label="Event Date" Mask="@(new DateMask("MM/dd/yyyy"))" DateFormat="MM/dd/yyyy" AutoClose="true" DisableToolbar="true">
                         </MudDatePicker>
-
                     </MudItem>
                     <MudItem xs="12" sm="7">
                         <MudTimePicker Label="Event Time" AmPm="true" @bind-Time="_eventTime" PickerVariant="PickerVariant.Dialog" />
@@ -71,7 +64,7 @@
                     </MudItem>
 
                     <MudItem xs="12" sm="7" Class="pt-5 pb-5">
-                        <MudFab StartIcon="@Icons.Material.Filled.Save" Label="Save" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" />
+                        <MudFab StartIcon="@Icons.Material.Filled.Save" Label="Save" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit" DisableElevation="true" />
                     </MudItem>
                 </MudGrid>
             </EditForm>
@@ -90,13 +83,13 @@
     private EventSchedulingCode? _selectedCode;
     private MudSelect<EventSchedulingCode>? _mudSelect;
     private Event? _newEvent = new Event();
-    private DateTime? _eventDate = DateTime.Now.Date;
+    private DateTime? _eventDate;
     private TimeSpan? _eventTime = new TimeSpan(18, 30, 00);
     private int _participantLimit;
     private bool _isPartial = false;
     private bool _isCancelled = false;
-    private int _areaOfPlayId = -1;
     private bool _valid = false;
+    private int _areaOfPlayId = -1;
     private string? _eventComment;
 
     private StateAccessService? _state;
@@ -169,38 +162,11 @@
         _valid = true;
     }
 
-    //private async Task CustomValidateEvent()
+    //async void OnDateChange(DateTime? newDate)
     //{
-    //    if (_selectedCode is not null)
-    //    {
-    //        _newEvent.EventSchedulingCodeId = _selectedCode.Id;
-    //    }
-
-    //    if (_eventDate is not null)
-    //    {
-    //        _newEvent.EventDate = _eventDate;
-    //    }
-
-    //    if (_eventTime is not null)
-    //    {
-    //        _newEvent.EventTime = _eventTime;
-    //    }
-
-    //    if (_areaOfPlayId > 0)
-    //    {
-    //        _newEvent.AreaOfPlayId = _areaOfPlayId;
-    //    }
-
-    //    _newEvent.IsPartial = _isPartial;
-
-    //    _newEvent.IsCancelled = _isCancelled;
-
-    //    _newEvent.ParticipantLimit = _participantLimit;
-
-    //    _newEvent.EventComment = _eventComment;
-
-    //    _newEvent.UpdatedDate = DateTime.Now;
-    //    _newEvent.UpdatedBy = _state.Member.Email;
+    //    _eventDate = newDate;
+    //    StateHasChanged();
+    //    //await FetchData();
     //}
 
     private async Task OnValidSubmit(EditContext context)
@@ -215,7 +181,16 @@
             return;
         }
 
-        _newEvent = await _data.SaveEvent(_newEvent);
+        var temp = await _data.SaveEvent(_newEvent);
+        if(temp is null)
+        {
+            _success = false;
+            Snackbar.Configuration.PositionClass = "Top-Center";
+            Snackbar.Add("Save Failed! Ensure there isn't already an event with the same date, time and area of play", Severity.Error);
+            return;
+        }
+
+        _newEvent = temp;
         _success = true;
         Snackbar.Configuration.PositionClass = "Top-Center";
         Snackbar.Add("Event Saved!", Severity.Success);
@@ -244,7 +219,7 @@
         await GetEventSchedulingCodes();
         _newEvent.EventTime = _eventTime ?? null;
         _newEvent.IsPartial = false;
-        _newEvent.EventDate = DateTime.Now;
+        //_newEvent.EventDate = DateTime.Now;
     }
 
     private async Task GetEventSchedulingCodes()

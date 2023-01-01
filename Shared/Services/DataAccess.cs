@@ -136,9 +136,26 @@ namespace WVBApp.Shared.Services.Data
         {
             JsonContent memberString = JsonContent.Create<Event>(evt);
             var response = await _http.PostAsync($"{_baseUrl}api/saveevent", memberString);
-            var retval = await response.Content.ReadFromJsonAsync<Event>();
-            return retval;
+
+            try
+            {
+                if (response.IsSuccessStatusCode)
+                {
+                    var retval = await response.Content.ReadFromJsonAsync<Event>();
+                    return retval;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
+
 
         #endregion
 
@@ -183,6 +200,6 @@ namespace WVBApp.Shared.Services.Data
     {
         IDbConnection GetConnection(string connectionString);
     }
-
-
 }
+
+

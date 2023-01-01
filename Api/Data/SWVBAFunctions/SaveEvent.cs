@@ -30,21 +30,18 @@ namespace Api.Data.SWVBAFunctions
             var data = requestBody.Result;
 
             Event evt = JsonSerializer.Deserialize<Event>(data, options);
-            if (evt.Id == 0)
+            _dbContext.Add<Event>(evt);
+            
+            try
             {
-                _dbContext.Add<Event>(evt);
+                await _dbContext.SaveChangesAsync();
+                return new OkObjectResult(evt);
             }
-            else
-            {
-                if (evt.Id > 0)
-                {
-                    _dbContext.Update<Event>(evt);
-                }
+            catch(System.Exception e) 
+            { return new BadRequestObjectResult(e); 
             }
 
-            await _dbContext.SaveChangesAsync();
 
-            return new OkObjectResult(evt);
         }
     }
 }

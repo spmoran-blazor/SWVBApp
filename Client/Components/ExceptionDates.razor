@@ -110,12 +110,20 @@
 
     private async void DropExceptionDate(MemberExceptionDate date)
     {
-        var postData = await _data.RemoveExceptionDate(date);
-        await GetMemberExceptionDatesById();
-        success = true;
-        Snackbar.Configuration.PositionClass = "Top-Center";
-        Snackbar.Add("Date Removed!", Severity.Success);
-        StateHasChanged();
+        bool? result = await DialogService.ShowMessageBox(
+            "Warning",
+            "Deleting can not be undone!",
+            yesText: "Delete!", cancelText: "Cancel");
+
+        if (result is not null && result == true)
+        {
+            var postData = await _data.RemoveExceptionDate(date);
+            await GetMemberExceptionDatesById();
+            success = true;
+            Snackbar.Configuration.PositionClass = "Top-Center";
+            Snackbar.Add("Date Removed!", Severity.Success);
+            StateHasChanged();
+        }
     }
 
     void IDisposable.Dispose()

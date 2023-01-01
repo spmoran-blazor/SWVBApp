@@ -6,7 +6,7 @@
 {
     if (_state.Member is not null)
     {
-        <MudAppBar Bottom="true" Fixed="true" Elevation="0" Dense="true" Color="Color.Primary">
+        <MudAppBar Bottom="true" Fixed="true" Elevation="0" Dense="true">
 
             <MudText>@_state.Member.FirstName  @_state.Member.LastName</MudText>
             <MudSpacer />
@@ -41,19 +41,11 @@
             if (_state is not null)
             {
                 _currentMember = _state.Member;
-                //StateHasChanged();
             }
         }
     }
 
-    protected void AdminVisible()
-    {
-        //if (_state is not null && _state.Member is not null && _state.Member.IsAdmin == true)
-        //{
-        //    _style = "display:none;";
-        //}
-    }
-
+    
     void IDisposable.Dispose()
     {
         _state = null;
