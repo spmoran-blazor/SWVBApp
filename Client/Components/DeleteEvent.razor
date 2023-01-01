@@ -12,14 +12,14 @@
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 @foreach (var ev in @_fullEvents)
                 {
-                    <MudItem xs="10">
+                    <MudItem xs="9">
                         <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-left mud-width-full py-2" Width="100%" Elevation="0">
                             <MudText Class="d-flex align-center justify-start py-1 pt-4">@ev.EventDate.ToShortDateString() - @ev.Code - @ev.Area - @ev.Description</MudText>
                         </MudPaper>
                     </MudItem>
-                    <MudItem xs="2">
+                    <MudItem xs="3">
                         <MudPaper Class="d-flex align-center py-2" Elevation="0" Width="80px">
-                            <MudButton Class="d-flex align-center justify-center py-1 mt-3" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" @onclick="(e => RemoveEvent(ev))">REMOVE</MudButton>
+                            <MudButton Class="align-center justify-center py-1 mt-3" Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Medium" @onclick="(e => RemoveEvent(ev))">REMOVE</MudButton>
 
                         </MudPaper>
                     </MudItem>
