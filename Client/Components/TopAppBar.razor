@@ -8,42 +8,34 @@
     {
         case null:
             _centerText = "Navigation Center";
-            _style = "background-color:#594ae2ff";
             break;
         case "1":
             _centerText = "Game Center";
-            _style = "background-color:#2196F3";
             break;
         case "2":
             _centerText = "Profile Center";
-            _style = "background-color:#594ae2ff";
             break;
         case "3":
             _centerText = "Availability Center";
-            _style = "background-color:#00c853ff";
             break;
         case "4":
             _centerText = "Exceptions Center";
-            _style = "background-color:#f44336ff";
             break;
             case "101":
             _centerText = "Admin Center";
-            _style = "background-color:#594ae2ff";
             break;
         case "102":
             _centerText = "Admin Center";
-            _style = "background-color:#594ae2ff";
             break;
         default:
             _centerText = "Navigation Center";
-            _style = "background-color:#594ae2ff";
             break;
     }
-    <MudAppBar Fixed="true" Elevation="0" style="@_style" Dense="true">
-        <MudText Typo="Typo.h5">@_centerText</MudText>
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Filled.Home" Size="Size.Large" Color="Color.Inherit" DisableElevation="true" Href="/" />
 
+    <MudAppBar Fixed="true" Elevation="2" style="@_style" Dense="true">
+        <MudText class="pl-2" Typo="Typo.h5">@_centerText</MudText>
+        <MudSpacer />
+        <MudIconButton Icon="@Icons.Filled.Home" Size="Size.Large" Color="Color.Inherit" Href="/" />
     </MudAppBar>
 }
 
@@ -55,7 +47,7 @@
     public MudAppBar _appBar;
     public StateAccessService? _state;
     public Member? _member;
-    private string _style = "Color:Color.Primary";
+    private string _style="background-color:#ffffff;color:#594ae2ff";
     private string _centerText = string.Empty;
 
     protected override async Task OnInitializedAsync()

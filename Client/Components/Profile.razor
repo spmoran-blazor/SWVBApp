@@ -18,7 +18,7 @@
                     <MudTextField @bind-Value="@_currentMember.MobileNumber" Label="Mobile Number" Variant="Variant.Text" For="@(() => @_currentMember.MobileNumber)" Immediate=true @onclick="ClearSuccess"></MudTextField>
                 </MudItem>
                 <MudItem xs="12" sm="7" Class="pt-5">
-                    <MudFab StartIcon="@Icons.Material.Filled.Save" Label="Save" Variant="Variant.Filled" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudFab>
+                    <MudButton StartIcon="@Icons.Material.Outlined.Save" Variant="Variant.Outlined" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
                 </MudItem>
 
                 @if (_state.Member.IsAdmin)

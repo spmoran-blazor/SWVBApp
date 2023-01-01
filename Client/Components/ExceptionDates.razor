@@ -13,13 +13,13 @@
                 <MudExpansionPanel @bind-IsExpanded="_isOpen" HideIcon="true" Style="py-0 width:300px;" >
                     <TitleContent>
                         <div class="d-flex">
-                            <MudChip Size="Size.Large" Icon="@Icons.Material.Filled.Add" Color="Color.Primary" Class="d-flex ml-auto">Add Dates</MudChip>
+                            <MudChip Size="Size.Large" Icon="@Icons.Material.Outlined.Add" Variant="Variant.Outlined" Color="Color.Primary" Class="d-flex ml-auto">Add Dates</MudChip>
                         </div>
                     </TitleContent>
                     <ChildContent>
                         <MudDateRangePicker @ref="_picker" Label="Add Date Range" @bind-DateRange="_dateRange" Elevation="0" AutoClose="true" PickerVariant="PickerVariant.Dialog" For="@(() => _dateRange.Start)" />
                         <MudItem xs="12" sm="7" Class="pt-6 align-end">
-                            <MudFab Variant="Variant.Outlined" StartIcon="@Icons.Material.Filled.Save" Label="Save" Color="Color.Primary" ButtonType="ButtonType.Submit"></MudFab>
+                            <MudButton Variant="Variant.Outlined" StartIcon="@Icons.Material.Outlined.Save" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
                         </MudItem>
                     </ChildContent>
                 </MudExpansionPanel>
@@ -31,7 +31,7 @@
 
 @if (_memberExceptionDates is not null && success == true && _memberExceptionDates.Count > 0)
 {
-    <MudPaper Width="100%" Elevation="0" Class="pt-6">
+    <MudPaper Width="100%" Elevation="0" Class="pt-6 object-center">
         <MudContainer MaxWidth="MaxWidth.Small">
             <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
                 @foreach (var ed in @_memberExceptionDates)
@@ -43,7 +43,7 @@
                     </MudItem>
                     <MudItem xs="3" py-2>
                         <MudPaper Class="d-flex align-center" Elevation="0">
-                            <MudFab Class="d-flex align-center justify-center py-1" Icon="@Icons.Material.Filled.Delete" Variant="Variant.Filled" DisableElevation="true" Color="Color.Primary" Size="Size.Medium" @onclick="(e => DropExceptionDate(ed))" />
+                            <MudButton Variant="Variant.Outlined" Class="d-flex align-center justify-center py-1" Color="Color.Secondary" Size="Size.Medium" @onclick="(e => DropExceptionDate(ed))">Remove</MudButton>
                         </MudPaper>
                     </MudItem>
                 }
