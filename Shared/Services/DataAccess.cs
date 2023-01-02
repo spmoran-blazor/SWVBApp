@@ -172,7 +172,7 @@ namespace WVBApp.Shared.Services.Data
 
         #endregion
 
-        private string SetBaseUri()
+        public string SetBaseUri()
         {
             string retval = string.Empty;
             retval = "https://swvbsa.azurewebsites.net/";

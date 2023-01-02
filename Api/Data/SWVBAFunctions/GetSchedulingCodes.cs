@@ -23,7 +23,7 @@ namespace Api.Data.SWVBAFunctions
             ILogger log)
         {
             var data = _dbContext.EventSchedulingCode;
-            var codes = data.ToList<EventSchedulingCode>().OrderBy(codes => codes.Id);
+            var codes = data.ToList<EventSchedulingCode>().Where(act => act.IsActive == true).OrderBy(codes => codes.Id);
 
             return new OkObjectResult(codes);
         }

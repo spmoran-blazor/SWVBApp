@@ -3,14 +3,6 @@
     {
       "route": "/",
       "allowedRoles": [ "anonymous" ]
-    },
-    {
-      "route": "/eventregister",
-      "allowedRoles": [ "anonymous" ]
-    },
-    {
-      "route": "/profile",
-      "allowedRoles": [ "anonymous" ]
     }
   ],
   "globalHeaders": {

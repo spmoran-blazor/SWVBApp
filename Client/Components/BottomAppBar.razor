@@ -1,40 +1,36 @@
 ﻿@attribute [Authorize]
+@using Microsoft.AspNetCore.Components.Authorization
 @inject StateAccessService state
+@inject IHttpClientFactory factory
+@inject NavigationManager navigation
 @implements IDisposable;
 
 @if (_state is not null)
 {
     if (_state.Member is not null)
     {
-        <MudAppBar Bottom="true" Fixed="true" Elevation="2" Dense="true" Style="@_style">
-
+        <MudAppBar Bottom="true" Fixed="true" Elevation="2" Dense="true" style="@_style">
             <MudChip Icon="@Icons.Filled.Person"> @_state.Member.FirstName  @_state.Member.LastName</MudChip>
             <MudSpacer />
-            <MudChip Variant="Variant.Outlined" Size="Size.Medium" Icon="@Icons.Material.Outlined.Logout" Href="/.auth/logout" Color="Color.Primary">Logout</MudChip>
+            <MudChip Variant="Variant.Outlined" @onclick="BeginSignOut" Size="Size.Medium" Icon="@Icons.Material.Outlined.Logout" Color="Color.Primary">Logout</MudChip>  @*Href="@_redirect"*@
         </MudAppBar>
     }
 }
 
-@*<MudAppBar Fixed="true" Elevation="2" style="@_style" Dense="true">
-    <MudText Typo="Typo.h6" Color="Color.Primary">@_centerText</MudText>
-    <MudSpacer />
-    <MudIconButton Icon="@Icons.Filled.Home" Size="Size.Medium" Color="Color.Primary" DisableElevation="true" Href="/" />
-
-</MudAppBar>*@
 @code {
     StateAccessService? _state;
-    private string _style = "background-color:#ffffff;color:#594ae2ff";
+    HttpClient? _http;
+    NavigationManager _nav;
     Member? _currentMember;
+    private string _redirect;
+    private string _style = "background-color:#ffffff;color:#594ae2ff";
 
     protected override async Task OnInitializedAsync()
     {
         state.OnStateChange += StateHasChanged;
         _state = state;
-
-        if (_state is not null && _state.Member is not null && _state.Member.IsAdmin == true)
-        {
-            _style = "display:none;";
-        }
+        _http = factory.CreateClient("DataAccessHttpClient");
+        _nav = navigation;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -48,10 +44,13 @@
         }
     }
 
-    
+    private void BeginSignOut(MouseEventArgs args)
+    {
+        _nav.NavigateTo("/.auth/logout", true);
+    }
+
     void IDisposable.Dispose()
     {
         _state = null;
     }
 }
-
