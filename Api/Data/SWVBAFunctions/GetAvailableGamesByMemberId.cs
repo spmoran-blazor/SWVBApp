@@ -21,7 +21,7 @@ namespace Api.Data.SWVBAFunctions
 
         [FunctionName("GetAvailableGamesByMemberId")]
         public IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "getmemberpreferreddaysbyid/{Id}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "getavailablegamesbymemberId/{Id}")] HttpRequest req,
             int Id, ILogger log)
         {
             var sql = $"SELECT evt.* FROM Event evt, dbo.EventSchedulingCode esc, dbo.Member mem WHERE evt.EventSchedulingCodeId = esc.Id AND mem.PlayLevel BETWEEN esc.MinLevelMain AND esc.MaxLevelEdge AND mem.Id={Id} ORDER BY evt.EventDate DESC";
