@@ -23,15 +23,17 @@
     <MudPaper Height="400px" Width="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.Small">
             <EditForm @ref="form" Model="@_newEvent" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
-@*                <DataAnnotationsValidator />*@
                 <MudGrid Class="overflow-scroll">
                     <MudItem xs="12" sm="7" Class="pt-5">
                         <MudDatePicker @ref="@_picker" @bind-Date="_eventDate" Label="Event Date" Mask="@(new DateMask("MM/dd/yyyy"))" DateFormat="MM/dd/yyyy" AutoClose="true" DisableToolbar="true">
                         </MudDatePicker>
                     </MudItem>
+
+
                     <MudItem xs="12" sm="7">
                         <MudTimePicker Label="Event Time" AmPm="true" @bind-Time="_eventTime" PickerVariant="PickerVariant.Dialog" />
                     </MudItem>
+
                     <MudItem xs="12" sm="7">
                         <MudField Label="Area of Play" Variant="Variant.Text" InnerPadding="true">
                             <MudRadioGroup T="int" @bind-SelectedOption="@_areaOfPlayId" Class="pl-4" For="@(() => @_areaOfPlayId)">
@@ -44,6 +46,7 @@
                     <MudItem xs="12" sm="7" Class="pt-5">
                         <MudNumericField @bind-Value="@_selectedCode.MinLevelMain" Label="Min Player Level" Variant="Variant.Text" Min="1" ReadOnly="true" />
                     </MudItem>
+
                     <MudItem xs="12" sm="7" Class="pt-5">
                         <MudNumericField @bind-Value="@_selectedCode.MaxLevelMain" Label="Max Player Level" Variant="Variant.Text" Min="1" ReadOnly="true" />
                     </MudItem>
@@ -57,6 +60,7 @@
                             <MudCheckBox @bind-Checked="@_isPartial" Label="Is Partial Game" Size="Size.Small" Disabled></MudCheckBox>
                         </MudField>
                     </MudItem>
+
                     <MudItem xs="12" sm="7" Class="pt-5" Style="border:none;">
                         <MudField Label="Comments" Variant="Variant.Text" InnerPadding="false">
                             <MudTextField @bind-Value="@_eventComment" Label="Enter any Comments" Variant="Variant.Text" Margin="Margin.Dense"></MudTextField>

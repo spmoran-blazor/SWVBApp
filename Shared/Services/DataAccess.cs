@@ -95,6 +95,16 @@ namespace WVBApp.Shared.Services.Data
 
         #region "EventData"
 
+        public async Task<IEnumerable<Event>?> GetAvailableGamesByMemberId(int Id)
+        {
+            IEnumerable<Event>? evts;
+
+            var response = await _http.GetAsync($"{_baseUrl}api/getavailablegamesbymemberId/{Id}");
+            evts = await response.Content.ReadFromJsonAsync<IEnumerable<Event>>();
+
+            return evts;
+        }
+
         public async Task<bool> DeleteEvent(Event evt)
         {
             JsonContent incoming = JsonContent.Create<Event>(evt);

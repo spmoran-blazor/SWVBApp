@@ -14,12 +14,15 @@
                 <MudStack Class="pt-10 pl-10">
                     @foreach (var prefday in _preferredDaysDisplay)
                     {
-                        <MudItem xs="12" sm="7">
-                            <MudSwitch Color="Color.Primary" UnCheckedColor="Color.Secondary" @bind-Checked="prefday.IsPreferred" Label="@prefday.Day" />
+                        <MudItem xs="12" sm="7" Class="pl-15">
+                            <MudToggleIconButton @bind-Toggled="@prefday.IsPreferred"
+                                         Icon="@Icons.Material.Filled.ThumbDown" Color="@Color.Error" Title="Not Scheduled"
+                                         ToggledIcon="@Icons.Material.Filled.ThumbUp" ToggledColor="@Color.Primary" ToggledTitle="Scheduled" />
+                            <span>@(prefday.IsPreferred ? "Available" : "Unavailable") @prefday.Day</span>
                         </MudItem>
                     }
-                    <MudItem xs="12" sm="7" Class="pt-2">
-                        <MudButton StartIcon="@Icons.Material.Outlined.Save" Variant="Variant.Outlined" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+                    <MudItem xs="12" sm="7" Class="pt-2 pl-15">
+                        <MudButton class="ml-2" StartIcon="@Icons.Material.Outlined.Save" Variant="Variant.Outlined" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
                     </MudItem>
                 </MudStack>
             </EditForm>

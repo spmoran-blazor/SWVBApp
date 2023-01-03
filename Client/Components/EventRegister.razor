@@ -1,48 +1,60 @@
 ﻿@attribute [Authorize]
+@inject DataAccessService data
+@inject StateAccessService state
+@inject ISnackbar Snackbar
 @implements IDisposable;
-<MudExpansionPanels MultiExpansion="true" Square="true" DisableBorders="false" Elevation="1" Class="pt-8">
-    <MudExpansionPanel Text="Monday, Nov 31 2022 6:30 PM" Icon="@Icons.Filled.SportsVolleyball" Style="font-weight:bold">
-        <MudStack Spacing="3" Row="true" Class="pb-2">
-            <MudField Variant="Variant.Text">Arthur Fonzarelli - Unconfirmed</MudField>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" DisableElevation="true" Icon="@Icons.Filled.ThumbUp"></MudIconButton>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" DisableElevation="true" Icon="@Icons.Filled.ThumbDown"></MudIconButton>
-        </MudStack>
-        <MudStack Spacing="3" Row="true" Class="pb-2">
-            <MudField Disabled Variant="Variant.Text">Freddie Kruger - Unconfirmed</MudField>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" Disabled DisableElevation="true" Icon="@Icons.Filled.ThumbUp"></MudIconButton>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" Disabled DisableElevation="true" Icon="@Icons.Filled.ThumbDown"></MudIconButton>
-        </MudStack>
-        <MudStack Spacing="3" Row="true" Class="pb-2">
-            <MudField Disabled Variant="Variant.Text">H.R. Puffenstuff - Confirmed</MudField>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" Disabled DisableElevation="true" Icon="@Icons.Filled.ThumbUp"></MudIconButton>
-            <MudIconButton OnClick="@ToggleValue" Variant="Variant.Text" Disabled DisableElevation="true" Icon="@Icons.Filled.ThumbDown"></MudIconButton>
-        </MudStack>
-        <MudPaper Height="200px" Width="100%" Elevation="0">
-            <MudContainer MaxWidth="MaxWidth.Small">
-                <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
-            </MudContainer>
-        </MudPaper>
-    </MudExpansionPanel>
-    <MudExpansionPanel Text="Panel Two" Style="font-weight:bold">
-        <MudPaper Height="200px" Width="100%" Elevation="0">
-            <MudContainer MaxWidth="MaxWidth.Small">
-                <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
-            </MudContainer>
-        </MudPaper>
-    </MudExpansionPanel>
+
+<MudExpansionPanels MultiExpansion="true" Square="true" DisableBorders="false" Elevation="1" Class="pt-8" >
+    @foreach(var evt in _availableEvents)
+    {
+        var ed = @evt.EventDate ?? null;
+        var nd = ed.Value;
+        string sd = nd.ToShortDateString();
+
+
+        var x = new DateTime().Add(evt.EventTime.GetValueOrDefault()).ToShortTimeString();
+
+        string dw = nd.DayOfWeek.ToString();
+
+        string title = dw + " " + sd + " " + x;
+
+
+
+        <MudExpansionPanel Text="@title" Icon="@Icons.Material.Filled.SportsVolleyball" Color="Color.Primary" style="color:red">
+
+            </MudExpansionPanel>
+    }
 </MudExpansionPanels>
 
 
+
 @code {
+    private StateAccessService? _state;
+    private DataAccessService? _data;
+    private entities.Member? _currentMember;
+    private bool _success = false;
+    List<PreferredPlayDays> _preferredDaysDisplay = new List<PreferredPlayDays>();
+    List<Event> _availableEvents = new List<Event>();
 
-    [Parameter] public int Id { get; set; }
-    public bool SwitchValue { get; set; } = true;
-    public bool ReadOnly { get; set; } = true;
-
-    void ToggleValue()
+    protected override async Task OnInitializedAsync()
     {
-        SwitchValue = !SwitchValue;
+        _state = state;
+        _currentMember = _state.Member;
+        _data = data ?? null;
+        await GetAvailableGames();
     }
+    protected async Task GetAvailableGames()
+    {
+        var getData = await _data.GetAvailableGamesByMemberId(_currentMember.Id);
+        _availableEvents = getData.ToList() ?? null;
+    }
+    //public bool SwitchValue { get; set; } = true;
+    //public bool ReadOnly { get; set; } = true;
+
+    //void ToggleValue()
+    //{
+    //    SwitchValue = !SwitchValue;
+    //}
     void IDisposable.Dispose() { }
     
 }   
