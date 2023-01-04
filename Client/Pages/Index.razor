@@ -4,6 +4,13 @@
 @inject DataAccessService dataAccess
 @inject StateAccessService stateAccess
 
+@if (CurrentMember is null)
+{
+    <MudItem style="text-align: center;">
+        <MudImage style="margin:auto; display:block; width:50%; padding-top:100px;" src="img/loading.gif" />
+    </MudItem>
+}
+
 <Client.Components.ProjectAuthComponent />
 
 @if (CurrentMember is not null)
@@ -50,6 +57,7 @@
     [Parameter]
     public string? Action { get; set; }
     private entities.Member _currentMember = new entities.Member();
+    private string _spinnerShow = string.Empty;
     public Member? CurrentMember { get; set; }
 
     protected override async Task OnParametersSetAsync()
@@ -66,7 +74,7 @@
     {
         if (!firstRender)
         {
-            if(CurrentMember is null)
+            if (CurrentMember is null)
             {
                 CurrentMember = stateAccess.Member;
                 StateHasChanged();

@@ -6,29 +6,23 @@
 
 @if (_preferredDaysDisplay.Count > 0)
 {
-
-    <MudPaper Height="400px" Width="100%" Elevation="0">
         <MudContainer MaxWidth="MaxWidth.Small">
             <EditForm Model="@_preferredDaysDisplay" OnValidSubmit="HandleValidPlayDaySubmit">
                 <DataAnnotationsValidator />
                 <MudStack Class="pt-10 pl-10">
                     @foreach (var prefday in _preferredDaysDisplay)
                     {
-                        <MudItem xs="12" sm="7" Class="pl-15">
-                            <MudToggleIconButton @bind-Toggled="@prefday.IsPreferred"
-                                         Icon="@Icons.Material.Filled.ThumbDown" Color="@Color.Error" Title="Not Scheduled"
-                                         ToggledIcon="@Icons.Material.Filled.ThumbUp" ToggledColor="@Color.Primary" ToggledTitle="Scheduled" />
-                            <span>@(prefday.IsPreferred ? "Available" : "Unavailable") @prefday.Day</span>
+                        <MudItem xs="12" sm="7" Class="pt-2">
+                            <MudSwitch @bind-Checked="@prefday.IsPreferred" Color="Color.Primary" UnCheckedColor="Color.Secondary" Label="@prefday.Day" />
                         </MudItem>
                     }
-                    <MudItem xs="12" sm="7" Class="pt-2 pl-15">
-                        <MudButton class="ml-2" StartIcon="@Icons.Material.Outlined.Save" Variant="Variant.Outlined" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
+                    <MudItem xs="12" sm="7" Class="pt-2">
+                        <MudButton class="" StartIcon="@Icons.Material.Outlined.Save" Variant="Variant.Outlined" Color="Color.Primary" ButtonType="ButtonType.Submit">Save</MudButton>
                     </MudItem>
                 </MudStack>
             </EditForm>
         </MudContainer>
-    </MudPaper>
- 
+
 
 }
 <MudPaper Height="200px" Width="100%" Elevation="0">
@@ -68,7 +62,7 @@
                 mpd.UpdatedBy = _state.Member.Email;
                 mpd.DayOfWeekId = prefday.DayOfWeekId;
                 mpd.MemberId = prefday.MemberId;
-                mpd.Id =0;
+                mpd.Id = 0;
 
                 mpds.Add(mpd);
             }
@@ -109,23 +103,23 @@
                 }
             }
 
-                DateTime baseDate = new DateTime(0001, 01, 02).AddDays(362);
-                for (int i = 0; i < 7; i++)
-                {
-                    PreferredPlayDays ppd = new PreferredPlayDays()
-                        {
-                            MemberId = _currentMember.Id,
-                            DayOfWeekId = i,
-                            IsPreferred = false,
-                            Day = baseDate.AddDays(i).DayOfWeek.ToString(),
-                        };
-
-                    if (vals.Contains(ppd.DayOfWeekId))
+            DateTime baseDate = new DateTime(0001, 01, 02).AddDays(362);
+            for (int i = 0; i < 7; i++)
+            {
+                PreferredPlayDays ppd = new PreferredPlayDays()
                     {
-                        ppd.IsPreferred = true;
-                    }
-                    _preferredDaysDisplay.Add(ppd);
+                        MemberId = _currentMember.Id,
+                        DayOfWeekId = i,
+                        IsPreferred = false,
+                        Day = baseDate.AddDays(i).DayOfWeek.ToString(),
+                    };
+
+                if (vals.Contains(ppd.DayOfWeekId))
+                {
+                    ppd.IsPreferred = true;
                 }
+                _preferredDaysDisplay.Add(ppd);
+            }
         }
 
     }
