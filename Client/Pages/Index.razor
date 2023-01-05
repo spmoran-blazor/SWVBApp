@@ -23,7 +23,8 @@
     switch (Action)
     {
         case null:
-            <Client.Components.NavScreen />
+@*            <Client.Components.NavScreen />*@
+            <Client.Components.EventManager />
             break;
         case "0":
             <Client.Components.NavScreen />
@@ -47,7 +48,7 @@
             <Client.Components.DeleteEvent />
             break;
         default:
-            <Client.Components.NavScreen />
+            <Client.Components.EventManager />
             break;
     }
 }

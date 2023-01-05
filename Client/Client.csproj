@@ -54,6 +54,9 @@
 
 	<ItemGroup>
 	  <Script Remove="Components\DeleteEvent.razor" />
+	  <Script Remove="Components\DeleteEvent.razor.cs" />
+	  <Script Remove="Components\EventManager.razor" />
+	  <Script Remove="Components\EventManager.razor.cs" />
 	  <Script Remove="Components\PreferredDays.razor" />
 	  <Script Remove="Components\Spinner.razor" />
 	  <Script Remove="Shared\ExceptionDates.razor" />
@@ -67,6 +70,7 @@
 
 	<ItemGroup>
 	  <None Include="Components\DeleteEvent.razor" />
+	  <None Include="Components\EventManager.razor" />
 	  <None Include="Components\PreferredDays.razor" />
 	  <None Include="Components\BottomAppBar.razor" />
 	  <None Include="Components\ProjectAuthComponent.razor" />

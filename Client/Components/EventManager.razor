@@ -1,0 +1,52 @@
+﻿@attribute [Authorize]
+
+@if (_fullEvents is not null && _fullEvents.Count > 0)
+{
+
+    <MudContainer MaxWidth="MaxWidth.Small" Class="pt-10">
+        <MudExpansionPanels>
+            @foreach (var hd in @_headerDates.Distinct())
+            {
+                <MudExpansionPanel HideIcon="true">
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText Class="mt-1">@hd.EventDate.ToShortDateString()</MudText>
+                            <MudBadge Content="@hd.Count" Color="Color.Primary" Overlap="true" Class="d-flex ml-auto">
+                                <MudIcon Icon="@Icons.Material.Filled.SportsVolleyball" Color="Color.Default" />
+                            </MudBadge>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        Panel Content
+                    </ChildContent>
+                </MudExpansionPanel>
+
+            }
+        </MudExpansionPanels>
+        @*        <MudGrid Spacing="1" Justify="Justify.SpaceBetween">
+    @foreach (var ev in @_headerDates)
+    {
+    <MudItem xs="9">
+    <MudText Class="d-flex align-center justify-start py-1 pt-4">@ev.EventDate.ToShortDateString() - @ev.Code - @ev.Area - @ev.Description</MudText>
+
+    </MudItem>
+    <MudItem xs="3">
+
+    <MudFab StartIcon="@Icons.Material.Filled.DeleteForever" Variant="Variant.Filled" Class="d-flex align-center justify-center py-1" Color="Color.Secondary" Size="Size.Medium" @onclick="(e => RemoveEvent(ev))"></MudFab>
+
+    </MudItem>
+    }
+    </MudGrid>*@
+    </MudContainer>
+
+    <MudContainer MaxWidth="MaxWidth.Small">
+        <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
+    </MudContainer>
+
+}
+else
+{
+    <MudPaper Typo="Typo.body2" Class="d-flex align-center justify-center mud-width-full py-2" Width="100%" Elevation="0">
+        <MudText Typo="Typo.h6" Class="d-flex align-center justify-start py-1 pt-4">Loading Events...</MudText>
+    </MudPaper>
+}

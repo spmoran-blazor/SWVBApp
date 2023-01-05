@@ -1,8 +1,6 @@
 ﻿@attribute [Authorize]
 @inject StateAccessService state
 
-@*<Client.Components.Spinner DisplayStyle="display:none;" />*@
-
 <MudStack Spacing="2" Row="true" Justify="Justify.Center" Class="pb-2 pt-10">
     <MudButton Variant="Variant.Filled" Style="@($"background-color:{Colors.Blue.Default}; color:{Colors.Shades.White};width: 200px; height: 60px;")" StartIcon="@Icons.Filled.SportsVolleyball" Href="/1" Size="Size.Large">Games</MudButton>
     <MudButton Style="width: 200px; height: 60px;" Variant="Variant.Filled" Color="Color.Success" StartIcon="@Icons.Material.Filled.CalendarMonth" Href="/3" Size="Size.Large">Available</MudButton>
