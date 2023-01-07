@@ -11,7 +11,7 @@
                     <TitleContent>
                         <div class="d-flex">
 
-                            <MudText Typo="Typo.subtitle1"><strong>@hd.EventDate.ToShortDateString()</strong></MudText>
+                            <MudText Typo="Typo.subtitle1"><strong>@hd.EventDate.DayOfWeek @hd.EventDate.ToShortDateString()</strong></MudText>
                             <MudSpacer />
                             <MudBadge Content="@hd.Count" Color="Color.Primary" Overlap="true" Class="d-flex ml-auto">
                                 <MudIcon Icon="@Icons.Material.Filled.SportsVolleyball" Color="Color.Default" />
