@@ -39,7 +39,7 @@
                                             <MudSpacer />
                                             <MudBadge Content="0" Color="Color.Primary" Overlap="true">
 
-                                                <MudChip Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Info">Verified Players</MudChip>
+                                                <MudChip Label="true" Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Info">Verified Players</MudChip>
 
                                             </MudBadge>
 
@@ -49,15 +49,15 @@
                                             @if (hd.Count == 2)
                                             {
                                                 <MudItem Class="pt-2">
-                                                    <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Label="Delete Game" />
+                                                    <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" />
                                                 </MudItem>
                                             }
                                         </MudItem>
                                         @if (hd.Count == 1)
                                         {
                                             <MudItem Class="pt-2">
-                                                <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Label="Delete Game" />
-                                                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Label="Add Game" />
+                                                <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" />
+                                                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" />
                                             </MudItem>
                                         }
 
@@ -70,7 +70,7 @@
                                 <MudChip Variant="Variant.Text" Color="Color.Info">
                                     No Events Scheduled.
                                 </MudChip>
-                                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Label="Add Game" />
+                                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Label="Add" />
                                 break;
                             }
                         }
