@@ -4,20 +4,79 @@
 {
 
     <MudContainer MaxWidth="MaxWidth.Small" Class="pt-10">
-        <MudExpansionPanels>
-            @foreach (var hd in @_headerDates.Distinct())
+        <MudExpansionPanels Elevation="1" MultiExpansion="true">
+            @foreach (var hd in @_headerDates.OrderBy(a => a.EventDate))
             {
-                <MudExpansionPanel HideIcon="true">
+                <MudExpansionPanel HideIcon="true" Class="border-bottom:none">
                     <TitleContent>
                         <div class="d-flex">
-                            <MudText Class="mt-1">@hd.EventDate.ToShortDateString()</MudText>
+
+                            <MudText Typo="Typo.subtitle1"><strong>@hd.EventDate.ToShortDateString()</strong></MudText>
+                            <MudSpacer />
                             <MudBadge Content="@hd.Count" Color="Color.Primary" Overlap="true" Class="d-flex ml-auto">
                                 <MudIcon Icon="@Icons.Material.Filled.SportsVolleyball" Color="Color.Default" />
                             </MudBadge>
+
                         </div>
                     </TitleContent>
                     <ChildContent>
-                        Panel Content
+                        @foreach (var i in _fullEvents)
+                        {
+                            @if (hd.Count > 0)
+                            {
+                                @if (i.EventDate == hd.EventDate)
+                                {
+                                    var et = new DateTime().Add(i.EventTime).ToShortTimeString();
+
+                                    <MudPaper Class="pb-2 pt-2  mb-2">
+                                        <MudItem>
+                                            <MudChip Variant="Variant.Outlined" Color="Color.Primary">@et </MudChip>
+                                            <MudChip Variant="Variant.Text" Color="Color.Info">@i.Area</MudChip>
+                                            <MudChip Variant="Variant.Text" Color="Color.Info">Code @i.Code</MudChip>
+                                            <MudChip Variant="Variant.Text" Color="Color.Info">@i.Description</MudChip>
+                                        </MudItem>
+                                        <MudItem>
+                                            <MudSpacer />
+                                            <MudBadge Content="0" Color="Color.Primary" Overlap="true">
+
+                                                <MudChip Icon="@Icons.Material.Filled.VerifiedUser" Color="Color.Info">Verified Players</MudChip>
+
+                                            </MudBadge>
+
+                                        </MudItem>
+
+                                        <MudItem>
+                                            @if (hd.Count == 2)
+                                            {
+                                                <MudItem Class="pt-2">
+                                                    <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Label="Delete Game" />
+                                                </MudItem>
+                                            }
+                                        </MudItem>
+                                        @if (hd.Count == 1)
+                                        {
+                                            <MudItem Class="pt-2">
+                                                <MudFab Color="Color.Error" StartIcon="@Icons.Material.Filled.DeleteForever" Size="Size.Small" Label="Delete Game" />
+                                                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Label="Add Game" />
+                                            </MudItem>
+                                        }
+
+                                    </MudPaper>
+
+                                }
+                            }
+                            else
+                            {
+                                <MudChip Variant="Variant.Text" Color="Color.Info">
+                                    No Events Scheduled.
+                                </MudChip>
+                                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" Label="Add Game" />
+                                break;
+                            }
+                        }
+
+
+
                     </ChildContent>
                 </MudExpansionPanel>
 

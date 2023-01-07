@@ -24,7 +24,7 @@ namespace Api.Data.SWVBAFunctions
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = "getscheduledevents")] HttpRequest req,
             ILogger log)
         {
-            var sql = $"SELECT e.Id, e.EventDate, e.EventTime, e.AreaOfPlayId,  a.Area, e.EventSchedulingCodeId, e.ParticipantLimit, e.EventComment, e.IsCancelled, e.IsPartial, e.PartialGameId, e.UpdatedDate, e.UpdatedBy, b.Code, b.Description, b.Notes FROM [dbo].[Event] e JOIN [dbo].[EventSchedulingCode] b ON e.EventSchedulingCodeId = b.Id JOIN [dbo].AreaOfPlay a ON e.AreaOfPlayId = a.Id WHERE e.EventDate >= GETDATE() ORDER BY e.EventDate, e.EventTime, e.AreaOfPlayId";
+            var sql = $"SELECT e.Id, e.EventDate, e.EventTime, e.AreaOfPlayId,  a.Area, e.EventSchedulingCodeId, e.ParticipantLimit, e.EventComment, e.IsCancelled, e.IsPartial, e.PartialGameId, e.UpdatedDate, e.UpdatedBy, b.Code, b.Description, b.Notes FROM [dbo].[Event] e JOIN [dbo].[EventSchedulingCode] b ON e.EventSchedulingCodeId = b.Id JOIN [dbo].AreaOfPlay a ON e.AreaOfPlayId = a.Id WHERE CONVERT(date, e.EventDate, 101) >= CONVERT(date, GETDATE(), 101) ORDER BY e.EventDate, e.EventTime, e.AreaOfPlayId";
             var data = _dbContext.EventWithCodeInfo.FromSqlRaw<EventWithCodeInfo>(sql).ToList();
 
             return new OkObjectResult(data);

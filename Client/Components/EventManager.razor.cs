@@ -13,7 +13,7 @@ using static MudBlazor.Colors;
 
 namespace Client.Components
 {
-    public partial class EventManager: IDisposable
+    public partial class EventManager : IDisposable
     {
         [Inject] StateAccessService State { get; set; }
         [Inject] DataAccessService Data { get; set; }
@@ -59,41 +59,36 @@ namespace Client.Components
 
                 foreach (var v in _fullEvents)
                 {
-                    HeaderType ht = new HeaderType();
-                    ht.Count = _fullEvents.Where(a => a.EventDate == v.EventDate).Count();
-                    ht.EventDate = v.EventDate;
-                    _headerDates.Add(ht);
-                    //var exists = headerDates.Find(x => (x.EventDate == v.EventDate)).FirstOrDefault();
-                    //if (!_headerDates.Find(x => (x.EventDate == v.EventDate)).fi
-                    //    {
-                    //    CartProduct obj = lst.Find(x => (x.Name == "product name"));
-                    //}
-                    //    _headerDates.Add(ht);
-                }
+                    HeaderType hta = new HeaderType();
+                    hta.Count = _fullEvents.Where(a => a.EventDate.Date == v.EventDate.Date).Count();
+                    hta.EventDate = v.EventDate.Date;
 
-                for (int i = 0; i <= 30; i++)
-                {
-                    DateTime dateTime= DateTime.Now.AddDays(i);
-                    var exists = _headerDates.Find(x => x.EventDate == dateTime);
+                    DateTime dta = hta.EventDate.Date;
+                    var exists1 = _headerDates.Find(x => x.EventDate.Date == dta.Date);
 
-                    if (exists is null)
+                    if (exists1 is null)
                     {
-                    HeaderType ht = new HeaderType();
-                    ht.EventDate = DateTime.Now.AddDays(i);
-                    ht.Count = 0;
-                    _headerDates.Add(ht);
+                        _headerDates.Add(hta);
                     }
 
-
-
                 }
+                    for (int i = 0; i <= 30; i++)
+                    {
+                        DateTime dtb = DateTime.Now.AddDays(i).Date;
+                        var exists2 = _headerDates.Find(x => x.EventDate.Date == dtb);
 
+                        if (exists2 is null)
+                        {
+                            HeaderType htb = new HeaderType();
+                            htb.EventDate = DateTime.Now.Date.AddDays(i).Date;
+                            htb.Count = 0;
+                            _headerDates.Add(htb);
+                        }
+                    }
+
+ 
                 
-
-
-                var groups = _headerDates.Distinct().ToList();
-
-                StateHasChanged();
+                   StateHasChanged();
             }
         }
 
