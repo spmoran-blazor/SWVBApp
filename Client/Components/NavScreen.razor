@@ -7,17 +7,17 @@
 </MudStack>
 
 <MudStack Spacing="2" Row="true" Justify="Justify.Center" Class="pb-2">
-    <MudButton Style="width: 200px; height: 60px;" Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.EditCalendar" Href="/4" Size="Size.Large">Exceptions</MudButton>
+    <MudButton Style="width: 200px; height: 60px;" Variant="Variant.Filled" Color="Color.Secondary" StartIcon="@Icons.Material.Filled.EditCalendar" Href="/4" Size="Size.Large">Exceptions</MudButton>
     <MudButton Style="width: 200px; height: 60px;" Variant="Variant.Filled" Color="Color.Primary" StartIcon="@Icons.Material.Filled.PermIdentity" Href="/2" Size="Size.Large">Profile</MudButton>
 </MudStack>
 
 @if (_admin is not null && _admin == true)
 {
-    <MudStack Spacing="2" Row="true" Justify="Justify.Center" Class="pb-2 pt-10">
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Filled.Create" Href="/101" Size="Size.Large" Style="width: 200px; height: 60px;">Create Game</MudButton>
-        <MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Filled.Delete" Href="/102" Size="Size.Large" Style="width: 200px; height: 60px;">Delete Game</MudButton>
+    <MudStack Spacing="2" Row="true" Justify="Justify.Center" Class="pb-2 pt-10 pr-4 pl-4">
+        <MudSpacer /><MudButton Variant="Variant.Outlined" Color="Color.Primary" StartIcon="@Icons.Material.Filled.EventRepeat" Href="/101" Size="Size.Large" Style="height: 60px;">Event Manager</MudButton><MudSpacer />
     </MudStack>
 }
+
 @code {
     private StateAccessService _state;
     private bool? _admin = null;

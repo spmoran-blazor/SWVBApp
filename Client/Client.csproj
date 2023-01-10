@@ -77,8 +77,6 @@
 	  <None Include="Components\Messages.razor" />
 	  <None Include="Components\NavScreen.razor" />
 	  <None Include="Components\ExceptionDates.razor" />
-	  <None Include="Components\MudDialog.razor" />
-	  <None Include="Components\RemoveExceptionDate.razor" />
 	  <None Include="Components\Spinner.razor" />
 	  <None Include="Components\TopAppBar.razor" />
 	</ItemGroup>

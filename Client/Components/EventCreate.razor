@@ -1,5 +1,5 @@
 ﻿@attribute [Authorize]
-@inject DataAccessService data;
+@inject DataAccessService data
 @inject StateAccessService state
 @inject ISnackbar Snackbar
 @implements IDisposable;
@@ -8,27 +8,22 @@
 <MudContainer MaxWidth="MaxWidth.Small">
     @if (_codes is not null)
     {
-        <MudSelect T="EventSchedulingCode" @ref="@_mudSelect" AnchorOrigin="Origin.BottomCenter" Label="Select Game Type" Clearable="true" Required="true" SelectedValuesChanged="OnSelectedCodeValuesChanged" Class="pt-8 pb-3">
+        <MudSelect T="EventSchedulingCode" @ref="@_mudSelect" AnchorOrigin="Origin.BottomCenter" Label="Select Game Type" Clearable="true" Required="true" SelectedValuesChanged="OnSelectedCodeValuesChanged" Class="pt-2 pb-3">
             @foreach (var evt in _codes)
             {
                 <MudSelectItem Value="@(evt)">@evt.Code - @evt.Description - @evt.Notes</MudSelectItem>
             }
         </MudSelect>
     }
-</MudContainer>
 
-
-@if (_selectedCode is not null)
-{
-            <MudContainer MaxWidth="MaxWidth.Small">
+    @if (_selectedCode is not null)
+    {
         <MudDatePicker @ref="@_picker" @bind-Date="_eventDate" Label="Event Date" Mask="@(new DateMask("MM/dd/yyyy"))" DateFormat="MM/dd/yyyy" AutoClose="true" DisableToolbar="true">
         </MudDatePicker>
-    </MudContainer>
-    <MudContainer MaxWidth="MaxWidth.Small">
         <EditForm @ref="form" Model="@_newEvent" OnValidSubmit="OnValidSubmit" OnInvalidSubmit="OnInvalidSubmit">
             <MudItem xs="12" sm="7" Class="pt-5">
-
             </MudItem>
+
             <MudGrid Class="overflow-scroll">
                 <MudItem xs="12" sm="7">
                     <MudTimePicker Label="Event Time" AmPm="true" @bind-Time="_eventTime" PickerVariant="PickerVariant.Dialog" />
@@ -42,7 +37,6 @@
                         </MudRadioGroup>
                     </MudField>
                 </MudItem>
-
 
                 <MudItem xs="12" sm="7" Class="pt-5">
                     <MudNumericField @bind-Value="@_participantLimit" Label="Number of Players Needed" Variant="Variant.Text" Min="0" Max="10" />
@@ -65,7 +59,6 @@
                     <MudNumericField @bind-Value="@_selectedCode.MaxLevelEdge" Label="Max Player Level" Variant="Variant.Text" Min="1" ReadOnly="true" />
                 </MudItem>
 
-
                 <MudItem xs="12" sm="7" Class="pt-5">
                     <MudField Label="Partial Game" Variant="Variant.Text">
                         <MudCheckBox @bind-Checked="@_isPartial" Label="Is Partial Game" Size="Size.Small" Disabled></MudCheckBox>
@@ -75,19 +68,18 @@
             </MudGrid>
         </EditForm>
         <MudPaper Height="200px" Width="100%" Elevation="0">
-            <MudContainer MaxWidth="MaxWidth.Small">
-                <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
-            </MudContainer>
+            <MudPaper Height="200px" Width="100%" Square="true" Style="background-color:transparent" Elevation="0"></MudPaper>
         </MudPaper>
-    </MudContainer>
+    }
+</MudContainer>
 
 
-}
 @code {
+    public EventWithCodeInfo? _eventInfo;
     private DataAccessService? _data;
     private List<EventSchedulingCode>? _codes;
     private EventSchedulingCode? _selectedCode;
-    private MudSelect<EventSchedulingCode>? _mudSelect;
+    public MudSelect<EventSchedulingCode>? _mudSelect;
     private Event? _newEvent = new Event();
     private DateTime? _eventDate;
     private TimeSpan? _eventTime = new TimeSpan(18, 30, 00);
@@ -105,9 +97,9 @@
     EditForm? form;
     MudDatePicker? _picker;
 
-
     private async Task BuildEventForSubmission()
     {
+        await Task.Delay(1);
         if (_selectedCode is not null)
         {
             _newEvent.EventSchedulingCodeId = _selectedCode.Id;
@@ -168,13 +160,6 @@
         _valid = true;
     }
 
-    //async void OnDateChange(DateTime? newDate)
-    //{
-    //    _eventDate = newDate;
-    //    StateHasChanged();
-    //    //await FetchData();
-    //}
-
     private async Task OnValidSubmit(EditContext context)
     {
         await BuildEventForSubmission();
@@ -201,6 +186,8 @@
         _success = true;
         Snackbar.Configuration.PositionClass = "Top-Center";
         Snackbar.Add("Event Saved!", Severity.Success);
+
+        _state.SetEventWithCodeInfo(null);
         StateHasChanged();
     }
 
@@ -213,20 +200,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+        state.OnStateChange += StateHasChanged;
         _state = state;
-        if (_state is not null)
-        {
-            if (_state.Member is not null)
-            {
-                _newEvent.UpdatedBy = _state.Member.Email;
-            }
-        }
-
         _data = data ?? null;
         await GetEventSchedulingCodes();
-        _newEvent.EventTime = _eventTime ?? null;
-        _newEvent.IsPartial = false;
-        //_newEvent.EventDate = DateTime.Now;
     }
 
     private async Task GetEventSchedulingCodes()
@@ -241,10 +218,19 @@
 
     private async Task OnSelectedCodeValuesChanged()
     {
+        await Task.Delay(1);
         try
         {
             _selectedCode = _mudSelect.SelectedValues.FirstOrDefault();
             _newEvent.EventSchedulingCodeId = _selectedCode.Id;
+            if (_state is not null)
+            {
+                if (_state.EventWithCodeInfo is not null)
+                {
+                    _eventDate = _state.EventWithCodeInfo.EventDate;
+                }
+            }
+            StateHasChanged();
         }
         catch (Exception e) { }
     }

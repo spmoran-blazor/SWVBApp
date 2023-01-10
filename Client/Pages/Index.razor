@@ -7,7 +7,7 @@
 @if (CurrentMember is null)
 {
     <MudItem style="text-align: center;">
-        <MudImage style="margin:auto; display:block; width:50%; padding-top:100px;" src="img/loading.gif" />
+        <MudImage style="margin:auto; display:block; width:25%; padding-top:100px;" src="img/loading.gif" />
     </MudItem>
 }
 
@@ -23,8 +23,7 @@
     switch (Action)
     {
         case null:
-@*            <Client.Components.NavScreen />*@
-            <Client.Components.EventManager />
+            <Client.Components.NavScreen />
             break;
         case "0":
             <Client.Components.NavScreen />
@@ -42,13 +41,16 @@
             <Client.Components.ExceptionDates />
             break;
         case "101":
-            <Client.Components.EventCreate />
+            <Client.Components.EventManager />
             break;
         case "102":
+            <Client.Components.EventCreate />
+            break;
+        case "103":
             <Client.Components.DeleteEvent />
             break;
         default:
-            <Client.Components.EventManager />
+            <Client.Components.NavScreen />
             break;
     }
 }

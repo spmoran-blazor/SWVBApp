@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Components;
 using MudBlazor;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+using MudBlazor.Extensions;
 using WVBApp.Shared.DTOs;
 using WVBApp.Shared.Entities;
 using WVBApp.Shared.Services.Data;
 using WVBApp.Shared.Services.State;
-using static MudBlazor.CategoryTypes;
-using static MudBlazor.Colors;
 
 namespace Client.Components
 {
@@ -25,14 +20,48 @@ namespace Client.Components
         private List<EventWithCodeInfo> _fullEvents = new List<EventWithCodeInfo>();
         private StateAccessService? _state;
         private List<HeaderType> _headerDates = new List<HeaderType>();
-        bool _success;
+        bool _open;
+        protected EventCreate? dc;
 
+        private async Task OpenDrawer(EventWithCodeInfo evc, DateTime? evtd)
+        {
+            if(evc is not null)
+            {
+                _state.EventWithCodeInfo = evc;
+            }
+
+            if(evtd is not null)
+            {
+                EventWithCodeInfo evcti = new EventWithCodeInfo();
+                evcti.EventDate = evtd.GetValueOrDefault();
+                _state.EventWithCodeInfo = evcti;
+            }
+
+            _open = !_open;
+            
+        }
+
+        async Task CloseAddScreen()
+        {
+            await dc._mudSelect.Clear();
+            _open = !_open;
+            if(_state is not null)
+            {
+                _state.SetEventWithCodeInfo(null);
+            }
+
+            await GetScheduledEvents();
+            await FashionEvents(_fullEvents);
+            StateHasChanged();
+        }
 
         protected override async Task OnInitializedAsync()
         {
+            State.OnStateChange += StateHasChanged;
             _state = State;
             _data = Data;
             await GetScheduledEvents();
+            await FashionEvents(_fullEvents);
         }
 
         private async void RemoveEvent(EventWithCodeInfo evc)
@@ -43,7 +72,7 @@ namespace Client.Components
                 Event? evt = _events.Where(a => a.Id == evc.Id).FirstOrDefault();
                 var postData = await _data.DeleteEvent(evt);
                 await GetScheduledEvents();
-                _success = true;
+                await FashionEvents(_fullEvents);
                 Snackbar.Configuration.PositionClass = "Top-Center";
                 Snackbar.Add("Event Removed!", Severity.Success);
                 StateHasChanged();
@@ -54,6 +83,7 @@ namespace Client.Components
         {
             if (_data is not null)
             {
+                _headerDates.Clear();
                 var data = await _data.GetScheduledEvents();
                 _fullEvents = data.ToList();
 
@@ -86,9 +116,7 @@ namespace Client.Components
                         }
                     }
 
- 
-                
-                   StateHasChanged();
+                    StateHasChanged();
             }
         }
 
@@ -122,9 +150,5 @@ namespace Client.Components
 
     }
 
-    public class HeaderType
-    {
-        public int Count { get; set; }
-        public DateTime EventDate { get; set; }
-    }
+   
 }

@@ -1,4 +1,5 @@
-﻿using WVBApp.Shared.Entities;
+﻿using WVBApp.Shared.DTOs;
+using WVBApp.Shared.Entities;
 
 namespace WVBApp.Shared.Services.State
 {
@@ -12,6 +13,7 @@ namespace WVBApp.Shared.Services.State
         public string? UserEmail { get; set; }
         public string? UserName { get; set;}
         public string? UserId { get; set;}
+        public EventWithCodeInfo EventWithCodeInfo { get; set; }
 
         public void SetUserIdValue(string value)
         {
@@ -27,6 +29,12 @@ namespace WVBApp.Shared.Services.State
         public void SetUserJsonValue(string value)
         {
             UserJson = value;
+            NotifyStateChanged();
+        }
+
+        public void SetEventWithCodeInfo(EventWithCodeInfo value)
+        {
+            EventWithCodeInfo = value;
             NotifyStateChanged();
         }
 
